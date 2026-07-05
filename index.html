@@ -1,0 +1,3292 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>澜湄通 LanMei Pass</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <script>
+        // ==========================================
+        // 1. API 统一配置中心
+        // ==========================================
+        const CONFIG = {
+            deepseek: {
+                apiKey: "sk-289430f721c24c138e1f8402479e1490",
+                apiUrl: "https://api.deepseek.com/chat/completions"
+            }
+        };
+
+        // ==========================================
+        // 2. 多语言配置与翻译 (i18n)
+        // ==========================================
+        let currentLang = 'zh';
+        const translations = {
+            zh: {
+                // 基础
+                site_title: "澜湄通 LanMei Pass",
+                toggle_btn_text: "English",
+                logo: "澜湄通",
+                dashboard_title: "控制台概览",
+
+                // 聊天
+                chat_toggle_btn: "智能客服",
+                chat_title: "澜湄通 AI 助手",
+                chat_welcome: "您好！我是澜湄通智能助手。关于 RCEP 关税、海关合规或平台操作，有什么我可以帮您的？",
+                chat_placeholder: "输入您的问题...",
+                chat_send_btn: "发送",
+
+                // 侧边栏导航
+                nav_dashboard: "控制台",
+                nav_section_identity: "IDENTITY & TRUST",
+                nav_did: "数字身份 DID",
+                nav_credit: "信用评级",
+                nav_section_compliance: "SMART COMPLIANCE",
+                nav_docs: "AI 单证引擎",
+                nav_rcep: "RCEP 原产地",
+                nav_approval: "审批看板",
+                nav_section_logistics: "SUPPLY CHAIN",
+                nav_logistics: "物流追踪",
+                nav_port: "口岸预测",
+                nav_kb: "政策法规库",
+                nav_knowledge: "海关知识库",
+
+                // 控制台概览
+                welcome_title: "👋 欢迎回来，云南菌业出口有限公司",
+                welcome_desc: "您有 2 笔贸易订单正在处理中，1 批货物预计明天抵达曼谷。AI 助手检测到磨憨口岸通关延迟，已为您准备替代方案。",
+                qa_new_order: "新建贸易订单",
+                qa_rcep: "RCEP 关税计算",
+                qa_track: "物流追踪",
+                qa_kb: "政策法规查询",
+                stat_active_orders: "进行中的订单",
+                stat_compliance_rate: "单证合规率",
+                stat_avg_clearance: "平均通关时间",
+                stat_tariff_saved: "RCEP 关税节省",
+                stat_vs_last: "较上月",
+                recent_orders: "近期贸易订单",
+                view_all: "查看全部",
+                th_order: "订单号",
+                th_dest: "目的国",
+                th_product: "商品",
+                th_status: "状态",
+                product_mushroom: "野生菌类",
+                product_tea: "普洱茶叶",
+                product_parts: "电子元器件",
+                status_customs: "海关审核中",
+                status_transit: "运输中",
+                status_complete: "已完成",
+                ai_alerts: "AI 智能预警",
+                new_label: "条新消息",
+                alert_port_title: "磨憨口岸通关延迟",
+                alert_port_text: "当前平均通关时间 8 小时（+30%），建议考虑河口口岸替代路线",
+                alert_doc_title: "单证优化建议",
+                alert_doc_text: "订单 LMT-2026-0312 的 SPS 证书与泰国 FDA 新规格式不符，建议重新生成",
+                alert_rcep_title: "RCEP 优惠已生效",
+                alert_rcep_text: "订单 LMT-2026-0301 已自动享受 RCEP 关税优惠，节省 $2,340",
+
+                // DID 数字身份
+                did_title: "🔐 企业数字身份（DID）",
+                did_verified: "已认证",
+                did_id_label: "DID 标识符",
+                did_company: "企业名称",
+                did_company_name: "云南菌业出口有限公司",
+                did_country: "注册国",
+                did_auth: "认证机构",
+                did_auth_org: "昆明市商会",
+                did_scope: "互认范围",
+                did_status_title: "身份已通过六国互认验证",
+                did_status_text: "您的 DID 凭证存储在联盟链上，已通过中国、老挝、泰国、越南、缅甸、柬埔寨六国 CA 机构互认验证。",
+
+                // 信用评级
+                credit_score_title: "📊 企业信用评分",
+                cr_dimension: "评分维度",
+                cr_weight: "权重",
+                cr_score: "得分",
+                cr_delivery: "交货准时率",
+                cr_doc_accuracy: "单证准确率",
+                cr_contract: "合约履约率",
+                cr_active: "平台活跃度",
+                cr_volume: "历史交易规模",
+                trade_profile_title: "🏢 企业贸易画像",
+                tp_main_cat: "主营品类",
+                tp_partners: "历史交易伙伴国",
+                tp_avg_cycle: "平均履约周期",
+                tp_days: "天",
+                tp_volume_trend: "近 12 月交易规模趋势",
+
+                // AI 单证引擎
+                doc_upload_title: "📤 上传原始凭据",
+                doc_upload_desc: "支持上传发票、装箱单、合同（PDF/JPG/PNG）",
+                btn_upload: "选择文件上传",
+                upload_title: "📤 贸易数据上传",
+                upload_more: "上传更多文件",
+                upload_formats: "支持 PDF, JPG, PNG, DOCX",
+                dest_country: "目的国",
+                hs_code: "商品 HS 编码",
+                ai_engine: "AI 智能合规引擎",
+                generated_docs_title: "📑 已生成单证",
+                doc_name: "单证名称",
+                doc_format: "目标格式",
+                doc_status: "状态",
+                doc_invoice: "商业发票",
+                doc_packing: "装箱单",
+                doc_sps: "SPS 检疫证书",
+                doc_origin: "原产地证书",
+                doc_customs: "报关单",
+                ready: "已就绪",
+                doc_missing: "⚠ 待上传",
+                doc_generating: "⏳ 生成中",
+                btn_convert: "🚀 一键提交审批",
+                btn_download: "📥 下载全部单证",
+                ai_analysis_1: "🔍 <strong>AI 正在分析您的贸易数据...</strong>",
+                ai_analysis_2: "✅ 商业发票格式已识别，字段映射完成。",
+                ai_analysis_3: "✅ 装箱单已解析，商品数量与发票一致。",
+                ai_analysis_4: "⚠️ <strong>检测到缺失单证：</strong>HS 编码 0709.51 属于农产品类别，出口至泰国需提供<strong>动植物检疫证书（SPS Certificate）</strong>。当前未检测到该证书。",
+                ai_analysis_5: "📋 已自动为您生成符合泰国海关格式的商业发票和装箱单模板。",
+                ai_suggest_title: "💡 AI 优化建议",
+                ai_suggest_text: "检测到您的菌类产品中含有「松茸素」成分。泰国 FDA 对该成分的进口标准为 ≤ 0.5mg/kg。<strong>建议：</strong>在申请 SPS 证书时，附加云南省农科院出具的成分检测报告，可将审批通过率从 72% 提升至 95%。",
+
+                // RCEP 原产地
+                rcep_calc_title: "🌏 RCEP 原产地证明智能生成",
+                rcep_product: "出口产品",
+                rcep_dest: "目的国",
+                rcep_materials: "原材料来源清单",
+                mat_name: "原材料",
+                mat_origin: "来源国",
+                mat_value: "价值占比",
+                mat_rcep: "RCEP成员",
+                mat_mushroom: "野生松茸",
+                mat_boletus: "牛肝菌",
+                mat_packaging: "包装材料",
+                mat_preserv: "防腐剂",
+                mat_label: "标签印刷",
+                mat_processing: "加工增值",
+                btn_calc_rvc: "🧮 计算区域价值成分 (RVC)",
+                rvc_result_title: "📊 RVC 计算结果",
+                rvc_label: "区域价值成分 (RVC)",
+                rvc_threshold: "阈值",
+                rcep_ai_label: "RCEP 规则计算引擎",
+
+                // 审批看板
+                approval_title: "✅ 单证同步审批看板",
+                approval_order: "订单 LMT-2026-0312",
+                approval_info: "单证已并联分发至以下部门同步审核，预计总审批时间较传统串联模式缩短 60%。",
+                appr_cn_customs: "中国海关 — 报关单审核",
+                appr_passed: "✓ 审核通过",
+                appr_cn_quarantine: "中国检验检疫局 — SPS 证书审核",
+                appr_la_transit: "老挝过境许可 — 过境文件审核",
+                appr_reviewing: "⏳ 审核中（预计 2 小时）",
+                appr_th_customs: "泰国海关 — 进口单证预审",
+                appr_queued: "⏳ 排队中",
+                appr_th_fda: "泰国 FDA — SPS 证书核验",
+                appr_waiting: "等待中",
+                appr_rcep: "RCEP 原产地证书签发",
+                appr_progress: "总体审批进度",
+
+                // 物流追踪
+                logi_alert_title: "AI 预警：磨憨—磨丁口岸通关延迟",
+                logi_alert_text: "当前平均通关时间 8 小时（较上周增加 30%），预计未来 3 天仍将维持高位。<strong>建议：</strong>考虑河口口岸（当前平均通关 4 小时）或延迟 3 天发货。",
+                logi_map_title: "🗺️ 全链路物流追踪",
+                logi_map_sub: "订单 LMT-2026-0308 · 昆明 → 曼谷",
+                logi_nodes_title: "📍 物流节点状态",
+                node_warehouse: "昆明仓库 · 出库",
+                node_warehouse_detail: "货物已出库，智能合约已触发",
+                node_cn_customs: "中国海关 · 出口放行",
+                node_cn_customs_detail: "报关单、SPS 证书审核通过",
+                node_mohan: "磨憨口岸 · 出境",
+                node_mohan_detail: "通关耗时 5.5 小时",
+                node_laos: "老挝境内运输中",
+                node_laos_detail: "当前位置：万象以南 120km · 预计 6 小时后抵达泰老边境",
+                node_nongkhai: "廊开口岸 · 入境泰国",
+                node_nongkhai_detail: "AI 预测通关时间：3.5 小时",
+                node_bangkok: "曼谷仓库 · 交付",
+                node_bangkok_detail: "预计到达，智能合约将自动确认交付",
+
+                // 口岸预测
+                port_avg_time: "平均通关",
+                port_trend: "趋势",
+                port_congestion_high: "拥堵指数：高",
+                port_congestion_med: "拥堵指数：中",
+                port_congestion_low: "拥堵指数：低",
+                port_forecast_title: "📈 未来 7 天通关时间预测",
+                port_ai_title: "🤖 AI 路线建议",
+                port_ai_text: "磨憨口岸拥堵预计将在 3 月 17 日后缓解。如需紧急发货，建议选择 <strong>河口—老街—河内—曼谷</strong> 路线，综合运输时间可缩短约 18 小时，运费增加约 $120。",
+
+                // 知识库
+                kb_title: "📚 政策法规知识库",
+                kb_search: "搜索政策法规...",
+                kb_rcep_title: "RCEP 原产地规则完整指南",
+                kb_rcep_desc: "涵盖一般规则、特定产品规则（PSR）、累积规则详解",
+                kb_th_title: "泰国农产品进口 SPS 标准",
+                kb_th_desc: "泰国 FDA 对动植物检疫、农药残留、食品添加剂的最新标准",
+                kb_vn_title: "越南海关进口单证要求",
+                kb_vn_desc: "越南海关对各类商品的单证格式、必填字段及附加要求",
+                kb_la_title: "老挝过境运输许可指南",
+                kb_la_desc: "老挝过境货物的许可证申请流程、所需文件及处理时间",
+                kb_cn_title: "中国出口退税与报关指南",
+                kb_cn_desc: "最新出口退税率表、报关流程及电子报关系统操作指引"
+            },
+            en: {
+                // Basic
+                site_title: "LanMei Pass",
+                toggle_btn_text: "中文",
+                logo: "LanMei Pass",
+                dashboard_title: "Dashboard Overview",
+
+                // Chat
+                chat_toggle_btn: "AI Assistant",
+                chat_title: "LanMei AI",
+                chat_welcome: "Hello! I am LanMei Pass AI Assistant. How can I help you with RCEP tariffs, customs compliance, or platform operations?",
+                chat_placeholder: "Type your question here...",
+                chat_send_btn: "Send",
+
+                // Sidebar
+                nav_dashboard: "Dashboard",
+                nav_section_identity: "IDENTITY & TRUST",
+                nav_did: "Digital ID",
+                nav_credit: "Credit Rating",
+                nav_section_compliance: "SMART COMPLIANCE",
+                nav_docs: "AI Doc Engine",
+                nav_rcep: "RCEP Origin",
+                nav_approval: "Approval Board",
+                nav_section_logistics: "SUPPLY CHAIN",
+                nav_logistics: "Logistics Tracking",
+                nav_port: "Port Prediction",
+                nav_kb: "Policy Database",
+                nav_knowledge: "Customs KB",
+
+                // Dashboard Overview
+                welcome_title: "👋 Welcome back, Yunnan Mushroom Export Co.",
+                welcome_desc: "You have 2 trade orders processing, 1 shipment arriving in Bangkok tomorrow. AI detected Mohan Port delay and prepared alternatives.",
+                qa_new_order: "New Trade Order",
+                qa_rcep: "RCEP Tariff Calc",
+                qa_track: "Track Logistics",
+                qa_kb: "Policy Query",
+                stat_active_orders: "Active Orders",
+                stat_compliance_rate: "Compliance Rate",
+                stat_avg_clearance: "Avg Clearance Time",
+                stat_tariff_saved: "RCEP Tariff Saved",
+                stat_vs_last: "vs last month",
+                recent_orders: "Recent Trade Orders",
+                view_all: "View All",
+                th_order: "Order ID",
+                th_dest: "Destination",
+                th_product: "Product",
+                th_status: "Status",
+                product_mushroom: "Wild Mushrooms",
+                product_tea: "Pu'er Tea",
+                product_parts: "Electronic Parts",
+                status_customs: "Under Customs Review",
+                status_transit: "In Transit",
+                status_complete: "Completed",
+                ai_alerts: "AI Smart Alerts",
+                new_label: "new messages",
+                alert_port_title: "Mohan Port Delay",
+                alert_port_text: "Avg clearance time 8 hrs (+30%). Consider Hekou port as alternative.",
+                alert_doc_title: "Doc Optimization Suggestion",
+                alert_doc_text: "Order LMT-2026-0312 SPS cert mismatches new Thai FDA format. Regeneration suggested.",
+                alert_rcep_title: "RCEP Benefit Applied",
+                alert_rcep_text: "Order LMT-2026-0301 auto-applied RCEP tariff saving $2,340",
+
+                // DID
+                did_title: "🔐 Digital Identity (DID)",
+                did_verified: "Verified",
+                did_id_label: "DID Identifier",
+                did_company: "Company Name",
+                did_company_name: "Yunnan Mushroom Export Co., Ltd",
+                did_country: "Country of Registration",
+                did_auth: "Certification Authority",
+                did_auth_org: "Kunming Chamber of Commerce",
+                did_scope: "Mutual Recognition Scope",
+                did_status_title: "Identity Verified by 6 Countries",
+                did_status_text: "Your DID is stored on the consortium blockchain, verified by CA authorities from CN, LA, TH, VN, MM, KH.",
+
+                // Credit Rating
+                credit_score_title: "📊 Credit Score",
+                cr_dimension: "Dimension",
+                cr_weight: "Weight",
+                cr_score: "Score",
+                cr_delivery: "Delivery Timeliness",
+                cr_doc_accuracy: "Doc Accuracy",
+                cr_contract: "Contract Fulfillment",
+                cr_active: "Platform Activity",
+                cr_volume: "Historical Trade Vol",
+                trade_profile_title: "🏢 Enterprise Trade Profile",
+                tp_main_cat: "Main Categories",
+                tp_partners: "Historical Partners",
+                tp_avg_cycle: "Avg Fulfillment Cycle",
+                tp_days: "days",
+                tp_volume_trend: "12-Month Trade Vol Trend",
+
+                // AI Document Engine
+                doc_upload_title: "📤 Upload Raw Vouchers",
+                doc_upload_desc: "Support Invoice, Packing List, Contract (PDF/JPG/PNG)",
+                btn_upload: "Select File to Upload",
+                upload_title: "📤 Trade Data Upload",
+                upload_more: "Upload More Files",
+                upload_formats: "Supports PDF, JPG, PNG, DOCX",
+                dest_country: "Destination Country",
+                hs_code: "HS Code",
+                ai_engine: "AI Compliance Engine",
+                generated_docs_title: "📑 Generated Documents",
+                doc_name: "Document Name",
+                doc_format: "Target Format",
+                doc_status: "Status",
+                doc_invoice: "Commercial Invoice",
+                doc_packing: "Packing List",
+                doc_sps: "SPS Certificate",
+                doc_origin: "Certificate of Origin",
+                doc_customs: "Customs Declaration",
+                ready: "Ready",
+                doc_missing: "⚠ Pending Upload",
+                doc_generating: "⏳ Generating",
+                btn_convert: "🚀 Submit for Approval",
+                btn_download: "📥 Download All",
+                ai_analysis_1: "🔍 <strong>AI is analyzing your trade data...</strong>",
+                ai_analysis_2: "✅ Invoice format recognized, field mapping complete.",
+                ai_analysis_3: "✅ Packing list parsed, quantities match invoice.",
+                ai_analysis_4: "⚠️ <strong>Missing document detected:</strong> HS 0709.51 is agricultural. Export to Thailand requires <strong> SPS Certificate</strong>. Not found.",
+                ai_analysis_5: "📋 Auto-generated invoice and packing list templates in Thai customs format.",
+                ai_suggest_title: "💡 AI Optimization Suggestion",
+                ai_suggest_text: "Your mushroom products contain 'Matsutake essence'. Thai FDA limit is ≤ 0.5mg/kg. <strong>Suggest:</strong> Attach Yunnan Academy lab report to SPS application to boost approval from 72% to 95%.",
+
+                // RCEP
+                rcep_calc_title: "🌏 RCEP Smart Certificate",
+                rcep_product: "Export Product",
+                rcep_dest: "Destination Country",
+                rcep_materials: "Material Source List",
+                mat_name: "Material",
+                mat_origin: "Source Country",
+                mat_value: "Value Share",
+                mat_rcep: "RCEP Member",
+                mat_mushroom: "Wild Matsutake",
+                mat_boletus: "Boletus",
+                mat_packaging: "Packaging",
+                mat_preserv: "Preservative",
+                mat_label: "Label Printing",
+                mat_processing: "Processing Value Added",
+                btn_calc_rvc: "🧮 Calculate RVC",
+                rvc_result_title: "📊 RVC Result",
+                rvc_label: "Regional Value Content (RVC)",
+                rvc_threshold: "Threshold",
+                rcep_ai_label: "RCEP Rule Engine",
+
+                // Approval Board
+                approval_title: "✅ Parallel Approval Board",
+                approval_order: "Order LMT-2026-0312",
+                approval_info: "Documents distributed for parallel review across departments. Estimated 60% time reduction vs serial mode.",
+                appr_cn_customs: "China Customs — Declaration Review",
+                appr_passed: "✓ Approved",
+                appr_cn_quarantine: "China CIQ — SPS Cert Review",
+                appr_la_transit: "Laos Transit — Transit Doc Review",
+                appr_reviewing: "⏳ Under Review (est. 2h)",
+                appr_th_customs: "Thai Customs — Import Doc Pre-review",
+                appr_queued: "⏳ Queued",
+                appr_th_fda: "Thai FDA — SPS Cert Verification",
+                appr_waiting: "Waiting",
+                appr_rcep: "RCEP CO Issuance",
+                appr_progress: "Overall Progress",
+
+                // Logistics
+                logi_alert_title: "AI Alert: Mohan-Boten Port Delay",
+                logi_alert_text: "Average clearance: 8 hrs (+30% WoW). Expected to remain high for 3 days. <strong>Suggest:</strong> Use Hekou Port (avg 4 hrs) or delay shipment by 3 days.",
+                logi_map_title: "🗺️ Full-chain Tracking",
+                logi_map_sub: "Order LMT-2026-0308 · Kunming → Bangkok",
+                logi_nodes_title: "📍 Node Status",
+                node_warehouse: "Kunming Warehouse · Outbound",
+                node_warehouse_detail: "Goods outbound, smart contract triggered",
+                node_cn_customs: "China Customs · Released",
+                node_cn_customs_detail: "Declaration & SPS approved",
+                node_mohan: "Mohan Port · Departure",
+                node_mohan_detail: "Clearance: 5.5 hrs",
+                node_laos: "In-transit in Laos",
+                node_laos_detail: "Location: 120km south of Vientiane · Est. 6 hrs to TH border",
+                node_nongkhai: "Nong Khai Port · Enter Thailand",
+                node_nongkhai_detail: "AI predicts 3.5 hrs clearance",
+                node_bangkok: "Bangkok Warehouse · Delivery",
+                node_bangkok_detail: "Estimated arrival, smart contract auto-confirms delivery",
+
+                // Port Prediction
+                port_avg_time: "Avg Time",
+                port_trend: "Trend",
+                port_congestion_high: "Congestion: High",
+                port_congestion_med: "Congestion: Med",
+                port_congestion_low: "Congestion: Low",
+                port_forecast_title: "📈 7-Day Clearance Forecast",
+                port_ai_title: "🤖 AI Route Suggestion",
+                port_ai_text: "Mohan congestion expected to ease after Mar 17. For urgent shipment, try <strong>Hekou—Lao Cai—Hanoi—Bangkok</strong> route, saving ~18 hrs transit time at ~$120 extra freight cost.",
+
+                // Knowledge Base
+                kb_title: "📚 Policy Database",
+                kb_search: "Search policies...",
+                kb_rcep_title: "RCEP Origin Rules Guide",
+                kb_rcep_desc: "General rules, Product Specific Rules (PSR), accumulation rules explained",
+                kb_th_title: "Thailand Agricultural SPS Standards",
+                kb_th_desc: "Latest Thai FDA standards on phytosanitary, pesticide residues, food additives",
+                kb_vn_title: "Vietnam Import Documentation",
+                kb_vn_desc: "Vietnam customs document formats, required fields and attachments",
+                kb_la_title: "Laos Transit Transport Guide",
+                kb_la_desc: "License application process, required documents, processing times for Laos transit",
+                kb_cn_title: "China Export Rebate & Customs Guide",
+                kb_cn_desc: "Latest export tax rebate rates, customs clearance processes, E-clearance system guide"
+            }
+        };
+
+        function setLang(lang) {
+            currentLang = lang;
+            applyTranslations();
+
+            // 修复左下角中英文切换按钮的UI高亮状态
+
+            const langBtns = document.querySelectorAll('.modern-lang-toggle .lang-btn');
+            if (langBtns.length >= 2) {
+                if (lang === 'zh') {
+                    langBtns[0].classList.add('active'); // 🇨🇳 中 按钮激活
+                    langBtns[1].classList.remove('active');
+                } else {
+                    langBtns[0].classList.remove('active');
+                    langBtns[1].classList.add('active'); // 🇬🇧 EN 按钮激活
+                }
+            }
+        }
+
+        function toggleLanguage() {
+            setLang(currentLang === 'zh' ? 'en' : 'zh');
+        }
+
+        function applyTranslations() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                const text = translations[currentLang][key];
+                if (text) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.placeholder = text;
+                    } else {
+                        el.innerHTML = text;
+                    }
+                } else if (el.getAttribute('data-i18n-fallback')) {
+                    // 如果翻译缺失，使用fallback属性中的文本
+                }
+            });
+            // 处理 data-i18n-placeholder 属性（用于搜索输入框等）
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                const text = translations[currentLang][key];
+                if (text) {
+                    el.placeholder = text;
+                }
+            });
+            const toggleBtn = document.getElementById('lang-toggle-btn');
+            if (toggleBtn) {
+                toggleBtn.innerText = translations[currentLang]['toggle_btn_text'];
+            }
+            // 同时更新顶栏标题
+            const titleEl = document.getElementById('page-title');
+            if (titleEl && titleEl.getAttribute('data-i18n')) {
+                const key = titleEl.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    titleEl.innerHTML = translations[currentLang][key];
+                }
+            }
+        }
+
+        // ==========================================
+        // 3. 恢复页面导航与基础 UI 逻辑 (找回丢失的按钮事件)
+        // ==========================================
+        const pageTitles = {
+            zh: {
+                dashboard: '控制台概览',
+                did: '数字身份认证',
+                credit: '企业信用评级',
+                documents: 'AI 单证引擎',
+                rcep: 'RCEP 原产地证明',
+                approval: '单证同步审批',
+                logistics: '全链路物流追踪',
+                port: '口岸通关预测',
+                knowledge: '政策法规知识库'
+            },
+            en: {
+                dashboard: 'Dashboard Overview',
+                did: 'Digital Identity',
+                credit: 'Credit Rating',
+                documents: 'AI Document Engine',
+                rcep: 'RCEP Certificate of Origin',
+                approval: 'Parallel Approval',
+                logistics: 'Full-chain Logistics',
+                port: 'Port Clearance Prediction',
+                knowledge: 'Policy Database'
+            }
+        };
+
+        let mapInitialized = false;
+
+        function navigateTo(pageId) {
+            // 隐藏所有页面并取消所有导航的高亮
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+            // 显示目标页面
+            const page = document.getElementById(`page-${pageId}`);
+            if (page) page.classList.add('active');
+
+            // 高亮目标导航按钮
+            const nav = document.querySelector(`[onclick="navigateTo('${pageId}')"]`);
+            if (nav) nav.classList.add('active');
+
+            // 更新顶栏标题（解决顶栏不随边栏切换的问题）
+            const titleEl = document.getElementById('page-title');
+            if (titleEl && pageTitles[currentLang] && pageTitles[currentLang][pageId]) {
+                titleEl.textContent = pageTitles[currentLang][pageId];
+            }
+
+            // 地图初始化
+            if (pageId === 'logistics' && !mapInitialized) {
+                setTimeout(initMap, 100);
+                mapInitialized = true;
+            }
+        }
+
+        function showNotifications() {
+            alert(currentLang === 'zh' ?
+                '您有 3 条未读通知：\n1. 磨憨口岸通关延迟预警\n2. SPS 证书优化建议\n3. RCEP 优惠已生效' :
+                'You have 3 unread notifications:\n1. Mohan port delay alert\n2. SPS certificate optimization\n3. RCEP benefit applied');
+        }
+
+        function quickDemo() {
+            alert(currentLang === 'zh' ? '演示模式：单证已提交至多部门并联审批' : 'Demo mode: Documents submitted for parallel approval');
+            navigateTo('approval');
+        }
+
+        // ==========================================
+        // 4. 智能助手 (Chatbot) 及 语音控制 
+        // ==========================================
+        function toggleChatbot() {
+            const panel = document.getElementById('chatbot-panel');
+            if (panel) {
+                panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
+            }
+        }
+
+        function handleChatEnter(event) {
+            if (event.key === 'Enter') sendMessage();
+        }
+
+        async function sendMessage() {
+            const inputEl = document.getElementById('chat-input');
+            if (!inputEl) return;
+            const message = inputEl.value.trim();
+            if (!message) return;
+
+            appendMessage(message, 'user-message');
+            inputEl.value = '';
+
+            const loadingText = currentLang === 'zh' ? '思考中...' : 'Thinking...';
+            const currentAIResponseId = appendMessage(loadingText, 'ai-message');
+
+            try {
+                // 根据中英文动态切换 AI 系统提示词
+                const systemPrompt = currentLang === 'zh' ?
+                    "你是澜湄通(LanMei Pass)平台的官方AI助手。解答专业且简明扼要，请务必用中文回答。" :
+                    "You are the official AI assistant of LanMei Pass. Be concise and professional, and PLEASE ANSWER IN ENGLISH.";
+
+                const response = await fetch(CONFIG.deepseek.apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${CONFIG.deepseek.apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: "deepseek-chat",
+                        messages: [{
+                            role: "system",
+                            content: systemPrompt
+                        }, {
+                            role: "user",
+                            content: message
+                        }],
+                        stream: false
+                    })
+                });
+
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const data = await response.json();
+                const aiReply = data.choices[0].message.content;
+
+                updateMessage(currentAIResponseId, aiReply);
+                speakText(aiReply); // 播报 AI 回答
+            } catch (error) {
+                const errorMsg = currentLang === 'zh' ? "网络连接失败，请稍后再试。" : "Connection failed. Please try again.";
+                updateMessage(currentAIResponseId, errorMsg);
+            }
+        }
+
+        // 初始化浏览器原生语音识别
+        let recognition;
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                const inputEl = document.getElementById('chat-input');
+                if (inputEl) {
+                    inputEl.value = transcript;
+                    sendMessage(); // 识别后自动发送
+                }
+            };
+        }
+
+        function startSpeechRecognition() {
+            if (!recognition) {
+                alert(currentLang === 'zh' ? '当前浏览器暂不支持语音识别，请使用 Chrome 等现代浏览器。' : 'Speech recognition is not supported.');
+                return;
+            }
+            recognition.lang = currentLang === 'zh' ? 'zh-CN' : 'en-US';
+            recognition.start();
+            const inputEl = document.getElementById('chat-input');
+            if (inputEl) inputEl.placeholder = currentLang === 'zh' ? '正在倾听...' : 'Listening...';
+        }
+
+        function speakText(text) {
+            if (!('speechSynthesis' in window)) return;
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = currentLang === 'zh' ? 'zh-CN' : 'en-US';
+            window.speechSynthesis.cancel();
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function appendMessage(text, className) {
+            const messagesDiv = document.getElementById('chatbot-messages');
+            if (!messagesDiv) return null;
+            const msgDiv = document.createElement('div');
+            const msgId = 'msg-' + Date.now();
+            msgDiv.id = msgId;
+            msgDiv.className = `chat-message ${className}`;
+            msgDiv.innerText = text;
+            messagesDiv.appendChild(msgDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            return msgId;
+        }
+
+        function updateMessage(id, text) {
+            const msgDiv = document.getElementById(id);
+            if (msgDiv) msgDiv.innerText = text;
+        }
+
+        // ==========================================
+        // 6. 缺失的实用函数（从原始版本移植）
+        // ==========================================
+
+        // 模拟上传
+        function simulateUpload() {
+            alert(currentLang === 'zh' ? 'Demo 模式：模拟文件上传成功' : 'Demo mode: File upload simulated');
+        }
+
+        // 模拟转换并跳转审批
+        function simulateConvert() {
+            alert(currentLang === 'zh' ? 'Demo 模式：单证已提交至多部门并联审批' : 'Demo mode: Documents submitted for parallel approval');
+            navigateTo('approval');
+        }
+
+        // 地图初始化
+        function initMap() {
+            const map = L.map('logistics-map', {
+                zoomControl: false,
+                attributionControl: false
+            }).setView([18.5, 103], 6);
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                maxZoom: 19
+            }).addTo(map);
+
+            L.control.zoom({
+                position: 'topright'
+            }).addTo(map);
+
+            const nodes = [
+                { lat: 25.04, lng: 102.68, name: '昆明仓库', status: 'completed', icon: '🏭' },
+                { lat: 24.98, lng: 102.72, name: '中国海关', status: 'completed', icon: '🛃' },
+                { lat: 21.18, lng: 101.69, name: '磨憨口岸', status: 'completed', icon: '🚛' },
+                { lat: 16.80, lng: 104.50, name: '老挝运输中', status: 'current', icon: '📍' },
+                { lat: 17.87, lng: 102.74, name: '廊开口岸', status: 'upcoming', icon: '🛃' },
+                { lat: 13.75, lng: 100.52, name: '曼谷仓库', status: 'upcoming', icon: '📦' }
+            ];
+
+            const routeCoords = nodes.map(n => [n.lat, n.lng]);
+            const completedIdx = nodes.findIndex(n => n.status === 'current');
+            const completedCoords = routeCoords.slice(0, completedIdx + 1);
+            const upcomingCoords = routeCoords.slice(completedIdx);
+
+            L.polyline(completedCoords, { color: '#22c55e', weight: 3, opacity: 0.8 }).addTo(map);
+            L.polyline(upcomingCoords, { color: '#5a6a8a', weight: 2, dashArray: '8 8', opacity: 0.5 }).addTo(map);
+
+            nodes.forEach(node => {
+                let color = '#5a6a8a';
+                if (node.status === 'completed') color = '#22c55e';
+                if (node.status === 'current') color = '#f59e0b';
+                const marker = L.circleMarker([node.lat, node.lng], {
+                    radius: node.status === 'current' ? 10 : 7,
+                    fillColor: color, color: color, weight: 2, fillOpacity: 0.8
+                }).addTo(map);
+                marker.bindPopup(`<div style="font-family:var(--font-cn);font-size:13px;"><strong>${node.icon} ${node.name}</strong></div>`);
+                if (node.status === 'current') {
+                    L.circleMarker([node.lat, node.lng], {
+                        radius: 18, fillColor: '#f59e0b', color: '#f59e0b', weight: 1, fillOpacity: 0.15
+                    }).addTo(map);
+                }
+            });
+            map.fitBounds(routeCoords, { padding: [40, 40] });
+        }
+
+        // RVC 计算器
+        function calculateRVC() {
+            const displayRVC = 100;
+            document.getElementById('rvc-value').textContent = displayRVC + '%';
+            document.getElementById('rvc-fill').style.width = displayRVC + '%';
+
+            const statusEl = document.getElementById('rvc-status');
+            statusEl.innerHTML = '<div class="alert-box success"><div class="alert-icon">🎉</div><div class="alert-content"><div class="alert-title">' +
+                (currentLang === 'zh' ? '符合 RCEP 原产地标准！' : 'Meets RCEP Origin Standard!') +
+                '</div><div class="alert-text">' +
+                (currentLang === 'zh' ? 'RVC = 100% ≥ 40% 阈值。所有原材料均来自 RCEP 成员国。系统已自动生成原产地证明申请表。' :
+                    'RVC = 100% ≥ 40% threshold. All materials sourced from RCEP members. Certificate application auto-generated.') +
+                '</div></div></div>';
+
+            const aiBox = document.getElementById('rcep-ai-box');
+            aiBox.style.display = 'block';
+            document.getElementById('rcep-ai-msg').innerHTML = currentLang === 'zh' ?
+                '<p>✅ <strong>计算完成。</strong>您的产品所有原材料均来自 RCEP 成员国，区域价值成分远超 40% 阈值。</p><br>' +
+                '<p>📋 <strong>已自动生成：</strong>RCEP 原产地证明申请表（FORM D 格式），包含完整的 RVC 计算过程和依据。</p><br>' +
+                '<p>🚀 申请将推送至中国贸促会签发。预计可享受 <strong>约 5% 关税优惠</strong>，每批次节省约 <strong>$800-1,200</strong>。</p>' :
+                '<p>✅ <strong>Calculation complete.</strong> All raw materials from RCEP member states. RVC far exceeds 40% threshold.</p><br>' +
+                '<p>📋 <strong>Auto-generated:</strong> RCEP Certificate of Origin application (FORM D) with full RVC calculation.</p><br>' +
+                '<p>🚀 Application will be sent to CCPIT for issuance. Estimated <strong>~5% tariff reduction</strong>, saving <strong>$800-1,200</strong> per shipment.</p>';
+        }
+
+        // ==========================================
+        // 7. 页面初始化加载事件
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // 初始设置语言并渲染
+            setLang('zh');
+
+            // 如果您使用了地图库，取消下面这段注释：
+            // if(typeof initMap === 'function') initMap(); 
+        });
+    </script>
+
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+         :root {
+            --bg-primary: #0a0f1c;
+            --bg-secondary: #111827;
+            --bg-card: #1a2235;
+            --bg-card-hover: #1f2a40;
+            --bg-surface: #0d1424;
+            --text-primary: #f0f4ff;
+            --text-secondary: #94a3c8;
+            --text-muted: #5a6a8a;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --accent-teal: #14b8a6;
+            --accent-green: #22c55e;
+            --accent-amber: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #8b5cf6;
+            --gradient-primary: linear-gradient(135deg, #3b82f6, #06b6d4);
+            --gradient-warm: linear-gradient(135deg, #f59e0b, #ef4444);
+            --gradient-cool: linear-gradient(135deg, #14b8a6, #3b82f6);
+            --border-color: rgba(59, 130, 246, 0.15);
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --shadow-glow: 0 0 30px rgba(59, 130, 246, 0.1);
+            --radius: 12px;
+            --radius-lg: 16px;
+            --radius-sm: 8px;
+            --font-cn: 'Noto Sans SC', sans-serif;
+            --font-en: 'DM Sans', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-cn);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        /* ===== SCROLLBAR ===== */
+        
+         ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+         ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        
+         ::-webkit-scrollbar-thumb {
+            background: var(--text-muted);
+            border-radius: 3px;
+        }
+        /* ===== LAYOUT ===== */
+        
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        /* ===== SIDEBAR ===== */
+        
+        .sidebar {
+            width: 260px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+        
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-text .cn {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        
+        .logo-text .en {
+            font-size: 10px;
+            font-weight: 500;
+            color: var(--text-muted);
+            font-family: var(--font-en);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+            overflow-y: auto;
+        }
+        
+        .nav-section-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 12px 12px 8px;
+            font-family: var(--font-en);
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-item:hover {
+            background: rgba(59, 130, 246, 0.08);
+            color: var(--text-primary);
+        }
+        
+        .nav-item.active {
+            background: rgba(59, 130, 246, 0.12);
+            color: var(--accent-blue);
+        }
+        
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 20px;
+            background: var(--accent-blue);
+            border-radius: 0 3px 3px 0;
+        }
+        
+        .nav-icon {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-footer {
+            padding: 16px 12px;
+            border-top: 1px solid var(--border-subtle);
+        }
+        /* ==========================================
+          现代化语言切换器样式 (Modern Lang Toggle)
+          ========================================== */
+        
+        .modern-lang-toggle {
+            display: flex;
+            background-color: #f1f5f9;
+            /* 柔和的浅灰蓝背景 */
+            border-radius: 12px;
+            padding: 4px;
+            margin: 20px;
+            /* 与侧边栏边缘保持呼吸感，可根据需要调整 */
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            /* 增加内阴影产生凹陷感 */
+        }
+        
+        .modern-lang-toggle .lang-btn {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #64748b;
+            /* 默认未激活字体颜色 */
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-family: inherit;
+        }
+        
+        .modern-lang-toggle .lang-btn span {
+            font-size: 14px;
+            /* 让 Emoji 稍微大一点 */
+        }
+        
+        .modern-lang-toggle .lang-btn:hover {
+            color: #334155;
+        }
+        /* 激活状态的高亮卡片效果 */
+        
+        .modern-lang-toggle .lang-btn.active {
+            background-color: #ffffff;
+            color: #2563eb;
+            /* 澜湄通的主题蓝色 */
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+        }
+        
+        .lang-switch-btn {
+            position: fixed;
+            /* 固定在页面某个位置，不随页面滚动 */
+            top: 20px;
+            /* 距离顶部 20px，您可根据截图效果微调 */
+            left: 20px;
+            /* 距离左侧 20px */
+            z-index: 99999;
+            /* 设置极高的层级，强制突破任何容器的遮挡 */
+            padding: 8px 16px;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            /* 确保鼠标悬浮时出现小手图标 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* 加一点阴影让它更具点击感 */
+            pointer-events: auto;
+            /* 强制接收点击事件 */
+            transition: background-color 0.2s;
+        }
+        
+        .lang-switch-btn:hover {
+            background-color: #004494;
+            /* 鼠标悬停变色提示，用来测试按钮是否处于激活状态 */
+        }
+        
+        .lang-btn.active {
+            background: var(--accent-blue);
+            color: white;
+        }
+        /* ===== MAIN CONTENT ===== */
+        
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            min-height: 100vh;
+        }
+        
+        .page-header {
+            padding: 24px 32px;
+            border-bottom: 1px solid var(--border-subtle);
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(20px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .page-title-area h1 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        
+        .page-title-area .subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: var(--font-en);
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-cool);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        
+        .notification-bell {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            font-size: 16px;
+        }
+        
+        .notification-dot {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 8px;
+            height: 8px;
+            background: var(--accent-red);
+            border-radius: 50%;
+            border: 2px solid var(--bg-secondary);
+        }
+        
+        .page-body {
+            padding: 28px 32px;
+        }
+        /* ===== PAGE: HIDDEN ===== */
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        /* ===== CARDS ===== */
+        
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            transition: all 0.3s;
+        }
+        
+        .card:hover {
+            border-color: var(--border-color);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+        }
+        
+        .card-badge {
+            font-size: 11px;
+            font-family: var(--font-en);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .badge-blue {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
+        }
+        
+        .badge-green {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--accent-green);
+        }
+        
+        .badge-amber {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-amber);
+        }
+        
+        .badge-red {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--accent-red);
+        }
+        
+        .badge-purple {
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--accent-purple);
+        }
+        
+        .badge-cyan {
+            background: rgba(6, 182, 212, 0.15);
+            color: var(--accent-cyan);
+        }
+        /* ===== GRID ===== */
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .grid-4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 16px;
+        }
+        /* ===== STAT CARD ===== */
+        
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            border-color: var(--border-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        
+        .stat-info {
+            flex: 1;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            font-family: var(--font-en);
+            line-height: 1.2;
+        }
+        
+        .stat-change {
+            font-size: 11px;
+            margin-top: 4px;
+            font-family: var(--font-en);
+        }
+        
+        .stat-change.up {
+            color: var(--accent-green);
+        }
+        
+        .stat-change.down {
+            color: var(--accent-red);
+        }
+        /* ===== BUTTONS ===== */
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            font-family: var(--font-cn);
+        }
+        
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.25);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+        }
+        
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-subtle);
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+        
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 12px;
+        }
+        
+        .btn-lg {
+            padding: 14px 28px;
+            font-size: 15px;
+        }
+        /* ===== FORM ===== */
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+        
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 10px 14px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 13px;
+            font-family: var(--font-cn);
+            transition: border-color 0.2s;
+            outline: none;
+        }
+        
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .form-select {
+            cursor: pointer;
+        }
+        
+        .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        /* ===== TABLE ===== */
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table th {
+            text-align: left;
+            padding: 10px 14px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--border-subtle);
+            font-family: var(--font-en);
+        }
+        
+        .data-table td {
+            padding: 12px 14px;
+            font-size: 13px;
+            border-bottom: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+        }
+        
+        .data-table tr:hover td {
+            background: rgba(59, 130, 246, 0.03);
+        }
+        /* ===== PROGRESS BAR ===== */
+        
+        .progress-bar {
+            height: 6px;
+            background: var(--bg-surface);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 1s ease;
+        }
+        /* ===== STEP INDICATOR ===== */
+        
+        .steps {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 32px;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            position: relative;
+        }
+        
+        .step:not(:last-child)::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: var(--border-subtle);
+            margin: 0 12px;
+        }
+        
+        .step.completed:not(:last-child)::after {
+            background: var(--accent-blue);
+        }
+        
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            background: var(--bg-surface);
+            border: 2px solid var(--border-subtle);
+            color: var(--text-muted);
+            flex-shrink: 0;
+            font-family: var(--font-en);
+        }
+        
+        .step.active .step-circle {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            color: white;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        .step.completed .step-circle {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+            color: white;
+        }
+        
+        .step-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        
+        .step.active .step-label {
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+        
+        .step.completed .step-label {
+            color: var(--accent-green);
+        }
+        /* ===== FILE UPLOAD ===== */
+        
+        .file-upload-zone {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius);
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(59, 130, 246, 0.02);
+        }
+        
+        .file-upload-zone:hover {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.05);
+        }
+        
+        .upload-icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+        
+        .upload-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        
+        .upload-hint {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        
+        .uploaded-file {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(34, 197, 94, 0.08);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: var(--radius-sm);
+            margin-top: 12px;
+        }
+        
+        .uploaded-file .file-icon {
+            font-size: 20px;
+        }
+        
+        .uploaded-file .file-name {
+            flex: 1;
+            font-size: 13px;
+            color: var(--accent-green);
+        }
+        
+        .uploaded-file .file-check {
+            color: var(--accent-green);
+        }
+        /* ===== AI ANALYSIS BOX ===== */
+        
+        .ai-box {
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            background: rgba(139, 92, 246, 0.05);
+            border-radius: var(--radius);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ai-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
+        }
+        
+        .ai-box-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        
+        .ai-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .ai-label {
+            font-size: 13px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .ai-message {
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+        
+        .ai-message strong {
+            color: var(--text-primary);
+        }
+        
+        .ai-suggestion {
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: rgba(59, 130, 246, 0.08);
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--accent-blue);
+        }
+        
+        .ai-suggestion .suggestion-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: 6px;
+        }
+        
+        .ai-suggestion .suggestion-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        /* ===== APPROVAL BOARD ===== */
+        
+        .approval-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        
+        .approval-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 16px 0;
+            position: relative;
+        }
+        
+        .approval-item:not(:last-child) {
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        
+        .approval-dot-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 20px;
+            flex-shrink: 0;
+        }
+        
+        .approval-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        
+        .approval-dot.passed {
+            background: var(--accent-green);
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+        }
+        
+        .approval-dot.pending {
+            background: var(--accent-amber);
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+            animation: pulse-amber 2s infinite;
+        }
+        
+        .approval-dot.waiting {
+            background: var(--text-muted);
+        }
+        
+        @keyframes pulse-amber {
+            0%,
+            100% {
+                box-shadow: 0 0 5px rgba(245, 158, 11, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+            }
+        }
+        
+        .approval-info {
+            flex: 1;
+        }
+        
+        .approval-dept {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .approval-status {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .approval-time {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+        /* ===== MAP ===== */
+        
+        #logistics-map {
+            height: 500px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-subtle);
+            z-index: 1;
+        }
+        
+        .leaflet-container {
+            background: var(--bg-surface) !important;
+            border-radius: var(--radius);
+        }
+        /* ===== LOGISTICS PANEL ===== */
+        
+        .logistics-info-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .route-node {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            background: var(--bg-surface);
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--text-muted);
+            transition: all 0.3s;
+        }
+        
+        .route-node.completed {
+            border-left-color: var(--accent-green);
+        }
+        
+        .route-node.current {
+            border-left-color: var(--accent-amber);
+            background: rgba(245, 158, 11, 0.05);
+        }
+        
+        .route-node.upcoming {
+            border-left-color: var(--text-muted);
+            opacity: 0.6;
+        }
+        
+        .route-node-icon {
+            font-size: 22px;
+        }
+        
+        .route-node-info {
+            flex: 1;
+        }
+        
+        .route-node-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .route-node-detail {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        
+        .route-node-time {
+            font-size: 11px;
+            font-family: var(--font-mono);
+            color: var(--text-muted);
+            text-align: right;
+        }
+        /* ===== ALERT BOX ===== */
+        
+        .alert-box {
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .alert-box.warning {
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+        
+        .alert-box.danger {
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+        
+        .alert-box.info {
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        
+        .alert-box.success {
+            background: rgba(34, 197, 94, 0.08);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+        
+        .alert-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        
+        .alert-content {
+            flex: 1;
+        }
+        
+        .alert-title {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .alert-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        /* ===== CREDIT SCORE ===== */
+        
+        .credit-ring {
+            width: 160px;
+            height: 160px;
+            position: relative;
+            margin: 0 auto 16px;
+        }
+        
+        .credit-ring svg {
+            transform: rotate(-90deg);
+        }
+        
+        .credit-ring .score-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .credit-ring .score-number {
+            font-size: 36px;
+            font-weight: 900;
+            font-family: var(--font-en);
+            background: var(--gradient-cool);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .credit-ring .score-grade {
+            font-size: 14px;
+            color: var(--accent-teal);
+            font-weight: 700;
+        }
+        /* ===== TABS ===== */
+        
+        .tabs {
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+            background: var(--bg-surface);
+            border-radius: var(--radius-sm);
+            margin-bottom: 24px;
+        }
+        
+        .tab {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            font-weight: 500;
+            border: none;
+            background: none;
+            font-family: var(--font-cn);
+        }
+        
+        .tab.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        /* ===== ANIMATIONS ===== */
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+        
+        .animate-in {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        
+        .animate-delay-1 {
+            animation-delay: 0.1s;
+            opacity: 0;
+        }
+        
+        .animate-delay-2 {
+            animation-delay: 0.2s;
+            opacity: 0;
+        }
+        
+        .animate-delay-3 {
+            animation-delay: 0.3s;
+            opacity: 0;
+        }
+        
+        .animate-delay-4 {
+            animation-delay: 0.4s;
+            opacity: 0;
+        }
+        /* ===== TYPING EFFECT ===== */
+        
+        .typing-cursor::after {
+            content: '▋';
+            animation: blink 0.8s infinite;
+            color: var(--accent-purple);
+        }
+        
+        @keyframes blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+        }
+        /* ===== LOADING SHIMMER ===== */
+        
+        .shimmer {
+            background: linear-gradient(90deg, var(--bg-surface) 25%, var(--bg-card) 50%, var(--bg-surface) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 4px;
+        }
+        
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+        /* ===== RCEP Calculator ===== */
+        
+        .rvc-meter {
+            position: relative;
+            height: 24px;
+            background: var(--bg-surface);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+        
+        .rvc-fill {
+            height: 100%;
+            border-radius: 12px;
+            transition: width 1.5s ease;
+            position: relative;
+        }
+        
+        .rvc-threshold {
+            position: absolute;
+            top: -8px;
+            bottom: -8px;
+            width: 2px;
+            background: var(--accent-red);
+            z-index: 2;
+        }
+        
+        .rvc-threshold-label {
+            position: absolute;
+            top: -22px;
+            transform: translateX(-50%);
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--accent-red);
+            font-family: var(--font-en);
+            white-space: nowrap;
+        }
+        /* ===== DASHBOARD SPECIFICS ===== */
+        
+        .welcome-banner {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.05));
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .welcome-banner::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1), transparent);
+            border-radius: 50%;
+        }
+        
+        .welcome-banner h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .welcome-banner p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            max-width: 600px;
+        }
+        
+        .quick-action-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .quick-action {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        
+        .quick-action:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+            transform: translateY(-1px);
+        }
+        
+        .quick-action .qa-icon {
+            font-size: 20px;
+        }
+        /* ===== CHART AREA ===== */
+        
+        .mini-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 40px;
+        }
+        
+        .mini-bar {
+            flex: 1;
+            background: var(--accent-blue);
+            border-radius: 2px 2px 0 0;
+            opacity: 0.6;
+            transition: all 0.3s;
+        }
+        
+        .mini-bar:hover {
+            opacity: 1;
+        }
+        /* ===== POLICY KB ===== */
+        
+        .kb-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px;
+            border-bottom: 1px solid var(--border-subtle);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .kb-item:hover {
+            background: rgba(59, 130, 246, 0.04);
+        }
+        
+        .kb-icon {
+            font-size: 28px;
+        }
+        
+        .kb-info {
+            flex: 1;
+        }
+        
+        .kb-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .kb-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .kb-tag {
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+            font-family: var(--font-en);
+            font-weight: 600;
+        }
+        /* ===== PORT CONGESTION ===== */
+        
+        .port-card {
+            padding: 16px;
+            background: var(--bg-surface);
+            border-radius: var(--radius-sm);
+            border-left: 3px solid;
+        }
+        
+        .port-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .port-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        
+        .port-stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .port-stat-value {
+            font-size: 13px;
+            font-weight: 600;
+            font-family: var(--font-en);
+        }
+        /* ===== RESPONSIVE ===== */
+        
+        @media (max-width: 1200px) {
+            .grid-4 {
+                grid-template-columns: 1fr 1fr;
+            }
+            .quick-action-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .grid-2,
+            .grid-3,
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+            .page-body {
+                padding: 16px;
+            }
+        }
+        /* 聊天悬浮按钮 */
+        
+        .chatbot-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            font-family: 'Space Mono', monospace;
+        }
+        /* 聊天面板 */
+        
+        .chatbot-panel {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--text-muted);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            overflow: hidden;
+        }
+        
+        .chatbot-header {
+            background-color: var(--bg-card-hover);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-primary);
+            font-weight: bold;
+            border-bottom: 1px solid var(--bg-surface);
+        }
+        
+        .chatbot-header button {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+        
+        .chatbot-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .chat-message {
+            padding: 10px 15px;
+            border-radius: 8px;
+            max-width: 80%;
+            font-size: 0.9em;
+            line-height: 1.4;
+            color: var(--text-primary);
+        }
+        
+        .ai-message {
+            background-color: var(--bg-surface);
+            align-self: flex-start;
+        }
+        
+        .user-message {
+            background-color: var(--accent-blue);
+            align-self: flex-end;
+        }
+        
+        .chatbot-input-area {
+            display: flex;
+            padding: 10px;
+            background-color: var(--bg-card-hover);
+            border-top: 1px solid var(--bg-surface);
+        }
+        
+        .chatbot-input-area input {
+            flex: 1;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--text-muted);
+            color: var(--text-primary);
+            padding: 10px;
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        .chatbot-input-area button {
+            background-color: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 0 15px;
+            margin-left: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <div class="logo-icon">澜</div>
+                    <div class="logo-text">
+                        <span class="cn" data-i18n="logo">澜湄通</span>
+                        <span class="en">LANMEI PASS</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-label">OVERVIEW</div>
+                <div class="nav-item active" data-page="dashboard" onclick="navigateTo('dashboard')">
+                    <span class="nav-icon">📊</span>
+                    <span data-i18n="nav_dashboard">控制台</span>
+                </div>
+
+                <div class="nav-section-label" data-i18n="nav_section_identity">IDENTITY & TRUST</div>
+                <div class="nav-item" data-page="did" onclick="navigateTo('did')">
+                    <span class="nav-icon">🔐</span>
+                    <span data-i18n="nav_did">数字身份 DID</span>
+                </div>
+                <div class="nav-item" data-page="credit" onclick="navigateTo('credit')">
+                    <span class="nav-icon">⭐</span>
+                    <span data-i18n="nav_credit">信用评级</span>
+                </div>
+
+                <div class="nav-section-label" data-i18n="nav_section_compliance">SMART COMPLIANCE</div>
+                <div class="nav-item" data-page="documents" onclick="navigateTo('documents')">
+                    <span class="nav-icon">📄</span>
+                    <span data-i18n="nav_docs">AI 单证引擎</span>
+                </div>
+                <div class="nav-item" data-page="rcep" onclick="navigateTo('rcep')">
+                    <span class="nav-icon">🌏</span>
+                    <span data-i18n="nav_rcep">RCEP 原产地</span>
+                </div>
+                <div class="nav-item" data-page="approval" onclick="navigateTo('approval')">
+                    <span class="nav-icon">✅</span>
+                    <span data-i18n="nav_approval">审批看板</span>
+                </div>
+
+                <div class="nav-section-label" data-i18n="nav_section_logistics">SUPPLY CHAIN</div>
+                <div class="nav-item" data-page="logistics" onclick="navigateTo('logistics')">
+                    <span class="nav-icon">🚛</span>
+                    <span data-i18n="nav_logistics">物流追踪</span>
+                </div>
+                <div class="nav-item" data-page="port" onclick="navigateTo('port')">
+                    <span class="nav-icon">🏗️</span>
+                    <span data-i18n="nav_port">口岸预测</span>
+                </div>
+
+                <div class="nav-section-label">RESOURCES</div>
+                <div class="nav-item" data-page="knowledge" onclick="navigateTo('knowledge')">
+                    <span class="nav-icon">📚</span>
+                    <span data-i18n="nav_kb">政策法规库</span>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="modern-lang-toggle">
+                    <button class="lang-btn active" onclick="setLang('zh')">
+                        <span></span> 中文
+                    </button>
+                    <button class="lang-btn" onclick="setLang('en')">
+                        <span></span> EN
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="main-content">
+            <!-- HEADER -->
+            <header class="page-header">
+                <div class="page-title-area">
+                    <h1 id="page-title" data-i18n="dashboard_title">控制台概览</h1>
+                    <div class="subtitle" id="page-subtitle">LanMei Pass — Cross-border Trade Intelligence</div>
+                </div>
+                <div class="header-actions">
+                    <div class="notification-bell" onclick="showNotifications()">
+                        🔔
+                        <div class="notification-dot"></div>
+                    </div>
+                    <div class="user-avatar">YN</div>
+                </div>
+            </header>
+
+            <!-- ======================== PAGE: DASHBOARD ======================== -->
+            <div class="page-body">
+                <div class="page active" id="page-dashboard">
+                    <div class="welcome-banner animate-in">
+                        <h2 data-i18n="welcome_title">👋 欢迎回来，云南菌业出口有限公司</h2>
+                        <p data-i18n="welcome_desc">您有 2 笔贸易订单正在处理中，1 批货物预计明天抵达曼谷。AI 助手检测到磨憨口岸通关延迟，已为您准备替代方案。</p>
+                        <div class="quick-action-grid">
+                            <div class="quick-action" onclick="navigateTo('documents')">
+                                <span class="qa-icon">📄</span>
+                                <span data-i18n="qa_new_order">新建贸易订单</span>
+                            </div>
+                            <div class="quick-action" onclick="navigateTo('rcep')">
+                                <span class="qa-icon">🌏</span>
+                                <span data-i18n="qa_rcep">RCEP 关税计算</span>
+                            </div>
+                            <div class="quick-action" onclick="navigateTo('logistics')">
+                                <span class="qa-icon">🚛</span>
+                                <span data-i18n="qa_track">物流追踪</span>
+                            </div>
+                            <div class="quick-action" onclick="navigateTo('knowledge')">
+                                <span class="qa-icon">📚</span>
+                                <span data-i18n="qa_kb">政策法规查询</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid-4 animate-in animate-delay-1">
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background:rgba(59,130,246,0.12);">📦</div>
+                            <div class="stat-info">
+                                <div class="stat-label" data-i18n="stat_active_orders">进行中的订单</div>
+                                <div class="stat-value">12</div>
+                                <div class="stat-change up">↑ 20% <span data-i18n="stat_vs_last">较上月</span></div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background:rgba(34,197,94,0.12);">✅</div>
+                            <div class="stat-info">
+                                <div class="stat-label" data-i18n="stat_compliance_rate">单证合规率</div>
+                                <div class="stat-value">96.8%</div>
+                                <div class="stat-change up">↑ 8.2%</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background:rgba(245,158,11,0.12);">⏱️</div>
+                            <div class="stat-info">
+                                <div class="stat-label" data-i18n="stat_avg_clearance">平均通关时间</div>
+                                <div class="stat-value">4.2<small style="font-size:12px;color:var(--text-muted);">h</small></div>
+                                <div class="stat-change up">↓ 35%</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background:rgba(139,92,246,0.12);">💰</div>
+                            <div class="stat-info">
+                                <div class="stat-label" data-i18n="stat_tariff_saved">RCEP 关税节省</div>
+                                <div class="stat-value">$18.5K</div>
+                                <div class="stat-change up">↑ 42%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid-2 animate-in animate-delay-2" style="margin-top:24px;">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title" data-i18n="recent_orders">近期贸易订单</div>
+                                <span class="card-badge badge-blue" data-i18n="view_all">查看全部</span>
+                            </div>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="th_order">订单号</th>
+                                        <th data-i18n="th_dest">目的国</th>
+                                        <th data-i18n="th_product">商品</th>
+                                        <th data-i18n="th_status">状态</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="font-family:var(--font-mono);font-size:12px;">LMT-2026-0312</td>
+                                        <td>🇹🇭 泰国</td>
+                                        <td data-i18n="product_mushroom">野生菌类</td>
+                                        <td><span class="card-badge badge-amber" data-i18n="status_customs">海关审核中</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-family:var(--font-mono);font-size:12px;">LMT-2026-0308</td>
+                                        <td>🇻🇳 越南</td>
+                                        <td data-i18n="product_tea">普洱茶叶</td>
+                                        <td><span class="card-badge badge-green" data-i18n="status_transit">运输中</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-family:var(--font-mono);font-size:12px;">LMT-2026-0301</td>
+                                        <td>🇱🇦 老挝</td>
+                                        <td data-i18n="product_parts">电子元器件</td>
+                                        <td><span class="card-badge badge-green" data-i18n="status_complete">已完成</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title" data-i18n="ai_alerts">AI 智能预警</div>
+                                <span class="card-badge badge-red">3 <span data-i18n="new_label">条新消息</span></span>
+                            </div>
+                            <div style="display:flex;flex-direction:column;gap:12px;">
+                                <div class="alert-box warning">
+                                    <div class="alert-icon">⚠️</div>
+                                    <div class="alert-content">
+                                        <div class="alert-title" data-i18n="alert_port_title">磨憨口岸通关延迟</div>
+                                        <div class="alert-text" data-i18n="alert_port_text">当前平均通关时间 8 小时（+30%），建议考虑河口口岸替代路线</div>
+                                    </div>
+                                </div>
+                                <div class="alert-box info">
+                                    <div class="alert-icon">📋</div>
+                                    <div class="alert-content">
+                                        <div class="alert-title" data-i18n="alert_doc_title">单证优化建议</div>
+                                        <div class="alert-text" data-i18n="alert_doc_text">订单 LMT-2026-0312 的 SPS 证书检测到潜在问题，点击查看 AI 建议</div>
+                                    </div>
+                                </div>
+                                <div class="alert-box success">
+                                    <div class="alert-icon">🎉</div>
+                                    <div class="alert-content">
+                                        <div class="alert-title" data-i18n="alert_rcep_title">RCEP 优惠已生效</div>
+                                        <div class="alert-text" data-i18n="alert_rcep_text">订单 LMT-2026-0301 已享受 5% 关税减免，节省 $920</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ======================== PAGE: DID ======================== -->
+                <div class="page" id="page-did">
+                    <div class="card animate-in" style="max-width:800px;">
+                        <div class="card-header">
+                            <div class="card-title" data-i18n="did_title">🔐 企业数字身份（DID）</div>
+                            <span class="card-badge badge-green" data-i18n="did_verified">已认证</span>
+                        </div>
+                        <div style="display:flex;gap:24px;">
+                            <div style="flex:1;">
+                                <div class="form-group">
+                                    <div class="form-label" data-i18n="did_id_label">DID 标识符</div>
+                                    <div class="form-input" style="font-family:var(--font-mono);font-size:12px;background:var(--bg-surface);user-select:all;">did:lmt:cn:yunnan:mushroom-export-co:8f3a2b</div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-label" data-i18n="did_company">企业名称</div>
+                                    <div class="form-input" style="background:var(--bg-surface);" data-i18n="did_company_name">云南菌业出口有限公司</div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-label" data-i18n="did_country">注册国</div>
+                                    <div class="form-input" style="background:var(--bg-surface);">🇨🇳 中国（云南省昆明市）</div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-label" data-i18n="did_auth">认证机构</div>
+                                    <div class="form-input" style="background:var(--bg-surface);" data-i18n="did_auth_org">昆明市商会</div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-label" data-i18n="did_scope">互认范围</div>
+                                    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+                                        <span class="card-badge badge-green">🇨🇳 中国</span>
+                                        <span class="card-badge badge-green">🇹🇭 泰国</span>
+                                        <span class="card-badge badge-green">🇻🇳 越南</span>
+                                        <span class="card-badge badge-green">🇱🇦 老挝</span>
+                                        <span class="card-badge badge-green">🇰🇭 柬埔寨</span>
+                                        <span class="card-badge badge-green">🇲🇲 缅甸</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alert-box success" style="margin-top:20px;">
+                            <div class="alert-icon">✅</div>
+                            <div class="alert-content">
+                                <div class="alert-title" data-i18n="did_status_title">身份已通过六国互认验证</div>
+                                <div class="alert-text" data-i18n="did_status_text">您的 DID 凭证存储在联盟链上，任何单一机构无法篡改或删除。目的国海关可即时验证您的身份与资质。</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ======================== PAGE: CREDIT ======================== -->
+                <div class="page" id="page-credit">
+                    <div class="grid-2 animate-in">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title" data-i18n="credit_score_title">📊 企业信用评分</div>
+                                <span class="card-badge badge-green">A</span>
+                            </div>
+                            <div class="credit-ring">
+                                <svg width="160" height="160" viewBox="0 0 160 160">
+                <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="10"/>
+                <circle cx="80" cy="80" r="70" fill="none" stroke="url(#creditGrad)" stroke-width="10" stroke-linecap="round"
+                  stroke-dasharray="440" stroke-dashoffset="66"/>
+                <defs>
+                  <linearGradient id="creditGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#14b8a6"/>
+                    <stop offset="100%" style="stop-color:#3b82f6"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+                                <div class="score-text">
+                                    <div class="score-number">85</div>
+                                    <div class="score-grade">A 级</div>
+                                </div>
+                            </div>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="cr_dimension">评分维度</th>
+                                        <th data-i18n="cr_weight">权重</th>
+                                        <th data-i18n="cr_score">得分</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td data-i18n="cr_delivery">交货准时率</td>
+                                        <td>30%</td>
+                                        <td style="color:var(--accent-green);">92</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-i18n="cr_doc_accuracy">单证准确率</td>
+                                        <td>25%</td>
+                                        <td style="color:var(--accent-green);">88</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-i18n="cr_contract">合约履约率</td>
+                                        <td>25%</td>
+                                        <td style="color:var(--accent-blue);">82</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-i18n="cr_active">平台活跃度</td>
+                                        <td>10%</td>
+                                        <td style="color:var(--accent-blue);">78</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-i18n="cr_volume">历史交易规模</td>
+                                        <td>10%</td>
+                                        <td style="color:var(--accent-amber);">72</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title" data-i18n="trade_profile_title">🏢 企业贸易画像</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-label" data-i18n="tp_main_cat">主营品类</div>
+                                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                                    <span class="card-badge badge-cyan">HS 0709 — 鲜蘑菇</span>
+                                    <span class="card-badge badge-cyan">HS 0712 — 干菌类</span>
+                                    <span class="card-badge badge-purple">HS 0902 — 茶叶</span>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top:16px;">
+                                <div class="form-label" data-i18n="tp_partners">历史交易伙伴国</div>
+                                <div style="display:flex;gap:8px;">
+                                    <span>🇹🇭</span><span>🇻🇳</span><span>🇱🇦</span><span>🇰🇭</span>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top:16px;">
+                                <div class="form-label" data-i18n="tp_avg_cycle">平均履约周期</div>
+                                <div style="font-size:24px;font-weight:700;font-family:var(--font-en);">14.2 <small style="font-size:12px;color:var(--text-muted);" data-i18n="tp_days">天</small></div>
+                            </div>
+                            <div class="form-group" style="margin-top:16px;">
+                                <div class="form-label" data-i18n="tp_volume_trend">近 12 月交易规模趋势</div>
+                                <div class="mini-chart" style="height:60px;">
+                                    <div class="mini-bar" style="height:30%;"></div>
+                                    <div class="mini-bar" style="height:40%;"></div>
+                                    <div class="mini-bar" style="height:35%;"></div>
+                                    <div class="mini-bar" style="height:55%;"></div>
+                                    <div class="mini-bar" style="height:50%;"></div>
+                                    <div class="mini-bar" style="height:65%;"></div>
+                                    <div class="mini-bar" style="height:60%;"></div>
+                                    <div class="mini-bar" style="height:75%;"></div>
+                                    <div class="mini-bar" style="height:70%;"></div>
+                                    <div class="mini-bar" style="height:85%;"></div>
+                                    <div class="mini-bar" style="height:80%;"></div>
+                                    <div class="mini-bar" style="height:95%;background:var(--accent-cyan);opacity:0.8;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ======================== PAGE: AI DOCUMENTS ENGINE ======================== -->
+                <div class="page" id="page-documents">
+                    <!-- Step indicator -->
+                    <div class="steps animate-in" id="doc-steps">
+                        <div class="step completed" data-step="1">
+                            <div class="step-circle">1</div>
+                            <div class="step-label" data-i18n="step_upload">上传单证</div>
+                        </div>
+                        <div class="step active" data-step="2">
+                            <div class="step-circle">2</div>
+                            <div class="step-label" data-i18n="step_ai_analysis">AI 分析</div>
+                        </div>
+                        <div class="step" data-step="3">
+                            <div class="step-circle">3</div>
+                            <div class="step-label" data-i18n="step_convert">智能转换</div>
+                        </div>
+                        <div class="step" data-step="4">
+                            <div class="step-circle">4</div>
+                            <div class="step-label" data-i18n="step_submit">提交审批</div>
+                        </div>
+                    </div>
+
+                    <div class="grid-2 animate-in animate-delay-1">
+                        <!-- Left: Uploaded files & form -->
+                        <div>
+                            <div class="card" style="margin-bottom:20px;">
+                                <div class="card-header">
+                                    <div class="card-title" data-i18n="upload_title">📤 贸易数据上传</div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-label" data-i18n="dest_country">目的国</div>
+                                    <select class="form-select" id="dest-country">
+                  <option>🇹🇭 泰国 Thailand</option>
+                  <option>🇻🇳 越南 Vietnam</option>
+                  <option>🇱🇦 老挝 Laos</option>
+                  <option>🇰🇭 柬埔寨 Cambodia</option>
+                  <option>🇲🇲 缅甸 Myanmar</option>
+                </select>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-label" data-i18n="hs_code">商品 HS 编码</div>
+                                    <input class="form-input" value="0709.51 — 蘑菇及块菌（鲜或冷藏）" readonly>
+                                </div>
+                                <div style="margin-top:12px;">
+                                    <div class="uploaded-file">
+                                        <span class="file-icon">📄</span>
+                                        <span class="file-name">commercial_invoice_2026_0312.pdf</span>
+                                        <span class="file-check">✓</span>
+                                    </div>
+                                    <div class="uploaded-file">
+                                        <span class="file-icon">📄</span>
+                                        <span class="file-name">packing_list_2026_0312.pdf</span>
+                                        <span class="file-check">✓</span>
+                                    </div>
+                                </div>
+                                <div class="file-upload-zone" style="margin-top:16px;" onclick="simulateUpload()">
+                                    <div class="upload-icon">📎</div>
+                                    <div class="upload-text" data-i18n="upload_more">上传更多文件</div>
+                                    <div class="upload-hint" data-i18n="upload_formats">支持 PDF, JPG, PNG, DOCX</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right: AI Analysis -->
+                        <div>
+                            <div class="ai-box animate-in animate-delay-2" style="margin-bottom:20px;">
+                                <div class="ai-box-header">
+                                    <div class="ai-icon">🤖</div>
+                                    <div class="ai-label" data-i18n="ai_engine">AI 智能合规引擎</div>
+                                </div>
+                                <div class="ai-message" id="ai-analysis-text">
+                                    <p data-i18n="ai_analysis_1">🔍 <strong>AI 正在分析您的贸易数据...</strong></p>
+                                    <br>
+                                    <p data-i18n="ai_analysis_2">✅ 商业发票格式已识别，字段映射完成。</p>
+                                    <p data-i18n="ai_analysis_3">✅ 装箱单已解析，商品数量与发票一致。</p>
+                                    <p data-i18n="ai_analysis_4">⚠️ <strong>检测到缺失单证：</strong>HS 编码 0709.51 属于农产品类别，出口至泰国需提供<strong>动植物检疫证书（SPS Certificate）</strong>。当前未检测到该证书。</p>
+                                    <br>
+                                    <p data-i18n="ai_analysis_5">📋 已自动为您生成符合泰国海关格式的商业发票和装箱单模板。</p>
+                                </div>
+                                <div class="ai-suggestion" style="margin-top:16px;">
+                                    <div class="suggestion-title" data-i18n="ai_suggest_title">💡 AI 优化建议</div>
+                                    <div class="suggestion-text" data-i18n="ai_suggest_text">检测到您的菌类产品中含有「松茸素」成分。泰国 FDA 对该成分的进口标准为 ≤ 0.5mg/kg。<strong>建议：</strong>在申请 SPS 证书时，附加云南省农科院出具的成分检测报告，可将审批通过率从 72% 提升至 95%。</div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title" data-i18n="generated_docs_title">📑 已生成单证</div>
+                                </div>
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th data-i18n="doc_name">单证名称</th>
+                                            <th data-i18n="doc_format">目标格式</th>
+                                            <th data-i18n="doc_status">状态</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td data-i18n="doc_invoice">商业发票</td>
+                                            <td style="font-family:var(--font-mono);font-size:11px;">TH-CUSTOMS-INV-v3.2</td>
+                                            <td><span class="card-badge badge-green">✓ <span data-i18n="ready">已就绪</span></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td data-i18n="doc_packing">装箱单</td>
+                                            <td style="font-family:var(--font-mono);font-size:11px;">TH-CUSTOMS-PKL-v3.2</td>
+                                            <td><span class="card-badge badge-green">✓ <span data-i18n="ready">已就绪</span></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td data-i18n="doc_sps">SPS 检疫证书</td>
+                                            <td style="font-family:var(--font-mono);font-size:11px;">TH-FDA-SPS-v2.1</td>
+                                            <td><span class="card-badge badge-red" data-i18n="doc_missing">⚠ 待上传</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td data-i18n="doc_origin">原产地证书</td>
+                                            <td style="font-family:var(--font-mono);font-size:11px;">RCEP-CO-FORM-D</td>
+                                            <td><span class="card-badge badge-amber" data-i18n="doc_generating">⏳ 生成中</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td data-i18n="doc_customs">报关单</td>
+                                            <td style="font-family:var(--font-mono);font-size:11px;">CN-CUSTOMS-DEC-v4.0</td>
+                                            <td><span class="card-badge badge-green">✓ <span data-i18n="ready">已就绪</span></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div style="margin-top:16px;display:flex;gap:12px;">
+                                    <button class="btn btn-primary" onclick="simulateConvert()">
+                  <span data-i18n="btn_convert">🚀 一键提交审批</span>
+                </button>
+                                    <button class="btn btn-secondary">
+                  <span data-i18n="btn_download">📥 下载全部单证</span>
+                </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ======================== PAGE: RCEP ======================== -->
+                <div class="page" id="page-rcep">
+                    <div class="grid-2 animate-in">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title" data-i18n="rcep_calc_title">🌏 RCEP 原产地证明智能生成</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-label" data-i18n="rcep_product">出口产品</div>
+                                <input class="form-input" value="野生菌类混合干品（HS 0712.39）" readonly>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-label" data-i18n="rcep_dest">目的国</div>
+                                <input class="form-input" value="🇹🇭 泰国" readonly>
+                            </div>
+                            <div class="form-label" style="margin-bottom:12px;" data-i18n="rcep_materials">原材料来源清单</div>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="mat_name">原材料</th>
+                                        <th data-i18n="mat_origin">来源国</th>
+                                        <th data-i18n="mat_value">价值占比</th>
+                                        <th data-i18n="mat_rcep">RCEP成员</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td data-i18n="mat_mushroom">野生松茸</td>
+                                        <td>🇨🇳 中国云南</td>
+                                        <td style="font-family:var(--font-en);">38%</td>
+                                        <td><span class="card-badge badge-green">✓</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td data-i18n="mat_boletus">牛肝菌</td>
+                                        <td>🇨🇳 中国云南</td>
+                                        <td style="font-family:var(--font-en);">22%</td>
+                                        <td><span class="card-badge badge-green">✓</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td data-i18n="mat_packaging">包装材料</td>
+                                        <td>🇻🇳 越南</td>
+                                        <td style="font-family:var(--font-en);">8%</td>
+                                        <td><span class="card-badge badge-green">✓</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td data-i18n="mat_preserv">防腐剂</td>
+                                        <td>🇯🇵 日本</td>
+                                        <td style="font-family:var(--font-en);">5%</td>
+                                        <td><span class="card-badge badge-green">✓</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td data-i18n="mat_label">标签印刷</td>
+                                        <td>🇨🇳 中国</td>
+                                        <td style="font-family:var(--font-en);">3%</td>
+                                        <td><span class="card-badge badge-green">✓</span></td>
+                                    </tr>
+                                    <tr style="font-weight:600;">
+                                        <td data-i18n="mat_processing">加工增值</td>
+                                        <td>🇨🇳 中国云南</td>
+                                        <td style="font-family:var(--font-en);">24%</td>
+                                        <td><span class="card-badge badge-green">✓</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button class="btn btn-primary" style="margin-top:16px;width:100%;" onclick="calculateRVC()">
+              <span data-i18n="btn_calc_rvc">🧮 计算区域价值成分 (RVC)</span>
+            </button>
+                        </div>
+
+                        <div>
+                            <div class="card" id="rvc-result-card" style="margin-bottom:20px;">
+                                <div class="card-header">
+                                    <div class="card-title" data-i18n="rvc_result_title">📊 RVC 计算结果</div>
+                                </div>
+                                <div style="text-align:center;padding:20px 0;">
+                                    <div style="font-size:48px;font-weight:900;font-family:var(--font-en);background:var(--gradient-cool);-webkit-background-clip:text;-webkit-text-fill-color:transparent;" id="rvc-value">—</div>
+                                    <div style="font-size:14px;color:var(--text-muted);margin-top:4px;" data-i18n="rvc_label">区域价值成分 (RVC)</div>
+                                </div>
+                                <div class="rvc-meter" id="rvc-meter">
+                                    <div class="rvc-fill" id="rvc-fill" style="width:0%;background:var(--gradient-cool);"></div>
+                                    <div class="rvc-threshold" style="left:40%;">
+                                        <div class="rvc-threshold-label">40% <span data-i18n="rvc_threshold">阈值</span></div>
+                                    </div>
+                                </div>
+                                <div id="rvc-status" style="text-align:center;margin-top:16px;"></div>
+                            </div>
+
+                            <div class="ai-box" id="rcep-ai-box" style="display:none;">
+                                <div class="ai-box-header">
+                                    <div class="ai-icon">🤖</div>
+                                    <div class="ai-label" data-i18n="rcep_ai_label">RCEP 规则计算引擎</div>
+                                </div>
+                                <div class="ai-message" id="rcep-ai-msg"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ======================== PAGE: APPROVAL ======================== -->
+                <div class="page" id="page-approval">
+                    <div class="card animate-in" style="max-width:900px;">
+                        <div class="card-header">
+                            <div class="card-title" data-i18n="approval_title">✅ 单证同步审批看板</div>
+                            <span class="card-badge badge-amber" data-i18n="approval_order">订单 LMT-2026-0312</span>
+                        </div>
+                        <div class="alert-box info" style="margin-bottom:20px;">
+                            <div class="alert-icon">ℹ️</div>
+                            <div class="alert-content">
+                                <div class="alert-text" data-i18n="approval_info">单证已并联分发至以下部门同步审核，预计总审批时间较传统串联模式缩短 60%。</div>
+                            </div>
+                        </div>
+                        <div class="approval-timeline" id="approval-timeline">
+                            <div class="approval-item">
+                                <div class="approval-dot-container">
+                                    <div class="approval-dot passed"></div>
+                                </div>
+                                <div class="approval-info">
+                                    <div class="approval-dept">🇨🇳 <span data-i18n="appr_cn_customs">中国海关 — 报关单审核</span></div>
+                                    <div class="approval-status" style="color:var(--accent-green);" data-i18n="appr_passed">✓ 审核通过</div>
+                                </div>
+                                <div class="approval-time">03-12 09:32</div>
+                            </div>
+                            <div class="approval-item">
+                                <div class="approval-dot-container">
+                                    <div class="approval-dot passed"></div>
+                                </div>
+                                <div class="approval-info">
+                                    <div class="approval-dept">🇨🇳 <span data-i18n="appr_cn_quarantine">中国检验检疫局 — SPS 证书审核</span></div>
+                                    <div class="approval-status" style="color:var(--accent-green);" data-i18n="appr_passed">✓ 审核通过</div>
+                                </div>
+                                <div class="approval-time">03-12 10:15</div>
+                            </div>
+                            <div class="approval-item">
+                                <div class="approval-dot-container">
+                                    <div class="approval-dot pending"></div>
+                                </div>
+                                <div class="approval-info">
+                                    <div class="approval-dept">🇱🇦 <span data-i18n="appr_la_transit">老挝过境许可 — 过境文件审核</span></div>
+                                    <div class="approval-status" style="color:var(--accent-amber);" data-i18n="appr_reviewing">⏳ 审核中（预计 2 小时）</div>
+                                </div>
+                                <div class="approval-time">03-12 10:20</div>
+                            </div>
+                            <div class="approval-item">
+                                <div class="approval-dot-container">
+                                    <div class="approval-dot pending"></div>
+                                </div>
+                                <div class="approval-info">
+                                    <div class="approval-dept">🇹🇭 <span data-i18n="appr_th_customs">泰国海关 — 进口单证预审</span></div>
+                                    <div class="approval-status" style="color:var(--accent-amber);" data-i18n="appr_queued">⏳ 排队中</div>
+                                </div>
+                                <div class="approval-time">—</div>
+                            </div>
+                            <div class="approval-item">
+                                <div class="approval-dot-container">
+                                    <div class="approval-dot waiting"></div>
+                                </div>
+                                <div class="approval-info">
+                                    <div class="approval-dept">🇹🇭 <span data-i18n="appr_th_fda">泰国 FDA — SPS 证书核验</span></div>
+                                    <div class="approval-status" data-i18n="appr_waiting">等待中</div>
+                                </div>
+                                <div class="approval-time">—</div>
+                            </div>
+                            <div class="approval-item">
+                                <div class="approval-dot-container">
+                                    <div class="approval-dot waiting"></div>
+                                </div>
+                                <div class="approval-info">
+                                    <div class="approval-dept">🌏 <span data-i18n="appr_rcep">RCEP 原产地证书签发</span></div>
+                                    <div class="approval-status" data-i18n="appr_waiting">等待中</div>
+                                </div>
+                                <div class="approval-time">—</div>
+                            </div>
+                        </div>
+                        <div style="margin-top:24px;padding:16px;background:var(--bg-surface);border-radius:var(--radius-sm);">
+                            <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                                <span style="font-size:13px;font-weight:600;" data-i18n="appr_progress">总体审批进度</span>
+                                <span style="font-size:13px;font-weight:700;font-family:var(--font-en);color:var(--accent-blue);">33%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width:33%;background:var(--gradient-primary);"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ======================== PAGE: LOGISTICS ======================== -->
+                <div class="page" id="page-logistics">
+                    <div class="alert-box warning animate-in" style="margin-bottom:20px;">
+                        <div class="alert-icon">⚠️</div>
+                        <div class="alert-content">
+                            <div class="alert-title" data-i18n="logi_alert_title">AI 预警：磨憨—磨丁口岸通关延迟</div>
+                            <div class="alert-text" data-i18n="logi_alert_text">当前平均通关时间 8 小时（较上周增加 30%），预计未来 3 天仍将维持高位。<strong>建议：</strong>考虑河口口岸（当前平均通关 4 小时）或延迟 3 天发货。</div>
+                        </div>
+                    </div>
+
+                    <div class="grid-2 animate-in animate-delay-1">
+                        <div class="card" style="padding:0;overflow:hidden;">
+                            <div style="padding:20px 24px;border-bottom:1px solid var(--border-subtle);">
+                                <div class="card-title" data-i18n="logi_map_title">🗺️ 全链路物流追踪</div>
+                                <div style="font-size:12px;color:var(--text-muted);margin-top:4px;" data-i18n="logi_map_sub">订单 LMT-2026-0308 · 昆明 → 曼谷</div>
+                            </div>
+                            <div id="logistics-map"></div>
+                        </div>
+
+                        <div>
+                            <div class="card" style="margin-bottom:16px;">
+                                <div class="card-header">
+                                    <div class="card-title" data-i18n="logi_nodes_title">📍 物流节点状态</div>
+                                </div>
+                                <div class="logistics-info-panel">
+                                    <div class="route-node completed">
+                                        <div class="route-node-icon">🏭</div>
+                                        <div class="route-node-info">
+                                            <div class="route-node-name" data-i18n="node_warehouse">昆明仓库 · 出库</div>
+                                            <div class="route-node-detail" data-i18n="node_warehouse_detail">货物已出库，智能合约已触发</div>
+                                        </div>
+                                        <div class="route-node-time">03-08<br>08:00</div>
+                                    </div>
+                                    <div class="route-node completed">
+                                        <div class="route-node-icon">🛃</div>
+                                        <div class="route-node-info">
+                                            <div class="route-node-name" data-i18n="node_cn_customs">中国海关 · 出口放行</div>
+                                            <div class="route-node-detail" data-i18n="node_cn_customs_detail">报关单、SPS 证书审核通过</div>
+                                        </div>
+                                        <div class="route-node-time">03-08<br>14:30</div>
+                                    </div>
+                                    <div class="route-node completed">
+                                        <div class="route-node-icon">🚛</div>
+                                        <div class="route-node-info">
+                                            <div class="route-node-name" data-i18n="node_mohan">磨憨口岸 · 出境</div>
+                                            <div class="route-node-detail" data-i18n="node_mohan_detail">通关耗时 5.5 小时</div>
+                                        </div>
+                                        <div class="route-node-time">03-09<br>06:20</div>
+                                    </div>
+                                    <div class="route-node current">
+                                        <div class="route-node-icon">🇱🇦</div>
+                                        <div class="route-node-info">
+                                            <div class="route-node-name" data-i18n="node_laos">老挝境内运输中</div>
+                                            <div class="route-node-detail" data-i18n="node_laos_detail">当前位置：万象以南 120km · 预计 6 小时后抵达泰老边境</div>
+                                        </div>
+                                        <div class="route-node-time" style="color:var(--accent-amber);">实时</div>
+                                    </div>
+                                    <div class="route-node upcoming">
+                                        <div class="route-node-icon">🛃</div>
+                                        <div class="route-node-info">
+                                            <div class="route-node-name" data-i18n="node_nongkhai">廊开口岸 · 入境泰国</div>
+                                            <div class="route-node-detail" data-i18n="node_nongkhai_detail">AI 预测通关时间：3.5 小时</div>
+                                        </div>
+                                        <div class="route-node-time">预计<br>03-13</div>
+                                    </div>
+                                    <div class="route-node upcoming">
+                                        <div class="route-node-icon">📦</div>
+                                        <div class="route-node-info">
+                                            <div class="route-node-name" data-i18n="node_bangkok">曼谷仓库 · 交付</div>
+                                            <div class="route-node-detail" data-i18n="node_bangkok_detail">预计到达，智能合约将自动确认交付</div>
+                                        </div>
+                                        <div class="route-node-time">预计<br>03-14</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ======================== PAGE: PORT PREDICTION ======================== -->
+                <div class="page" id="page-port">
+                    <div class="grid-3 animate-in">
+                        <div class="port-card" style="border-left-color:var(--accent-red);">
+                            <div class="port-name">🇨🇳🇱🇦 磨憨—磨丁</div>
+                            <div class="port-stat">
+                                <span class="port-stat-label" data-i18n="port_avg_time">平均通关</span>
+                                <span class="port-stat-value" style="color:var(--accent-red);">8.2h</span>
+                            </div>
+                            <div class="port-stat">
+                                <span class="port-stat-label" data-i18n="port_trend">趋势</span>
+                                <span class="port-stat-value" style="color:var(--accent-red);">↑ 30%</span>
+                            </div>
+                            <div class="progress-bar" style="margin-top:8px;">
+                                <div class="progress-fill" style="width:82%;background:var(--accent-red);"></div>
+                            </div>
+                            <div style="font-size:10px;color:var(--text-muted);margin-top:4px;" data-i18n="port_congestion_high">拥堵指数：高</div>
+                        </div>
+                        <div class="port-card" style="border-left-color:var(--accent-amber);">
+                            <div class="port-name">🇨🇳🇻🇳 河口—老街</div>
+                            <div class="port-stat">
+                                <span class="port-stat-label" data-i18n="port_avg_time">平均通关</span>
+                                <span class="port-stat-value" style="color:var(--accent-amber);">4.1h</span>
+                            </div>
+                            <div class="port-stat">
+                                <span class="port-stat-label" data-i18n="port_trend">趋势</span>
+                                <span class="port-stat-value" style="color:var(--accent-green);">↓ 5%</span>
+                            </div>
+                            <div class="progress-bar" style="margin-top:8px;">
+                                <div class="progress-fill" style="width:41%;background:var(--accent-amber);"></div>
+                            </div>
+                            <div style="font-size:10px;color:var(--text-muted);margin-top:4px;" data-i18n="port_congestion_med">拥堵指数：中</div>
+                        </div>
+                        <div class="port-card" style="border-left-color:var(--accent-green);">
+                            <div class="port-name">🇱🇦🇹🇭 廊开—友谊桥</div>
+                            <div class="port-stat">
+                                <span class="port-stat-label" data-i18n="port_avg_time">平均通关</span>
+                                <span class="port-stat-value" style="color:var(--accent-green);">2.8h</span>
+                            </div>
+                            <div class="port-stat">
+                                <span class="port-stat-label" data-i18n="port_trend">趋势</span>
+                                <span class="port-stat-value" style="color:var(--accent-green);">↓ 12%</span>
+                            </div>
+                            <div class="progress-bar" style="margin-top:8px;">
+                                <div class="progress-fill" style="width:28%;background:var(--accent-green);"></div>
+                            </div>
+                            <div style="font-size:10px;color:var(--text-muted);margin-top:4px;" data-i18n="port_congestion_low">拥堵指数：低</div>
+                        </div>
+                    </div>
+
+                    <div class="card animate-in animate-delay-1" style="margin-top:20px;">
+                        <div class="card-header">
+                            <div class="card-title" data-i18n="port_forecast_title">📈 未来 7 天通关时间预测</div>
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:flex-end;height:200px;padding:20px 0;">
+                            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                                <div style="flex:1;width:100%;display:flex;align-items:flex-end;">
+                                    <div style="width:100%;height:82%;background:rgba(239,68,68,0.3);border-radius:4px 4px 0 0;border-top:2px solid var(--accent-red);"></div>
+                                </div>
+                                <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">03-13</div>
+                            </div>
+                            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                                <div style="flex:1;width:100%;display:flex;align-items:flex-end;">
+                                    <div style="width:100%;height:78%;background:rgba(239,68,68,0.25);border-radius:4px 4px 0 0;border-top:2px solid var(--accent-red);"></div>
+                                </div>
+                                <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">03-14</div>
+                            </div>
+                            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                                <div style="flex:1;width:100%;display:flex;align-items:flex-end;">
+                                    <div style="width:100%;height:70%;background:rgba(245,158,11,0.25);border-radius:4px 4px 0 0;border-top:2px solid var(--accent-amber);"></div>
+                                </div>
+                                <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">03-15</div>
+                            </div>
+                            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                                <div style="flex:1;width:100%;display:flex;align-items:flex-end;">
+                                    <div style="width:100%;height:55%;background:rgba(245,158,11,0.2);border-radius:4px 4px 0 0;border-top:2px solid var(--accent-amber);"></div>
+                                </div>
+                                <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">03-16</div>
+                            </div>
+                            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                                <div style="flex:1;width:100%;display:flex;align-items:flex-end;">
+                                    <div style="width:100%;height:45%;background:rgba(34,197,94,0.2);border-radius:4px 4px 0 0;border-top:2px solid var(--accent-green);"></div>
+                                </div>
+                                <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">03-17</div>
+                            </div>
+                            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                                <div style="flex:1;width:100%;display:flex;align-items:flex-end;">
+                                    <div style="width:100%;height:38%;background:rgba(34,197,94,0.2);border-radius:4px 4px 0 0;border-top:2px solid var(--accent-green);"></div>
+                                </div>
+                                <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">03-18</div>
+                            </div>
+                            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                                <div style="flex:1;width:100%;display:flex;align-items:flex-end;">
+                                    <div style="width:100%;height:35%;background:rgba(34,197,94,0.2);border-radius:4px 4px 0 0;border-top:2px solid var(--accent-green);"></div>
+                                </div>
+                                <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">03-19</div>
+                            </div>
+                        </div>
+                        <div class="ai-suggestion">
+                            <div class="suggestion-title" data-i18n="port_ai_title">🤖 AI 路线建议</div>
+                            <div class="suggestion-text" data-i18n="port_ai_text">磨憨口岸拥堵预计将在 3 月 17 日后缓解。如需紧急发货，建议选择 <strong>河口—老街—河内—曼谷</strong> 路线，综合运输时间可缩短约 18 小时，运费增加约 $120。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ======================== PAGE: KNOWLEDGE BASE ======================== -->
+                <div class="page" id="page-knowledge">
+                    <div class="card animate-in">
+                        <div class="card-header">
+                            <div class="card-title" data-i18n="kb_title">📚 政策法规知识库</div>
+                        </div>
+                        <div style="margin-bottom:16px;">
+                            <input class="form-input" placeholder="搜索政策法规..." data-i18n-placeholder="kb_search" style="max-width:400px;">
+                        </div>
+                        <div>
+                            <div class="kb-item" onclick="alert('Demo: 打开 RCEP 详细规则')">
+                                <div class="kb-icon">📘</div>
+                                <div class="kb-info">
+                                    <div class="kb-title" data-i18n="kb_rcep_title">RCEP 原产地规则完整指南</div>
+                                    <div class="kb-desc" data-i18n="kb_rcep_desc">涵盖一般规则、特定产品规则（PSR）、累积规则详解</div>
+                                </div>
+                                <div class="kb-tag">RCEP</div>
+                            </div>
+                            <div class="kb-item">
+                                <div class="kb-icon">📗</div>
+                                <div class="kb-info">
+                                    <div class="kb-title" data-i18n="kb_th_title">泰国农产品进口 SPS 标准</div>
+                                    <div class="kb-desc" data-i18n="kb_th_desc">泰国 FDA 对动植物检疫、农药残留、食品添加剂的最新标准</div>
+                                </div>
+                                <div class="kb-tag">🇹🇭 TH</div>
+                            </div>
+                            <div class="kb-item">
+                                <div class="kb-icon">📙</div>
+                                <div class="kb-info">
+                                    <div class="kb-title" data-i18n="kb_vn_title">越南海关进口单证要求</div>
+                                    <div class="kb-desc" data-i18n="kb_vn_desc">越南海关对各类商品的单证格式、必填字段及附加要求</div>
+                                </div>
+                                <div class="kb-tag">🇻🇳 VN</div>
+                            </div>
+                            <div class="kb-item">
+                                <div class="kb-icon">📕</div>
+                                <div class="kb-info">
+                                    <div class="kb-title" data-i18n="kb_la_title">老挝过境运输许可指南</div>
+                                    <div class="kb-desc" data-i18n="kb_la_desc">老挝过境货物的许可证申请流程、所需文件及处理时间</div>
+                                </div>
+                                <div class="kb-tag">🇱🇦 LA</div>
+                            </div>
+                            <div class="kb-item">
+                                <div class="kb-icon">📒</div>
+                                <div class="kb-info">
+                                    <div class="kb-title" data-i18n="kb_cn_title">中国出口退税与报关指南</div>
+                                    <div class="kb-desc" data-i18n="kb_cn_desc">最新出口退税率表、报关流程及电子报关系统操作指引</div>
+                                </div>
+                                <div class="kb-tag">🇨🇳 CN</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /page-body -->
+        </main>
+    </div>
+
+
+    <div id="chatbot-toggle" class="chatbot-toggle" onclick="toggleChatbot()">
+        💬 <span data-i18n="chat_toggle_btn">💬</span>
+    </div>
+
+    <div id="chatbot-panel" class="chatbot-panel" style="display: none;">
+        <div class="chatbot-header">
+            <span data-i18n="chat_title">澜湄通 AI 助手</span>
+            <button onclick="toggleChatbot()">✖</button>
+        </div>
+        <div id="chatbot-messages" class="chatbot-messages">
+            <div id="chatbot-welcome-msg" class="chat-message ai-message" data-i18n="chat_welcome">
+                您好！我是澜湄通智能助手。关于 RCEP 关税、海关合规或平台操作，有什么我可以帮您的？
+            </div>
+        </div>
+        <div class="chatbot-input-area">
+            <button onclick="startSpeechRecognition()" style="background:transparent; border:none; cursor:pointer; font-size:18px;">🎤</button>
+            <input type="text" id="chat-input" data-i18n="chat_placeholder" placeholder="输入您的问题..." onkeypress="handleChatEnter(event)">
+            <button onclick="sendMessage()" data-i18n="chat_send_btn">发送</button>
+        </div>
+    </div>
+</body>
+
+</html>
