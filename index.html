@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>澜湄通 LanMei Pass</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
     <script>
         // ==========================================
         // 1. API 统一配置中心
@@ -15,6 +14,11 @@
             deepseek: {
                 apiKey: "sk-289430f721c24c138e1f8402479e1490",
                 apiUrl: "https://api.deepseek.com/chat/completions"
+            },
+            iflytek: {
+                appId: "6692b39c",
+                apiKey: "8e009948e09b2b7074c6165f3a2c47c6",
+                apiSecret: "YjIwNDI0YjZlMjcyMjMwYmQxMjlhZjJh"
             }
         };
 
@@ -44,7 +48,7 @@
                 nav_credit: "信用评级",
                 nav_section_compliance: "SMART COMPLIANCE",
                 nav_docs: "AI 单证引擎",
-                nav_rcep: "RCEP 原产地",
+                nav_rcep: "RCEP 优惠计算",
                 nav_approval: "审批看板",
                 nav_section_logistics: "SUPPLY CHAIN",
                 nav_logistics: "物流追踪",
@@ -82,8 +86,8 @@
                 alert_port_text: "当前平均通关时间 8 小时（+30%），建议考虑河口口岸替代路线",
                 alert_doc_title: "单证优化建议",
                 alert_doc_text: "订单 LMT-2026-0312 的 SPS 证书与泰国 FDA 新规格式不符，建议重新生成",
-                alert_rcep_title: "RCEP 优惠已生效",
-                alert_rcep_text: "订单 LMT-2026-0301 已自动享受 RCEP 关税优惠，节省 $2,340",
+                alert_rcep_title: "RCEP 优惠计算成功",
+                alert_rcep_text: "订单 LMT-2026-0301 RCEP 原产地规则计算通过，商品符合关税优惠条件",
 
                 // DID 数字身份
                 did_title: "🔐 企业数字身份（DID）",
@@ -148,7 +152,7 @@
                 ai_suggest_text: "检测到您的菌类产品中含有「松茸素」成分。泰国 FDA 对该成分的进口标准为 ≤ 0.5mg/kg。<strong>建议：</strong>在申请 SPS 证书时，附加云南省农科院出具的成分检测报告，可将审批通过率从 72% 提升至 95%。",
 
                 // RCEP 原产地
-                rcep_calc_title: "🌏 RCEP 原产地证明智能生成",
+                rcep_calc_title: "🌏 RCEP 优惠计算器",
                 rcep_product: "出口产品",
                 rcep_dest: "目的国",
                 rcep_materials: "原材料来源清单",
@@ -166,7 +170,37 @@
                 rvc_result_title: "📊 RVC 计算结果",
                 rvc_label: "区域价值成分 (RVC)",
                 rvc_threshold: "阈值",
-                rcep_ai_label: "RCEP 规则计算引擎",
+                rcep_ai_label: "RCEP 计算器",
+                rcep_formula_indirect: "扣减法（间接法）",
+                rcep_formula_indirect_desc: "RVC = (FOB - VNM) / FOB × 100%  ≥ 40%",
+                rcep_formula_direct: "累加法（直接法）",
+                rcep_formula_direct_desc: "RVC = (VOM + 人工 + 费用 + 利润) / FOB × 100%  ≥ 40%",
+                rcep_fob: "FOB离岸价格 ($)",
+                rcep_fob_hint: "货物装运港船上交货价格",
+                rcep_vnm: "非原产材料价值 VNM ($)",
+                rcep_vnm_hint: "来自非RCEP成员国的原材料价值",
+                rcep_vom: "原产材料价值 VOM ($)",
+                rcep_vom_hint: "来自RCEP成员国的原材料价值",
+                rcep_labor: "直接人工成本 ($)",
+                rcep_overhead: "直接经营费用 ($)",
+                rcep_profit: "利润及其他 ($)",
+                rcep_btn_indirect: "🧮 扣减法计算",
+                rcep_btn_direct: "🧮 累加法计算",
+                rcep_deduct_detail: "扣减值（非原产材料）",
+                rcep_accum_detail: "累加值（原产地价值）",
+                rcep_cumulative_toggle: "🔗 启用累积规则（RCEP缔约方原产材料可累积计算）",
+                rcep_cumulative_note: "累积规则生效中：越南（包装材料）、日本（防腐剂）的原产材料视为中国原产，提升RVC",
+                rcep_qualify: "✅ 符合RCEP原产资格",
+                rcep_qualify_detail: "RVC ≥ 40% 阈值，该产品可享受协定关税优惠",
+                rcep_qualify_detail2: "预计关税从 5% 降至 0%，每批次节省约 $800-1,200",
+                rcep_not_qualify: "❌ 不符合RCEP原产资格",
+                rcep_not_qualify_detail: "RVC < 40% 阈值，建议增加RCEP成员国原材料占比后重新计算",
+
+                // 泰国进口综合指南
+                kb_th_guide_title: "泰国进口合规综合指南",
+                kb_th_guide_desc: "涵盖泰国海关进口关税、原产地规则、SPS检疫、FDA食品药品标准、产品标签及包装要求",
+                kb_la_guide_title: "老挝海关与过境运输指南",
+                kb_la_guide_desc: "老挝海关总局进出口报关流程、过境货物许可、关税政策及通关要求",
 
                 // 审批看板
                 approval_title: "✅ 单证同步审批看板",
@@ -187,8 +221,48 @@
                 // 物流追踪
                 logi_alert_title: "AI 预警：磨憨—磨丁口岸通关延迟",
                 logi_alert_text: "当前平均通关时间 8 小时（较上周增加 30%），预计未来 3 天仍将维持高位。<strong>建议：</strong>考虑河口口岸（当前平均通关 4 小时）或延迟 3 天发货。",
-                logi_map_title: "🗺️ 全链路物流追踪",
-                logi_map_sub: "订单 LMT-2026-0308 · 昆明 → 曼谷",
+                logi_route_title: "🚚 运输前物流路线推荐",
+                logi_route_desc: "AI 根据您的货物信息与目的国为您推荐以下最优运输方案",
+                route_road: "公路运输",
+                route_road_desc: "昆明—磨憨—万象—曼谷，全程约 1800km，跨境陆路运输",
+                route_road_time: "预计 48 小时",
+                route_road_cost: "约 $1,200",
+                route_rail: "铁路运输",
+                route_rail_desc: "中老铁路磨憨—万象—廊开—曼谷，冷链集装箱直达",
+                route_rail_time: "预计 36 小时",
+                route_rail_cost: "约 $1,500",
+                route_sea: "海运运输",
+                route_sea_desc: "昆明陆运至深圳港—曼谷港，适合大批量货物",
+                route_sea_time: "预计 7 天",
+                route_sea_cost: "约 $800",
+                route_air: "空运运输",
+                route_air_desc: "昆明长水机场—曼谷素万那普机场，适合高价值急需货物",
+                route_air_time: "预计 6 小时",
+                route_air_cost: "约 $5,000",
+                route_tag_recommend: "AI 推荐",
+                route_tag_fast: "时效最快",
+                route_tag_economy: "经济实惠",
+                logi_tracking_title: "🛰️ 在途物流实时追踪",
+                logi_tracking_desc: "通过卫星定位与海关报关数据分析，实时追踪货物去向",
+                sat_signal: "卫星信号",
+                sat_signal_val: "强 (4/4)",
+                sat_position: "当前位置",
+                sat_position_val: "北纬 18.2° 东经 102.5°",
+                sat_speed: "当前速度",
+                sat_speed_val: "62 km/h",
+                sat_est: "预计到达",
+                sat_est_val: "03-14 14:30",
+                customs_title: "📋 海关报关数据分析",
+                customs_order: "关联订单",
+                customs_order_val: "LMT-2026-0308",
+                customs_declare: "报关单号",
+                customs_declare_val: "CN-2026-0312-0089",
+                customs_status: "报关状态",
+                customs_status_val: "✅ 已完成出口申报",
+                customs_goods: "货物状态",
+                customs_goods_val: "📦 已出中国关境，老挝过境中",
+                customs_next: "下一海关节点",
+                customs_next_val: "🇹🇭 廊开口岸（入境泰国）",
                 logi_nodes_title: "📍 物流节点状态",
                 node_warehouse: "昆明仓库 · 出库",
                 node_warehouse_detail: "货物已出库，智能合约已触发",
@@ -197,7 +271,7 @@
                 node_mohan: "磨憨口岸 · 出境",
                 node_mohan_detail: "通关耗时 5.5 小时",
                 node_laos: "老挝境内运输中",
-                node_laos_detail: "当前位置：万象以南 120km · 预计 6 小时后抵达泰老边境",
+                node_laos_detail: "卫星定位：万象以南 120km · 预计 6 小时后抵达泰老边境",
                 node_nongkhai: "廊开口岸 · 入境泰国",
                 node_nongkhai_detail: "AI 预测通关时间：3.5 小时",
                 node_bangkok: "曼谷仓库 · 交付",
@@ -271,7 +345,20 @@
 
                 // 单证预览
                 doc_invoice_preview: "📋 商业发票 · 预览",
-                doc_packing_preview: "📦 装箱单 · 预览"
+                doc_packing_preview: "📦 装箱单 · 预览",
+
+                // 投诉弹窗
+                complaint_btn: "投诉信用评分",
+                complaint_title: "信用评分投诉",
+                complaint_disclaimer: "本平台展示的信用评分基于公开数据与历史交易记录综合评估，<strong>仅供参考</strong>，不构成任何商业决策的唯一依据。平台不对因依赖评分产生的任何损失承担责任。",
+                complaint_reason_label: "投诉理由",
+                complaint_reason_1: "评分数据不准确，与实际交易情况不符",
+                complaint_reason_2: "存在未纳入计算的正面交易记录",
+                complaint_reason_3: "企业主营品类归类错误",
+                complaint_reason_4: "其他原因（请在下框说明）",
+                complaint_detail_label: "详细说明",
+                complaint_cancel: "取消",
+                complaint_submit: "提交投诉"
             },
             en: {
                 // Basic
@@ -294,7 +381,7 @@
                 nav_credit: "Credit Rating",
                 nav_section_compliance: "SMART COMPLIANCE",
                 nav_docs: "AI Doc Engine",
-                nav_rcep: "RCEP Origin",
+                nav_rcep: "RCEP Calculator",
                 nav_approval: "Approval Board",
                 nav_section_logistics: "SUPPLY CHAIN",
                 nav_logistics: "Logistics Tracking",
@@ -332,8 +419,8 @@
                 alert_port_text: "Avg clearance time 8 hrs (+30%). Consider Hekou port as alternative.",
                 alert_doc_title: "Doc Optimization Suggestion",
                 alert_doc_text: "Order LMT-2026-0312 SPS cert mismatches new Thai FDA format. Regeneration suggested.",
-                alert_rcep_title: "RCEP Benefit Applied",
-                alert_rcep_text: "Order LMT-2026-0301 auto-applied RCEP tariff saving $2,340",
+                alert_rcep_title: "RCEP Calculation Successful",
+                alert_rcep_text: "Order LMT-2026-0301 passed RCEP origin rule calculation, eligible for tariff preference",
 
                 // DID
                 did_title: "🔐 Digital Identity (DID)",
@@ -398,7 +485,7 @@
                 ai_suggest_text: "Your mushroom products contain 'Matsutake essence'. Thai FDA limit is ≤ 0.5mg/kg. <strong>Suggest:</strong> Attach Yunnan Academy lab report to SPS application to boost approval from 72% to 95%.",
 
                 // RCEP
-                rcep_calc_title: "🌏 RCEP Smart Certificate",
+                rcep_calc_title: "🌏 RCEP Preference Calculator",
                 rcep_product: "Export Product",
                 rcep_dest: "Destination Country",
                 rcep_materials: "Material Source List",
@@ -416,7 +503,37 @@
                 rvc_result_title: "📊 RVC Result",
                 rvc_label: "Regional Value Content (RVC)",
                 rvc_threshold: "Threshold",
-                rcep_ai_label: "RCEP Rule Engine",
+                rcep_ai_label: "RCEP Calculator",
+                rcep_formula_indirect: "Indirect Method (Deduction)",
+                rcep_formula_indirect_desc: "RVC = (FOB - VNM) / FOB × 100%  ≥ 40%",
+                rcep_formula_direct: "Direct Method (Accumulation)",
+                rcep_formula_direct_desc: "RVC = (VOM + Labor + Expenses + Profit) / FOB × 100%  ≥ 40%",
+                rcep_fob: "FOB Price ($)",
+                rcep_fob_hint: "Free on Board price at shipment",
+                rcep_vnm: "Non-Originating Materials VNM ($)",
+                rcep_vnm_hint: "Materials from non-RCEP members",
+                rcep_vom: "Originating Materials VOM ($)",
+                rcep_vom_hint: "Materials from RCEP members",
+                rcep_labor: "Direct Labor ($)",
+                rcep_overhead: "Operating Expenses ($)",
+                rcep_profit: "Profit & Others ($)",
+                rcep_btn_indirect: "🧮 Calculate (Deduction)",
+                rcep_btn_direct: "🧮 Calculate (Accumulation)",
+                rcep_deduct_detail: "Deduction (Non-Originating)",
+                rcep_accum_detail: "Accumulation (Originating Value)",
+                rcep_cumulative_toggle: "🔗 Enable Accumulation Rule (RCEP party materials count as originating)",
+                rcep_cumulative_note: "Accumulation active: Vietnam (packaging), Japan (preservative) counted as Chinese-origin, boosting RVC",
+                rcep_qualify: "✅ RCEP Origin Qualified",
+                rcep_qualify_detail: "RVC ≥ 40% threshold. Product eligible for tariff preference",
+                rcep_qualify_detail2: "Tariff from 5% → 0%, saving ~$800-1,200 per shipment",
+                rcep_not_qualify: "❌ Not RCEP Origin Qualified",
+                rcep_not_qualify_detail: "RVC < 40% threshold. Consider increasing RCEP member material ratio",
+
+                // Thailand Import Guide
+                kb_th_guide_title: "Thailand Import Compliance Guide",
+                kb_th_guide_desc: "Covers Thai customs tariffs, rules of origin, SPS quarantine, FDA food/drug standards, product labeling & packaging requirements",
+                kb_la_guide_title: "Laos Customs & Transit Guide",
+                kb_la_guide_desc: "Laos Customs Department import/export procedures, transit cargo permits, tariff policies & clearance requirements",
 
                 // Approval Board
                 approval_title: "✅ Parallel Approval Board",
@@ -437,8 +554,48 @@
                 // Logistics
                 logi_alert_title: "AI Alert: Mohan-Boten Port Delay",
                 logi_alert_text: "Average clearance: 8 hrs (+30% WoW). Expected to remain high for 3 days. <strong>Suggest:</strong> Use Hekou Port (avg 4 hrs) or delay shipment by 3 days.",
-                logi_map_title: "🗺️ Full-chain Tracking",
-                logi_map_sub: "Order LMT-2026-0308 · Kunming → Bangkok",
+                logi_route_title: "🚚 Pre-shipment Route Recommendation",
+                logi_route_desc: "AI recommends optimal transport plans based on your cargo and destination",
+                route_road: "Road Transport",
+                route_road_desc: "Kunming—Mohan—Vientiane—Bangkok, ~1800km cross-border road",
+                route_road_time: "Est. 48 hrs",
+                route_road_cost: "~$1,200",
+                route_rail: "Rail Transport",
+                route_rail_desc: "China-Laos Railway Mohan—Vientiane—Nong Khai—Bangkok cold chain",
+                route_rail_time: "Est. 36 hrs",
+                route_rail_cost: "~$1,500",
+                route_sea: "Sea Transport",
+                route_sea_desc: "Kunming truck to Shenzhen Port—Bangkok Port, bulk cargo",
+                route_sea_time: "Est. 7 days",
+                route_sea_cost: "~$800",
+                route_air: "Air Transport",
+                route_air_desc: "Kunming Changshui—Bangkok Suvarnabhumi, urgent high-value cargo",
+                route_air_time: "Est. 6 hrs",
+                route_air_cost: "~$5,000",
+                route_tag_recommend: "AI Recommended",
+                route_tag_fast: "Fastest",
+                route_tag_economy: "Economy",
+                logi_tracking_title: "🛰️ Real-time In-transit Tracking",
+                logi_tracking_desc: "Satellite positioning and customs declaration analysis for cargo tracking",
+                sat_signal: "Satellite Signal",
+                sat_signal_val: "Strong (4/4)",
+                sat_position: "Current Position",
+                sat_position_val: "18.2°N 102.5°E",
+                sat_speed: "Current Speed",
+                sat_speed_val: "62 km/h",
+                sat_est: "Est. Arrival",
+                sat_est_val: "03-14 14:30",
+                customs_title: "📋 Customs Declaration Analysis",
+                customs_order: "Related Order",
+                customs_order_val: "LMT-2026-0308",
+                customs_declare: "Declaration No.",
+                customs_declare_val: "CN-2026-0312-0089",
+                customs_status: "Declaration Status",
+                customs_status_val: "✅ Export declared",
+                customs_goods: "Cargo Status",
+                customs_goods_val: "📦 Departed China, in Laos transit",
+                customs_next: "Next Customs Node",
+                customs_next_val: "🇹🇭 Nong Khai Port (Enter Thailand)",
                 logi_nodes_title: "📍 Node Status",
                 node_warehouse: "Kunming Warehouse · Outbound",
                 node_warehouse_detail: "Goods outbound, smart contract triggered",
@@ -447,7 +604,7 @@
                 node_mohan: "Mohan Port · Departure",
                 node_mohan_detail: "Clearance: 5.5 hrs",
                 node_laos: "In-transit in Laos",
-                node_laos_detail: "Location: 120km south of Vientiane · Est. 6 hrs to TH border",
+                node_laos_detail: "Satellite: 120km south of Vientiane · Est. 6 hrs to TH border",
                 node_nongkhai: "Nong Khai Port · Enter Thailand",
                 node_nongkhai_detail: "AI predicts 3.5 hrs clearance",
                 node_bangkok: "Bangkok Warehouse · Delivery",
@@ -521,7 +678,20 @@
 
                 // Document Previews
                 doc_invoice_preview: "📋 Commercial Invoice · Preview",
-                doc_packing_preview: "📦 Packing List · Preview"
+                doc_packing_preview: "📦 Packing List · Preview",
+
+                // Complaint Modal
+                complaint_btn: "Complaint",
+                complaint_title: "Credit Score Complaint",
+                complaint_disclaimer: "The credit scores displayed on this platform are based on public data and historical transaction records for <strong>reference only</strong>. They do not constitute the sole basis for any business decision. The platform assumes no responsibility for any losses arising from reliance on the scores.",
+                complaint_reason_label: "Complaint Reason",
+                complaint_reason_1: "Score data is inaccurate and does not match actual transactions",
+                complaint_reason_2: "Positive transaction records are missing from evaluation",
+                complaint_reason_3: "Business category classification is incorrect",
+                complaint_reason_4: "Other reason (please specify below)",
+                complaint_detail_label: "Details",
+                complaint_cancel: "Cancel",
+                complaint_submit: "Submit Complaint"
             }
         };
 
@@ -624,8 +794,6 @@
             }
         };
 
-        let mapInitialized = false;
-
         function navigateTo(pageId) {
             // 隐藏所有页面并取消所有导航的高亮
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -643,12 +811,6 @@
             const titleEl = document.getElementById('page-title');
             if (titleEl && pageTitles[currentLang] && pageTitles[currentLang][pageId]) {
                 titleEl.textContent = pageTitles[currentLang][pageId];
-            }
-
-            // 地图初始化
-            if (pageId === 'logistics' && !mapInitialized) {
-                setTimeout(initMap, 100);
-                mapInitialized = true;
             }
         }
 
@@ -726,33 +888,263 @@
             }
         }
 
-        // 初始化浏览器原生语音识别
-        let recognition;
-        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            recognition = new SpeechRecognition();
-            recognition.continuous = false;
-            recognition.interimResults = false;
+        // ==========================================
+        // 4.1 讯飞语音识别 (WebSocket ASR)
+        // 使用 MediaRecorder + WebSocket 方案，不依赖浏览器原生 SpeechRecognition
+        // ==========================================
+        let _iat = {
+            ws: null,
+            audioCtx: null,
+            mediaStream: null,
+            source: null,
+            processor: null,
+            isRecording: false,
+            segments: {},
+            finalSegments: {},
+            sid: null,
+            stopTimeout: null
+        };
 
-            recognition.onresult = function(event) {
-                const transcript = event.results[0][0].transcript;
-                const inputEl = document.getElementById('chat-input');
-                if (inputEl) {
-                    inputEl.value = transcript;
-                    sendMessage(); // 识别后自动发送
-                }
-            };
+        function buildIFlytekUrl() {
+            const { apiKey, apiSecret } = CONFIG.iflytek;
+            const host = 'iat-api.xfyun.cn';
+            const date = new Date().toUTCString();
+            const requestLine = 'GET /v2/iat HTTP/1.1';
+            const signatureOrigin = `host: ${host}\ndate: ${date}\n${requestLine}`;
+            const signatureSha = CryptoJS.HmacSHA256(signatureOrigin, apiSecret);
+            const signature = CryptoJS.enc.Base64.stringify(signatureSha);
+            const authorizationOrigin =
+                `api_key="${apiKey}", algorithm="hmac-sha256", headers="host date request-line", signature="${signature}"`;
+            const authorization = btoa(authorizationOrigin);
+            return `wss://${host}/v2/iat?authorization=${encodeURIComponent(authorization)}` +
+                   `&date=${encodeURIComponent(date)}&host=${encodeURIComponent(host)}`;
         }
 
-        function startSpeechRecognition() {
-            if (!recognition) {
-                alert(currentLang === 'zh' ? '当前浏览器暂不支持语音识别，请使用 Chrome 等现代浏览器。' : 'Speech recognition is not supported.');
+        function joinSegments() {
+            const all = Object.assign({}, _iat.finalSegments, _iat.segments);
+            return Object.keys(all).map(Number).sort((a, b) => a - b).map(k => all[k]).join('');
+        }
+
+        function downsampleTo16k(float32, srcRate) {
+            if (srcRate === 16000) return float32;
+            if (srcRate < 16000) return float32;
+            const ratio = srcRate / 16000;
+            const outLen = Math.floor(float32.length / ratio);
+            const out = new Float32Array(outLen);
+            for (let i = 0; i < outLen; i++) {
+                const idx = i * ratio;
+                const lo = Math.floor(idx);
+                const hi = Math.min(lo + 1, float32.length - 1);
+                const frac = idx - lo;
+                out[i] = float32[lo] * (1 - frac) + float32[hi] * frac;
+            }
+            return out;
+        }
+
+        function floatToInt16(float32) {
+            const out = new Int16Array(float32.length);
+            for (let i = 0; i < float32.length; i++) {
+                const s = Math.max(-1, Math.min(1, float32[i]));
+                out[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+            }
+            return out;
+        }
+
+        function int16ToBase64(int16) {
+            const bytes = new Uint8Array(int16.buffer, int16.byteOffset, int16.byteLength);
+            let binary = '';
+            const chunk = 0x8000;
+            for (let i = 0; i < bytes.length; i += chunk) {
+                binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+            }
+            return btoa(binary);
+        }
+
+        function startAudioPipeline() {
+            _iat.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            _iat.source = _iat.audioCtx.createMediaStreamSource(_iat.mediaStream);
+            const bufSize = 4096;
+            _iat.processor = _iat.audioCtx.createScriptProcessor(bufSize, 1, 1);
+
+            _iat.processor.onaudioprocess = function(e) {
+                if (!_iat.ws || _iat.ws.readyState !== WebSocket.OPEN) return;
+                const float32 = e.inputBuffer.getChannelData(0);
+                const resampled = downsampleTo16k(float32, _iat.audioCtx.sampleRate);
+                const pcm16 = floatToInt16(resampled);
+                const b64 = int16ToBase64(pcm16);
+                _iat.ws.send(JSON.stringify({
+                    data: { status: 1, format: 'audio/L16;rate=16000', encoding: 'raw', audio: b64 }
+                }));
+            };
+
+            _iat.source.connect(_iat.processor);
+            _iat.processor.connect(_iat.audioCtx.destination);
+        }
+
+        function onWsOpen() {
+            const firstFrame = {
+                common: { app_id: CONFIG.iflytek.appId },
+                business: {
+                    language: currentLang === 'zh' ? 'zh_cn' : 'en_us',
+                    domain: 'iat',
+                    accent: currentLang === 'zh' ? 'mandarin' : 'mandarin',
+                    vad_eos: 5000,
+                    dwa: 'wpgs',
+                    ptt: 1
+                },
+                data: { status: 0, format: 'audio/L16;rate=16000', encoding: 'raw', audio: '' }
+            };
+            _iat.ws.send(JSON.stringify(firstFrame));
+            startAudioPipeline();
+            updateMicButton();
+        }
+
+        function onWsMessage(evt) {
+            let msg;
+            try { msg = JSON.parse(evt.data); } catch (e) { return; }
+            if (msg.sid && !_iat.sid) {
+                _iat.sid = msg.sid;
+                console.log('[iFlytek] sid =', msg.sid);
+            }
+            if (msg.code !== 0) {
+                console.error('iFlytek error:', msg);
+                const inputEl = document.getElementById('chat-input');
+                if (inputEl) inputEl.value = currentLang === 'zh' ? '语音识别失败，请重试' : 'Speech recognition failed, please retry';
+                cleanupIFlytek();
                 return;
             }
-            recognition.lang = currentLang === 'zh' ? 'zh-CN' : 'en-US';
-            recognition.start();
+
+            const result = msg.data && msg.data.result;
+            if (result) {
+                let text = '';
+                for (const w of (result.ws || [])) {
+                    for (const cw of (w.cw || [])) text += cw.w;
+                }
+
+                if (result.pgs) {
+                    const sn = result.sn;
+                    if (result.pgs === 'apd') {
+                        _iat.finalSegments[sn] = text;
+                    } else if (result.pgs === 'rpl' && result.rg) {
+                        for (let i = result.rg[0]; i <= result.rg[1]; i++) {
+                            delete _iat.finalSegments[i];
+                            delete _iat.segments[i];
+                        }
+                        _iat.segments[sn] = text;
+                    }
+                    updateChatInput(joinSegments());
+                } else {
+                    _iat.finalSegments[result.sn || Object.keys(_iat.finalSegments).length] = text;
+                    updateChatInput(joinSegments());
+                }
+            }
+
+            if (msg.data && msg.data.status === 2) {
+                const finalText = joinSegments();
+                updateChatInput(finalText);
+                cleanupIFlytek();
+            }
+        }
+
+        function updateChatInput(text) {
             const inputEl = document.getElementById('chat-input');
-            if (inputEl) inputEl.placeholder = currentLang === 'zh' ? '正在倾听...' : 'Listening...';
+            if (inputEl) {
+                inputEl.value = text;
+            }
+        }
+
+        function cleanupIFlytek() {
+            if (_iat.stopTimeout) { clearTimeout(_iat.stopTimeout); _iat.stopTimeout = null; }
+            try { if (_iat.processor) _iat.processor.disconnect(); } catch (e) {}
+            try { if (_iat.source) _iat.source.disconnect(); } catch (e) {}
+            try { if (_iat.audioCtx && _iat.audioCtx.state !== 'closed') _iat.audioCtx.close(); } catch (e) {}
+            if (_iat.mediaStream) { _iat.mediaStream.getTracks().forEach(t => t.stop()); }
+            if (_iat.ws && _iat.ws.readyState === WebSocket.OPEN) { try { _iat.ws.close(); } catch (e) {} }
+            _iat.processor = _iat.source = _iat.audioCtx = _iat.mediaStream = _iat.ws = null;
+            _iat.isRecording = false;
+            _iat.sid = null;
+            updateMicButton();
+            const inputEl = document.getElementById('chat-input');
+            if (inputEl) inputEl.placeholder = currentLang === 'zh' ? '输入您的问题...' : 'Type your question here...';
+        }
+
+        async function startRecording() {
+            try {
+                _iat.mediaStream = await navigator.mediaDevices.getUserMedia({
+                    audio: { echoCancellation: true, noiseSuppression: true, sampleRate: 16000 }
+                });
+
+                const wsUrl = buildIFlytekUrl();
+                _iat.ws = new WebSocket(wsUrl);
+                _iat.ws.onopen = onWsOpen;
+                _iat.ws.onmessage = onWsMessage;
+                _iat.ws.onerror = function(e) {
+                    console.error('iFlytek ws error', e);
+                    const inputEl = document.getElementById('chat-input');
+                    if (inputEl) inputEl.value = currentLang === 'zh' ? '网络连接失败' : 'Network connection failed';
+                    cleanupIFlytek();
+                };
+                _iat.ws.onclose = function() {
+                    _iat.isRecording = false;
+                    updateMicButton();
+                };
+
+                _iat.isRecording = true;
+                _iat.segments = {};
+                _iat.finalSegments = {};
+                _iat.sid = null;
+                updateMicButton();
+
+                const inputEl = document.getElementById('chat-input');
+                if (inputEl) inputEl.placeholder = currentLang === 'zh' ? '正在录音...再次点击停止' : 'Recording... click again to stop';
+
+            } catch (err) {
+                console.error(err);
+                const msg = err.name === 'NotAllowedError'
+                    ? (currentLang === 'zh' ? '麦克风权限被拒绝，请允许访问麦克风。' : 'Microphone permission denied.')
+                    : (currentLang === 'zh' ? '无法启动录音: ' : 'Cannot start recording: ') + err.message;
+                alert(msg);
+                cleanupIFlytek();
+            }
+        }
+
+        function stopRecording() {
+            if (_iat.ws && _iat.ws.readyState === WebSocket.OPEN) {
+                _iat.ws.send(JSON.stringify({
+                    data: { status: 2, format: 'audio/L16;rate=16000', encoding: 'raw', audio: '' }
+                }));
+                
+                _iat.stopTimeout = setTimeout(function() {
+                    console.warn('Stop timeout, forcing cleanup');
+                    cleanupIFlytek();
+                }, 5000);
+            }
+            if (_iat.processor) { try { _iat.processor.disconnect(); } catch (e) {} _iat.processor = null; }
+            if (_iat.source) { try { _iat.source.disconnect(); } catch (e) {} _iat.source = null; }
+            if (_iat.audioCtx && _iat.audioCtx.state !== 'closed') { _iat.audioCtx.close(); _iat.audioCtx = null; }
+            if (_iat.mediaStream) { _iat.mediaStream.getTracks().forEach(t => t.stop()); _iat.mediaStream = null; }
+            _iat.isRecording = false;
+            updateMicButton();
+            const inputEl = document.getElementById('chat-input');
+            if (inputEl) inputEl.placeholder = currentLang === 'zh' ? '正在处理...' : 'Processing...';
+        }
+
+        function toggleSpeechRecognition() {
+            if (_iat.isRecording) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        }
+
+        function updateMicButton() {
+            const micBtn = document.querySelector('.chatbot-input-area button:first-child');
+            if (micBtn) {
+                micBtn.textContent = _iat.isRecording ? '⏹️' : '🎤';
+                micBtn.style.backgroundColor = _iat.isRecording ? 'rgba(239, 68, 68, 0.2)' : 'transparent';
+                micBtn.style.borderRadius = '50%';
+                micBtn.style.padding = '8px';
+            }
         }
 
         function speakText(text) {
@@ -1034,79 +1426,164 @@
             setTimeout(advancePipeline, 500);
         }
 
-        // 地图初始化
-        function initMap() {
-            const map = L.map('logistics-map', {
-                zoomControl: false,
-                attributionControl: false
-            }).setView([18.5, 103], 6);
-
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                maxZoom: 19
-            }).addTo(map);
-
-            L.control.zoom({
-                position: 'topright'
-            }).addTo(map);
-
-            const nodes = [
-                { lat: 25.04, lng: 102.68, name: '昆明仓库', status: 'completed', icon: '🏭' },
-                { lat: 24.98, lng: 102.72, name: '中国海关', status: 'completed', icon: '🛃' },
-                { lat: 21.18, lng: 101.69, name: '磨憨口岸', status: 'completed', icon: '🚛' },
-                { lat: 16.80, lng: 104.50, name: '老挝运输中', status: 'current', icon: '📍' },
-                { lat: 17.87, lng: 102.74, name: '廊开口岸', status: 'upcoming', icon: '🛃' },
-                { lat: 13.75, lng: 100.52, name: '曼谷仓库', status: 'upcoming', icon: '📦' }
-            ];
-
-            const routeCoords = nodes.map(n => [n.lat, n.lng]);
-            const completedIdx = nodes.findIndex(n => n.status === 'current');
-            const completedCoords = routeCoords.slice(0, completedIdx + 1);
-            const upcomingCoords = routeCoords.slice(completedIdx);
-
-            L.polyline(completedCoords, { color: '#22c55e', weight: 3, opacity: 0.8 }).addTo(map);
-            L.polyline(upcomingCoords, { color: '#5a6a8a', weight: 2, dashArray: '8 8', opacity: 0.5 }).addTo(map);
-
-            nodes.forEach(node => {
-                let color = '#5a6a8a';
-                if (node.status === 'completed') color = '#22c55e';
-                if (node.status === 'current') color = '#f59e0b';
-                const marker = L.circleMarker([node.lat, node.lng], {
-                    radius: node.status === 'current' ? 10 : 7,
-                    fillColor: color, color: color, weight: 2, fillOpacity: 0.8
-                }).addTo(map);
-                marker.bindPopup(`<div style="font-family:var(--font-cn);font-size:13px;"><strong>${node.icon} ${node.name}</strong></div>`);
-                if (node.status === 'current') {
-                    L.circleMarker([node.lat, node.lng], {
-                        radius: 18, fillColor: '#f59e0b', color: '#f59e0b', weight: 1, fillOpacity: 0.15
-                    }).addTo(map);
-                }
-            });
-            map.fitBounds(routeCoords, { padding: [40, 40] });
+        // 模拟卫星追踪更新
+        function simulateSatelliteUpdate() {
+            const speedEl = document.getElementById('sat-speed');
+            const posEl = document.getElementById('sat-position');
+            if (!speedEl || !posEl) return;
+            const speeds = [58, 62, 65, 60, 63, 61, 64];
+            const lats = ['18.1°', '18.2°', '18.3°', '18.4°', '18.5°', '18.6°', '18.7°'];
+            let i = 0;
+            setInterval(() => {
+                i = (i + 1) % speeds.length;
+                if (speedEl) speedEl.textContent = speeds[i] + ' km/h';
+                if (posEl) posEl.textContent = '北纬 ' + lats[i] + ' 东经 102.5°';
+            }, 3000);
         }
 
-        // RVC 计算器
-        function calculateRVC() {
-            const displayRVC = 100;
+        // RCEP 全局状态
+        let rcepCumulativeEnabled = false;
+        const RCEP_MATERIALS = {
+            totalFOB: 12500,
+            // 原材料明细
+            materials: [
+                { name: 'mat_mushroom', origin: 'CN', value: 4750, isRCEP: true },
+                { name: 'mat_boletus', origin: 'CN', value: 2750, isRCEP: true },
+                { name: 'mat_packaging', origin: 'VN', value: 1000, isRCEP: true },
+                { name: 'mat_preserv', origin: 'JP', value: 625, isRCEP: true },
+                { name: 'mat_label', origin: 'CN', value: 375, isRCEP: true },
+                { name: 'mat_processing', origin: 'CN', value: 3000, isRCEP: true }
+            ],
+            labor: 800,
+            overhead: 600,
+            profit: 1600
+        };
+
+        function updateRVCParams() {
+            // synced by onchange
+        }
+
+        function toggleCumulativeRule() {
+            rcepCumulativeEnabled = !rcepCumulativeEnabled;
+            const sw = document.getElementById('cumulative-switch');
+            const note = document.getElementById('cumulative-note');
+            sw.classList.toggle('active', rcepCumulativeEnabled);
+            note.classList.toggle('visible', rcepCumulativeEnabled);
+        }
+
+        // 扣减法（间接法）: RVC = (FOB - VNM) / FOB × 100%
+        function calculateRVCIndirect() {
+            const fob = parseFloat(document.getElementById('rcep-fob-indirect').value) || 0;
+            let vnm = parseFloat(document.getElementById('rcep-vnm').value) || 0;
+
+            // 如果启用累积规则，非RCEP成员材料才计入VNM
+            // 本例中所有材料均来自RCEP成员，故VNM=0（除非手动输入非RCEP材料价值）
+            if (rcepCumulativeEnabled) {
+                // 累积规则下，只有非RCEP成员的原产材料才视为VNM
+                // 本例中所有材料均为RCEP成员，VNM保持用户输入值
+            }
+
+            if (fob <= 0) {
+                showRCEPError('FOB must be > 0');
+                return;
+            }
+
+            const rvc = ((fob - vnm) / fob) * 100;
+            const qualifies = rvc >= 40;
+            showRVCResult(rvc, qualifies, 'indirect', fob, vnm);
+        }
+
+        // 累加法（直接法）: RVC = (VOM + 人工 + 费用 + 利润) / FOB × 100%
+        function calculateRVCDirect() {
+            const fob = parseFloat(document.getElementById('rcep-fob-direct').value) || 0;
+            let vom = parseFloat(document.getElementById('rcep-vom').value) || 0;
+            const labor = parseFloat(document.getElementById('rcep-labor').value) || 0;
+            const overhead = parseFloat(document.getElementById('rcep-overhead').value) || 0;
+            const profit = parseFloat(document.getElementById('rcep-profit').value) || 0;
+
+            // 如果启用累积规则，VOM中来自RCEP成员的材料价值可累积
+            if (rcepCumulativeEnabled) {
+                // 累积规则下，越南（包装材料$1000）、日本（防腐剂$625）的原产材料可视为中国原产
+                // 此处VOM已包含所有RCEP成员材料价值，累积规则下VOM不变但可增加可视为原产的材料范围
+                const cumulativeBonus = 0; // 本例中所有材料已计入VOM
+            }
+
+            if (fob <= 0) {
+                showRCEPError('FOB must be > 0');
+                return;
+            }
+
+            const numerator = vom + labor + overhead + profit;
+            const rvc = (numerator / fob) * 100;
+            const qualifies = rvc >= 40;
+            showRVCResult(rvc, qualifies, 'direct', fob, numerator);
+        }
+
+        function showRVCResult(rvcVal, qualifies, method, fob, detailVal) {
+            const displayRVC = Math.round(rvcVal * 10) / 10;
             document.getElementById('rvc-value').textContent = displayRVC + '%';
-            document.getElementById('rvc-fill').style.width = displayRVC + '%';
+            document.getElementById('rvc-fill').style.width = Math.min(displayRVC, 100) + '%';
 
+            // 填充详情
+            const detailDiv = document.getElementById('rcep-detail');
+            detailDiv.style.display = 'grid';
+
+            const isZh = currentLang === 'zh';
+            if (method === 'indirect') {
+                document.getElementById('detail-label-1').textContent = isZh ? 'FOB 离岸价格' : 'FOB Price';
+                document.getElementById('detail-val-1').textContent = '$' + fob.toLocaleString();
+                document.getElementById('detail-label-2').textContent = isZh ? '扣减值 (VNM)' : 'Deduction (VNM)';
+                document.getElementById('detail-val-2').textContent = '$' + (detailVal || 0).toLocaleString();
+                document.getElementById('detail-label-3').textContent = isZh ? '计算结果' : 'Result (RVC)';
+                document.getElementById('detail-val-3').textContent = displayRVC + '%';
+            } else {
+                document.getElementById('detail-label-1').textContent = isZh ? 'FOB 离岸价格' : 'FOB Price';
+                document.getElementById('detail-val-1').textContent = '$' + fob.toLocaleString();
+                document.getElementById('detail-label-2').textContent = isZh ? '累加值 (VOM+人工+费用+利润)' : 'Accumulated Value';
+                document.getElementById('detail-val-2').textContent = '$' + Math.round(detailVal).toLocaleString();
+                document.getElementById('detail-label-3').textContent = isZh ? '计算结果' : 'Result (RVC)';
+                document.getElementById('detail-val-3').textContent = displayRVC + '%';
+            }
+            document.getElementById('detail-label-4').textContent = isZh ? '资格判定' : 'Qualification';
+            const qualEl = document.getElementById('detail-val-4');
+            if (qualifies) {
+                qualEl.className = 'detail-value green';
+                qualEl.textContent = isZh ? '✅ 合格' : '✅ Qualified';
+            } else {
+                qualEl.className = 'detail-value red';
+                qualEl.textContent = isZh ? '❌ 不合格' : '❌ Not Qualified';
+            }
+
+            // 状态显示
             const statusEl = document.getElementById('rvc-status');
-            statusEl.innerHTML = '<div class="alert-box success"><div class="alert-icon">🎉</div><div class="alert-content"><div class="alert-title">' +
-                (currentLang === 'zh' ? '符合 RCEP 原产地标准！' : 'Meets RCEP Origin Standard!') +
-                '</div><div class="alert-text">' +
-                (currentLang === 'zh' ? 'RVC = 100% ≥ 40% 阈值。所有原材料均来自 RCEP 成员国。系统已自动生成原产地证明申请表。' :
-                    'RVC = 100% ≥ 40% threshold. All materials sourced from RCEP members. Certificate application auto-generated.') +
-                '</div></div></div>';
+            if (qualifies) {
+                const rcepQualify = isZh ? '符合RCEP原产资格' : 'RCEP Origin Qualified';
+                const rcepQualifyDetail = isZh ? 'RVC ≥ 40% 阈值，该产品可享受协定关税优惠' : 'RVC ≥ 40% threshold, eligible for tariff preference';
+                const rcepQualifyDetail2 = isZh ? '预计关税从 5% 降至 0%，每批次节省约 $800-1,200' : 'Tariff from 5% → 0%, saving ~$800-1,200/shipment';
+                statusEl.innerHTML = '<div class="alert-box success"><div class="alert-icon">🎉</div><div class="alert-content"><div class="alert-title">' + rcepQualify + '</div><div class="alert-text">' + rcepQualifyDetail + '<br>' + rcepQualifyDetail2 + '</div></div></div>';
+            } else {
+                statusEl.innerHTML = '<div class="alert-box error"><div class="alert-icon">❌</div><div class="alert-content"><div class="alert-title">' + (isZh ? '不符合RCEP原产资格' : 'Not RCEP Origin Qualified') + '</div><div class="alert-text">' + (isZh ? 'RVC < 40% 阈值，建议增加RCEP成员国原材料占比后重新计算' : 'RVC < 40% threshold. Consider increasing RCEP member material ratio') + '</div></div></div>';
+            }
 
+            // AI 引擎
             const aiBox = document.getElementById('rcep-ai-box');
             aiBox.style.display = 'block';
-            document.getElementById('rcep-ai-msg').innerHTML = currentLang === 'zh' ?
-                '<p>✅ <strong>计算完成。</strong>您的产品所有原材料均来自 RCEP 成员国，区域价值成分远超 40% 阈值。</p><br>' +
-                '<p>📋 <strong>已自动生成：</strong>RCEP 原产地证明申请表（FORM D 格式），包含完整的 RVC 计算过程和依据。</p><br>' +
-                '<p>🚀 申请将推送至中国贸促会签发。预计可享受 <strong>约 5% 关税优惠</strong>，每批次节省约 <strong>$800-1,200</strong>。</p>' :
-                '<p>✅ <strong>Calculation complete.</strong> All raw materials from RCEP member states. RVC far exceeds 40% threshold.</p><br>' +
-                '<p>📋 <strong>Auto-generated:</strong> RCEP Certificate of Origin application (FORM D) with full RVC calculation.</p><br>' +
-                '<p>🚀 Application will be sent to CCPIT for issuance. Estimated <strong>~5% tariff reduction</strong>, saving <strong>$800-1,200</strong> per shipment.</p>';
+            const methodName = method === 'indirect' ? (isZh ? '扣减法（间接法）' : 'Deduction Method') : (isZh ? '累加法（直接法）' : 'Accumulation Method');
+            const cumNote = rcepCumulativeEnabled ? (isZh ? '（累积规则已启用）' : ' (Accumulation Rule ON)') : '';
+            const aiMsg = document.getElementById('rcep-ai-msg');
+            if (qualifies) {
+                aiMsg.innerHTML = '<p>✅ <strong>' + (isZh ? '计算完成' : 'Calculated') + '</strong> · ' + methodName + cumNote + '<br>' +
+                    (isZh ? 'RVC = ' : 'RVC = ') + displayRVC + '% ' + (isZh ? '≥ 40% 阈值' : '≥ 40% threshold') + '</p>';
+            } else {
+                aiMsg.innerHTML = '<p>❌ <strong>' + (isZh ? '未通过' : 'Failed') + '</strong> · ' + methodName + cumNote + '<br>' +
+                    (isZh ? 'RVC = ' : 'RVC = ') + displayRVC + '% ' + (isZh ? '< 40% 阈值' : '< 40% threshold') + '<br>' +
+                    (isZh ? '💡 建议增加RCEP成员国原材料占比，或启用累积规则' : '💡 Consider increasing RCEP material ratio or enabling Accumulation Rule') + '</p>';
+            }
+        }
+
+        function showRCEPError(msg) {
+            const statusEl = document.getElementById('rvc-status');
+            statusEl.innerHTML = '<div class="alert-box error"><div class="alert-icon">⚠️</div><div class="alert-content"><div class="alert-text">' + msg + '</div></div></div>';
         }
 
         // ==========================================
@@ -1341,14 +1818,78 @@
         });
 
         // ==========================================
-        // 8. 页面初始化加载事件
+        // 8. 投诉弹窗函数
+        // ==========================================
+
+        function openComplaintModal() {
+            const overlay = document.getElementById('complaint-modal');
+            if (overlay) overlay.classList.add('active');
+            // Reset form
+            document.querySelectorAll('input[name="complaint_reason"]').forEach(r => r.checked = false);
+            document.getElementById('complaint-other-group').style.display = 'none';
+            document.getElementById('complaint-other-text').value = '';
+        }
+
+        function closeComplaintModal() {
+            const overlay = document.getElementById('complaint-modal');
+            if (overlay) overlay.classList.remove('active');
+        }
+
+        // 点击遮罩层关闭投诉弹窗
+        document.addEventListener('DOMContentLoaded', () => {
+            const overlay = document.getElementById('complaint-modal');
+            if (overlay) {
+                overlay.addEventListener('click', function(e) {
+                    if (e.target === this) closeComplaintModal();
+                });
+            }
+        });
+
+        function selectComplaintReason(labelEl) {
+            const radio = labelEl.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+            const otherGroup = document.getElementById('complaint-other-group');
+            if (radio && radio.value === 'other') {
+                otherGroup.style.display = 'block';
+            } else {
+                otherGroup.style.display = 'none';
+            }
+        }
+
+        function submitComplaint() {
+            const selected = document.querySelector('input[name="complaint_reason"]:checked');
+            if (!selected) {
+                alert(currentLang === 'zh' ? '请选择一个投诉理由' : 'Please select a complaint reason');
+                return;
+            }
+            const reasonMap = {
+                'score_inaccurate': currentLang === 'zh' ? '评分数据不准确' : 'Score inaccurate',
+                'missing_data': currentLang === 'zh' ? '存在未纳入计算的正面交易记录' : 'Missing positive transaction data',
+                'wrong_category': currentLang === 'zh' ? '企业主营品类归类错误' : 'Wrong business category',
+                'other': currentLang === 'zh' ? '其他原因' : 'Other'
+            };
+            let reasonText = reasonMap[selected.value] || selected.value;
+            if (selected.value === 'other') {
+                const detail = document.getElementById('complaint-other-text').value.trim();
+                if (detail) reasonText += ': ' + detail;
+            }
+            alert(currentLang === 'zh' ?
+                '✅ 投诉已提交。感谢您的反馈，我们将对相关信用评分进行复核。' :
+                '✅ Complaint submitted. Thank you for your feedback. We will review the credit rating.');
+            closeComplaintModal();
+        }
+
+        // ==========================================
+        // 9. 页面初始化加载事件
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             // 初始设置语言并渲染
             setLang('zh');
 
-            // 如果您使用了地图库，取消下面这段注释：
-            // if(typeof initMap === 'function') initMap(); 
+            // 启动卫星追踪模拟
+            if (pageId === 'logistics') {
+                setTimeout(simulateSatelliteUpdate, 500);
+            }
         });
     </script>
 
@@ -2281,19 +2822,196 @@
             color: var(--text-muted);
             font-family: var(--font-mono);
         }
-        /* ===== MAP ===== */
-        
-        #logistics-map {
-            height: 500px;
-            border-radius: var(--radius);
-            border: 1px solid var(--border-subtle);
+        /* ===== ROUTE SCHEMATIC DIAGRAM ===== */
+        .route-schematic {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 24px 16px;
+            position: relative;
+            overflow-x: auto;
+        }
+        .route-schematic::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 40px;
+            right: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-green) 50%, var(--text-muted) 50%);
+            background-size: 200% 100%;
+            background-position: 0% 0%;
+            transform: translateY(-50%);
+            z-index: 0;
+            border-radius: 2px;
+        }
+        .route-schematic .scheme-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            position: relative;
             z-index: 1;
+            flex: 1;
+            min-width: 60px;
         }
-        
-        .leaflet-container {
-            background: var(--bg-surface) !important;
-            border-radius: var(--radius);
+        .route-schematic .scheme-node .node-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 3px solid var(--bg-card);
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s;
         }
+        .route-schematic .scheme-node .node-dot.completed {
+            background: var(--accent-green);
+            box-shadow: 0 0 10px rgba(34,197,94,0.4);
+        }
+        .route-schematic .scheme-node .node-dot.current {
+            background: var(--accent-amber);
+            box-shadow: 0 0 12px rgba(245,158,11,0.5);
+            animation: pulse-node 2s infinite;
+        }
+        .route-schematic .scheme-node .node-dot.upcoming {
+            background: var(--text-muted);
+        }
+        @keyframes pulse-node {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        .route-schematic .scheme-node .node-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-align: center;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        .route-schematic .scheme-node .node-label.completed {
+            color: var(--accent-green);
+        }
+        .route-schematic .scheme-node .node-label.current {
+            color: var(--accent-amber);
+        }
+        .route-schematic .scheme-node .node-sub {
+            font-size: 9px;
+            color: var(--text-muted);
+            text-align: center;
+            white-space: nowrap;
+        }
+        .route-schematic .scheme-node .node-icon {
+            font-size: 16px;
+        }
+        /* ===== LOGISTICS ROUTE PLANS ===== */
+        .route-plan-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .route-plan-card {
+            padding: 16px;
+            background: var(--bg-surface);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-subtle);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .route-plan-card:hover {
+            border-color: var(--accent-blue);
+            background: rgba(59,130,246,0.04);
+        }
+        .route-plan-card .plan-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .route-plan-card .plan-name {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .route-plan-card .plan-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+        .route-plan-card .plan-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+        }
+        .route-plan-card .plan-meta span {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .route-plan-card .plan-tag {
+            display: inline-block;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: rgba(34,197,94,0.1);
+            color: var(--accent-green);
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        .route-plan-card .plan-tag.recommended {
+            background: rgba(59,130,246,0.1);
+            color: var(--accent-blue);
+        }
+        .route-plan-card .plan-tag.express {
+            background: rgba(245,158,11,0.1);
+            color: var(--accent-amber);
+        }
+        /* ===== SATELLITE TRACKING ===== */
+        .satellite-dashboard {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .satellite-card {
+            flex: 1;
+            padding: 16px;
+            background: var(--bg-surface);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-subtle);
+            text-align: center;
+        }
+        .satellite-card .sat-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        .satellite-card .sat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        .satellite-card .sat-value {
+            font-size: 16px;
+            font-weight: 700;
+            font-family: var(--font-en);
+        }
+        .satellite-card .sat-value.green { color: var(--accent-green); }
+        .satellite-card .sat-value.amber { color: var(--accent-amber); }
+        .satellite-card .sat-value.blue { color: var(--accent-blue); }
+        .customs-analysis {
+            padding: 16px;
+            background: rgba(139,92,246,0.05);
+            border: 1px solid rgba(139,92,246,0.15);
+            border-radius: var(--radius-sm);
+            margin-bottom: 16px;
+        }
+        .customs-analysis .analysis-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .customs-analysis .analysis-item:last-child { border-bottom: none; }
+        .customs-analysis .analysis-item .label { color: var(--text-muted); }
+        .customs-analysis .analysis-item .value { font-weight: 600; }
         /* ===== LOGISTICS PANEL ===== */
         
         .logistics-info-panel {
@@ -2558,6 +3276,175 @@
             }
         }
         /* ===== RCEP Calculator ===== */
+        .rcep-calc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 900px) {
+            .rcep-calc-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .rcep-formula-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 20px;
+        }
+        .rcep-formula-card .formula-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .rcep-formula-card .formula-header .formula-icon {
+            font-size: 20px;
+        }
+        .rcep-formula-card .formula-header .formula-name {
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .rcep-formula-card .formula-body {
+            font-size: 13px;
+            font-family: var(--font-mono);
+            background: var(--bg-surface);
+            padding: 12px;
+            border-radius: 6px;
+            color: var(--accent-blue);
+            margin-bottom: 16px;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+        .rcep-formula-card .calc-input-group {
+            margin-bottom: 12px;
+        }
+        .rcep-formula-card .calc-input-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .rcep-formula-card .calc-input-group input {
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-family: var(--font-mono);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            color: var(--text-primary);
+            transition: border-color 0.2s;
+        }
+        .rcep-formula-card .calc-input-group input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+        .rcep-formula-card .calc-input-group .hint {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .rcep-cumulative-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            margin: 16px 0;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 12px;
+        }
+        .rcep-cumulative-toggle:hover {
+            border-color: var(--accent-blue);
+            background: rgba(59,130,246,0.05);
+        }
+        .rcep-cumulative-toggle .toggle-switch {
+            width: 40px;
+            height: 22px;
+            background: var(--text-muted);
+            border-radius: 11px;
+            position: relative;
+            transition: background 0.3s;
+            flex-shrink: 0;
+        }
+        .rcep-cumulative-toggle .toggle-switch.active {
+            background: var(--accent-green);
+        }
+        .rcep-cumulative-toggle .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        .rcep-cumulative-toggle .toggle-switch.active::after {
+            transform: translateX(18px);
+        }
+        .rcep-cumulative-toggle .toggle-label {
+            flex: 1;
+            font-weight: 500;
+        }
+        .rcep-cumulative-note {
+            font-size: 11px;
+            color: var(--accent-green);
+            padding: 8px 12px;
+            background: rgba(34,197,94,0.08);
+            border-radius: 6px;
+            margin-top: 8px;
+            display: none;
+        }
+        .rcep-cumulative-note.visible {
+            display: block;
+        }
+        .rcep-result-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 12px 0;
+        }
+        .rcep-result-detail .detail-item {
+            padding: 10px;
+            background: var(--bg-surface);
+            border-radius: 6px;
+            text-align: center;
+        }
+        .rcep-result-detail .detail-item .detail-label {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+        .rcep-result-detail .detail-item .detail-value {
+            font-size: 16px;
+            font-weight: 700;
+            font-family: var(--font-mono);
+        }
+        .rcep-result-detail .detail-item .detail-value.green { color: var(--accent-green); }
+        .rcep-result-detail .detail-item .detail-value.blue { color: var(--accent-blue); }
+        .rcep-result-detail .detail-item .detail-value.amber { color: var(--accent-amber); }
+        .rcep-result-detail .detail-item .detail-value.red { color: var(--accent-red); }
+        .rcep-result-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .rcep-result-badge.qualify {
+            background: rgba(34,197,94,0.15);
+            color: var(--accent-green);
+        }
+        .rcep-result-badge.not-qualify {
+            background: rgba(239,68,68,0.15);
+            color: var(--accent-red);
+        }
         
         .rvc-meter {
             position: relative;
@@ -4066,6 +4953,57 @@
                         <div class="modal-section-title" style="font-size:12px;font-weight:600;color:var(--text-muted);" data-i18n="modal_tags_title">企业标签</div>
                         <div class="modal-metrics-row" id="modal-metrics">
                         </div>
+                        <!-- ===== 投诉按钮 ===== -->
+                        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border-subtle);display:flex;justify-content:flex-end;">
+                            <button class="btn btn-sm" style="background:rgba(239,68,68,0.1);color:var(--accent-red);border:1px solid rgba(239,68,68,0.2);" onclick="openComplaintModal()">
+                                ⚠️ <span data-i18n="complaint_btn">投诉信用评分</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 投诉弹窗 ===== -->
+                <div class="modal-overlay" id="complaint-modal">
+                    <div class="modal-content" style="max-width:480px;">
+                        <button class="modal-close" onclick="closeComplaintModal()">✖</button>
+                        <div class="modal-header" style="margin-bottom:16px;">
+                            <div class="modal-company-name" style="font-size:16px;">⚠️ <span data-i18n="complaint_title">信用评分投诉</span></div>
+                        </div>
+                        <div class="alert-box warning" style="margin-bottom:16px;padding:12px;font-size:12px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:var(--radius-sm);">
+                            <div class="alert-icon" style="font-size:16px;">📢</div>
+                            <div class="alert-content">
+                                <div class="alert-text" data-i18n="complaint_disclaimer">本平台展示的信用评分基于公开数据与历史交易记录综合评估，<strong>仅供参考</strong>，不构成任何商业决策的唯一依据。平台不对因依赖评分产生的任何损失承担责任。</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-label" data-i18n="complaint_reason_label">投诉理由</div>
+                            <div style="display:flex;flex-direction:column;gap:8px;" id="complaint-reasons">
+                                <label class="complaint-option" style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg-surface);border-radius:var(--radius-sm);border:1px solid var(--border-subtle);cursor:pointer;transition:all 0.2s;font-size:13px;" onclick="selectComplaintReason(this)">
+                                    <input type="radio" name="complaint_reason" value="score_inaccurate" style="accent-color:var(--accent-blue);">
+                                    <span data-i18n="complaint_reason_1">评分数据不准确，与实际交易情况不符</span>
+                                </label>
+                                <label class="complaint-option" style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg-surface);border-radius:var(--radius-sm);border:1px solid var(--border-subtle);cursor:pointer;transition:all 0.2s;font-size:13px;" onclick="selectComplaintReason(this)">
+                                    <input type="radio" name="complaint_reason" value="missing_data">
+                                    <span data-i18n="complaint_reason_2">存在未纳入计算的正面交易记录</span>
+                                </label>
+                                <label class="complaint-option" style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg-surface);border-radius:var(--radius-sm);border:1px solid var(--border-subtle);cursor:pointer;transition:all 0.2s;font-size:13px;" onclick="selectComplaintReason(this)">
+                                    <input type="radio" name="complaint_reason" value="wrong_category">
+                                    <span data-i18n="complaint_reason_3">企业主营品类归类错误</span>
+                                </label>
+                                <label class="complaint-option" style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg-surface);border-radius:var(--radius-sm);border:1px solid var(--border-subtle);cursor:pointer;transition:all 0.2s;font-size:13px;" onclick="selectComplaintReason(this)">
+                                    <input type="radio" name="complaint_reason" value="other">
+                                    <span data-i18n="complaint_reason_4">其他原因（请在下框说明）</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group" id="complaint-other-group" style="display:none;">
+                            <div class="form-label" data-i18n="complaint_detail_label">详细说明</div>
+                            <textarea class="form-textarea" id="complaint-other-text" rows="3" placeholder="请详细描述您认为评分不准确的原因..."></textarea>
+                        </div>
+                        <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:16px;">
+                            <button class="btn btn-sm btn-secondary" onclick="closeComplaintModal()" data-i18n="complaint_cancel">取消</button>
+                            <button class="btn btn-sm btn-primary" onclick="submitComplaint()" data-i18n="complaint_submit">提交投诉</button>
+                        </div>
                     </div>
                 </div>
 
@@ -4320,100 +5258,193 @@
 
                 <!-- ======================== PAGE: RCEP ======================== -->
                 <div class="page" id="page-rcep">
-                    <div class="grid-2 animate-in">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-title" data-i18n="rcep_calc_title">🌏 RCEP 原产地证明智能生成</div>
-                            </div>
-                            <div class="form-group">
-                                <div class="form-label" data-i18n="rcep_product">出口产品</div>
-                                <input class="form-input" value="野生菌类混合干品（HS 0712.39）" readonly>
-                            </div>
-                            <div class="form-group">
-                                <div class="form-label" data-i18n="rcep_dest">目的国</div>
-                                <input class="form-input" value="🇹🇭 泰国" readonly>
-                            </div>
-                            <div class="form-label" style="margin-bottom:12px;" data-i18n="rcep_materials">原材料来源清单</div>
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th data-i18n="mat_name">原材料</th>
-                                        <th data-i18n="mat_origin">来源国</th>
-                                        <th data-i18n="mat_value">价值占比</th>
-                                        <th data-i18n="mat_rcep">RCEP成员</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td data-i18n="mat_mushroom">野生松茸</td>
-                                        <td>🇨🇳 中国云南</td>
-                                        <td style="font-family:var(--font-en);">38%</td>
-                                        <td><span class="card-badge badge-green">✓</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td data-i18n="mat_boletus">牛肝菌</td>
-                                        <td>🇨🇳 中国云南</td>
-                                        <td style="font-family:var(--font-en);">22%</td>
-                                        <td><span class="card-badge badge-green">✓</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td data-i18n="mat_packaging">包装材料</td>
-                                        <td>🇻🇳 越南</td>
-                                        <td style="font-family:var(--font-en);">8%</td>
-                                        <td><span class="card-badge badge-green">✓</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td data-i18n="mat_preserv">防腐剂</td>
-                                        <td>🇯🇵 日本</td>
-                                        <td style="font-family:var(--font-en);">5%</td>
-                                        <td><span class="card-badge badge-green">✓</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td data-i18n="mat_label">标签印刷</td>
-                                        <td>🇨🇳 中国</td>
-                                        <td style="font-family:var(--font-en);">3%</td>
-                                        <td><span class="card-badge badge-green">✓</span></td>
-                                    </tr>
-                                    <tr style="font-weight:600;">
-                                        <td data-i18n="mat_processing">加工增值</td>
-                                        <td>🇨🇳 中国云南</td>
-                                        <td style="font-family:var(--font-en);">24%</td>
-                                        <td><span class="card-badge badge-green">✓</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <button class="btn btn-primary" style="margin-top:16px;width:100%;" onclick="calculateRVC()">
-              <span data-i18n="btn_calc_rvc">🧮 计算区域价值成分 (RVC)</span>
-            </button>
-                        </div>
 
-                        <div>
-                            <div class="card" id="rvc-result-card" style="margin-bottom:20px;">
-                                <div class="card-header">
-                                    <div class="card-title" data-i18n="rvc_result_title">📊 RVC 计算结果</div>
-                                </div>
-                                <div style="text-align:center;padding:20px 0;">
-                                    <div style="font-size:48px;font-weight:900;font-family:var(--font-en);background:var(--gradient-cool);-webkit-background-clip:text;-webkit-text-fill-color:transparent;" id="rvc-value">—</div>
-                                    <div style="font-size:14px;color:var(--text-muted);margin-top:4px;" data-i18n="rvc_label">区域价值成分 (RVC)</div>
-                                </div>
-                                <div class="rvc-meter" id="rvc-meter">
+                    <!-- 计算结果（紧凑型，放在最上面） -->
+                    <div class="card animate-in" id="rvc-result-card" style="margin-bottom:12px;">
+                        <div class="card-header" style="padding:10px 16px;">
+                            <div class="card-title" data-i18n="rvc_result_title" style="font-size:14px;">📊 RVC 计算结果</div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:16px;padding:12px 16px;">
+                            <div style="text-align:center;flex-shrink:0;">
+                                <div style="font-size:32px;font-weight:900;font-family:var(--font-en);background:var(--gradient-cool);-webkit-background-clip:text;-webkit-text-fill-color:transparent;" id="rvc-value">—</div>
+                                <div style="font-size:11px;color:var(--text-muted);" data-i18n="rvc_label">区域价值成分 (RVC)</div>
+                            </div>
+                            <div style="flex:1;">
+                                <div class="rvc-meter" style="height:18px;margin:4px 0;">
                                     <div class="rvc-fill" id="rvc-fill" style="width:0%;background:var(--gradient-cool);"></div>
-                                    <div class="rvc-threshold" style="left:40%;">
-                                        <div class="rvc-threshold-label">40% <span data-i18n="rvc_threshold">阈值</span></div>
+                                    <div class="rvc-threshold" style="top:-4px;bottom:-4px;left:40%;">
+                                        <div class="rvc-threshold-label" style="top:-18px;">40% <span data-i18n="rvc_threshold">阈值</span></div>
                                     </div>
                                 </div>
-                                <div id="rvc-status" style="text-align:center;margin-top:16px;"></div>
-                            </div>
-
-                            <div class="ai-box" id="rcep-ai-box" style="display:none;">
-                                <div class="ai-box-header">
-                                    <div class="ai-icon">🤖</div>
-                                    <div class="ai-label" data-i18n="rcep_ai_label">RCEP 规则计算引擎</div>
+                                <div class="rcep-result-detail" id="rcep-detail" style="display:none;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px;">
+                                    <div class="detail-item" style="padding:6px;">
+                                        <div class="detail-label" style="font-size:9px;" id="detail-label-1">FOB</div>
+                                        <div class="detail-value blue" style="font-size:13px;" id="detail-val-1">—</div>
+                                    </div>
+                                    <div class="detail-item" style="padding:6px;">
+                                        <div class="detail-label" style="font-size:9px;" id="detail-label-2">VNM</div>
+                                        <div class="detail-value amber" style="font-size:13px;" id="detail-val-2">—</div>
+                                    </div>
+                                    <div class="detail-item" style="padding:6px;">
+                                        <div class="detail-label" style="font-size:9px;" id="detail-label-3">RVC</div>
+                                        <div class="detail-value green" style="font-size:13px;" id="detail-val-3">—</div>
+                                    </div>
+                                    <div class="detail-item" style="padding:6px;">
+                                        <div class="detail-label" style="font-size:9px;" id="detail-label-4">结果</div>
+                                        <div class="detail-value" style="font-size:13px;" id="detail-val-4">—</div>
+                                    </div>
                                 </div>
-                                <div class="ai-message" id="rcep-ai-msg"></div>
                             </div>
                         </div>
+                        <div id="rvc-status" style="padding:0 16px 12px 16px;"></div>
                     </div>
+
+                    <!-- AI 计算器信息（紧凑） -->
+                    <div class="ai-box" id="rcep-ai-box" style="display:none;margin-bottom:12px;">
+                        <div class="ai-box-header" style="padding:8px 14px;">
+                            <div class="ai-icon" style="font-size:16px;">🤖</div>
+                            <div class="ai-label" style="font-size:12px;" data-i18n="rcep_ai_label">RCEP 计算器</div>
+                        </div>
+                        <div class="ai-message" id="rcep-ai-msg" style="padding:8px 14px;font-size:12px;"></div>
+                    </div>
+
+                    <!-- 产品原材料信息卡片（紧凑） -->
+                    <div class="card animate-in" style="margin-bottom:12px;">
+                        <div class="card-header" style="padding:10px 16px;">
+                            <div class="card-title" data-i18n="rcep_calc_title" style="font-size:14px;">🌏 RCEP 优惠计算器</div>
+                            <span class="card-badge badge-blue" style="font-size:9px;">RVC ≥ 40%</span>
+                        </div>
+                        <div style="display:flex;gap:16px;flex-wrap:wrap;padding:0 16px 12px;">
+                            <div style="flex:1;min-width:160px;">
+                                <div class="form-label" data-i18n="rcep_product" style="font-size:11px;">出口产品</div>
+                                <input class="form-input" value="野生菌类混合干品（HS 0712.39）" readonly style="font-size:12px;padding:6px 10px;">
+                            </div>
+                            <div style="flex:1;min-width:120px;">
+                                <div class="form-label" data-i18n="rcep_dest" style="font-size:11px;">目的国</div>
+                                <input class="form-input" value="🇹🇭 泰国" readonly style="font-size:12px;padding:6px 10px;">
+                            </div>
+                        </div>
+                        <div class="form-label" style="margin:0 16px 8px;font-size:11px;" data-i18n="rcep_materials">原材料来源清单</div>
+                        <div style="padding:0 16px 12px;overflow-x:auto;">
+                        <table class="data-table" style="font-size:11px;">
+                            <thead>
+                                <tr>
+                                    <th data-i18n="mat_name" style="padding:4px 6px;">原材料</th>
+                                    <th data-i18n="mat_origin" style="padding:4px 6px;">来源国</th>
+                                    <th data-i18n="mat_value" style="padding:4px 6px;">价值占比</th>
+                                    <th data-i18n="mat_rcep" style="padding:4px 6px;">RCEP成员</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td data-i18n="mat_mushroom" style="padding:3px 6px;">野生松茸</td>
+                                    <td style="padding:3px 6px;">🇨🇳 中国云南</td>
+                                    <td style="padding:3px 6px;font-family:var(--font-en);">38%</td>
+                                    <td style="padding:3px 6px;"><span class="card-badge badge-green" style="font-size:9px;">✓</span></td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="mat_boletus" style="padding:3px 6px;">牛肝菌</td>
+                                    <td style="padding:3px 6px;">🇨🇳 中国云南</td>
+                                    <td style="padding:3px 6px;font-family:var(--font-en);">22%</td>
+                                    <td style="padding:3px 6px;"><span class="card-badge badge-green" style="font-size:9px;">✓</span></td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="mat_packaging" style="padding:3px 6px;">包装材料</td>
+                                    <td style="padding:3px 6px;">🇻🇳 越南</td>
+                                    <td style="padding:3px 6px;font-family:var(--font-en);">8%</td>
+                                    <td style="padding:3px 6px;"><span class="card-badge badge-green" style="font-size:9px;">✓</span></td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="mat_preserv" style="padding:3px 6px;">防腐剂</td>
+                                    <td style="padding:3px 6px;">🇯🇵 日本</td>
+                                    <td style="padding:3px 6px;font-family:var(--font-en);">5%</td>
+                                    <td style="padding:3px 6px;"><span class="card-badge badge-green" style="font-size:9px;">✓</span></td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="mat_label" style="padding:3px 6px;">标签印刷</td>
+                                    <td style="padding:3px 6px;">🇨🇳 中国</td>
+                                    <td style="padding:3px 6px;font-family:var(--font-en);">3%</td>
+                                    <td style="padding:3px 6px;"><span class="card-badge badge-green" style="font-size:9px;">✓</span></td>
+                                </tr>
+                                <tr style="font-weight:600;">
+                                    <td data-i18n="mat_processing" style="padding:3px 6px;">加工增值</td>
+                                    <td style="padding:3px 6px;">🇨🇳 中国云南</td>
+                                    <td style="padding:3px 6px;font-family:var(--font-en);">24%</td>
+                                    <td style="padding:3px 6px;"><span class="card-badge badge-green" style="font-size:9px;">✓</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+
+                    <!-- 双计算器区域 -->
+                    <div class="rcep-calc-grid animate-in animate-delay-1">
+                        <!-- 扣减法（间接法） -->
+                        <div class="rcep-formula-card">
+                            <div class="formula-header">
+                                <div class="formula-icon">➖</div>
+                                <div class="formula-name" data-i18n="rcep_formula_indirect">扣减法（间接法）</div>
+                            </div>
+                            <div class="formula-body" data-i18n="rcep_formula_indirect_desc">RVC = (FOB - VNM) / FOB × 100%  ≥ 40%</div>
+                            <div class="calc-input-group">
+                                <label data-i18n="rcep_fob">FOB离岸价格 ($)</label>
+                                <input type="number" id="rcep-fob-indirect" value="12500">
+                                <div class="hint" data-i18n="rcep_fob_hint">货物装运港船上交货价格</div>
+                            </div>
+                            <div class="calc-input-group">
+                                <label data-i18n="rcep_vnm">非原产材料价值 VNM ($)</label>
+                                <input type="number" id="rcep-vnm" value="0">
+                                <div class="hint" data-i18n="rcep_vnm_hint">来自非RCEP成员国的原材料价值</div>
+                            </div>
+                            <button class="btn btn-primary" style="width:100%;" onclick="calculateRVCIndirect()">
+                                <span data-i18n="rcep_btn_indirect">🧮 扣减法计算</span>
+                            </button>
+                        </div>
+
+                        <!-- 累加法（直接法） -->
+                        <div class="rcep-formula-card">
+                            <div class="formula-header">
+                                <div class="formula-icon">➕</div>
+                                <div class="formula-name" data-i18n="rcep_formula_direct">累加法（直接法）</div>
+                            </div>
+                            <div class="formula-body" data-i18n="rcep_formula_direct_desc">RVC = (VOM + 人工 + 费用 + 利润) / FOB × 100%  ≥ 40%</div>
+                            <div class="calc-input-group">
+                                <label data-i18n="rcep_fob">FOB离岸价格 ($)</label>
+                                <input type="number" id="rcep-fob-direct" value="12500">
+                                <div class="hint" data-i18n="rcep_fob_hint">货物装运港船上交货价格</div>
+                            </div>
+                            <div class="calc-input-group">
+                                <label data-i18n="rcep_vom">原产材料价值 VOM ($)</label>
+                                <input type="number" id="rcep-vom" value="9500">
+                                <div class="hint" data-i18n="rcep_vom_hint">来自RCEP成员国的原材料价值</div>
+                            </div>
+                            <div class="calc-input-group">
+                                <label data-i18n="rcep_labor">直接人工成本 ($)</label>
+                                <input type="number" id="rcep-labor" value="800">
+                            </div>
+                            <div class="calc-input-group">
+                                <label data-i18n="rcep_overhead">直接经营费用 ($)</label>
+                                <input type="number" id="rcep-overhead" value="600">
+                            </div>
+                            <div class="calc-input-group">
+                                <label data-i18n="rcep_profit">利润及其他 ($)</label>
+                                <input type="number" id="rcep-profit" value="1600">
+                            </div>
+                            <button class="btn btn-primary" style="width:100%;" onclick="calculateRVCDirect()">
+                                <span data-i18n="rcep_btn_direct">🧮 累加法计算</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 累积规则开关（紧凑） -->
+                    <div class="card animate-in animate-delay-2" style="margin-top:12px;">
+                        <div class="rcep-cumulative-toggle" onclick="toggleCumulativeRule()">
+                            <div class="toggle-switch" id="cumulative-switch"></div>
+                            <div class="toggle-label" data-i18n="rcep_cumulative_toggle">🔗 启用累积规则（RCEP缔约方原产材料可累积计算）</div>
+                        </div>
+                        <div class="rcep-cumulative-note" id="cumulative-note" data-i18n="rcep_cumulative_note">累积规则生效中：越南（包装材料）、日本（防腐剂）的原产材料视为中国原产，提升RVC</div>
+                    </div>
+
                 </div>
 
                 <!-- ======================== PAGE: APPROVAL ======================== -->
@@ -4513,69 +5544,210 @@
                         </div>
                     </div>
 
-                    <div class="grid-2 animate-in animate-delay-1">
-                        <div class="card" style="padding:0;overflow:hidden;">
-                            <div style="padding:20px 24px;border-bottom:1px solid var(--border-subtle);">
-                                <div class="card-title" data-i18n="logi_map_title">🗺️ 全链路物流追踪</div>
-                                <div style="font-size:12px;color:var(--text-muted);margin-top:4px;" data-i18n="logi_map_sub">订单 LMT-2026-0308 · 昆明 → 曼谷</div>
+                    <!-- 模块1：运输前物流路线推荐 -->
+                    <div class="card animate-in">
+                        <div class="card-header">
+                            <div class="card-title" data-i18n="logi_route_title">🚚 运输前物流路线推荐</div>
+                            <span class="card-badge badge-blue" style="font-size:10px;">AI RECOMMEND</span>
+                        </div>
+                        <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px;padding:0 4px;" data-i18n="logi_route_desc">AI 根据您的货物信息与目的国为您推荐以下最优运输方案</div>
+                        <div class="route-plan-grid">
+                            <div class="route-plan-card" onclick="alert('演示：查看公路运输详情')">
+                                <div class="plan-icon">🚛</div>
+                                <div class="plan-name" data-i18n="route_road">公路运输</div>
+                                <div class="plan-desc" data-i18n="route_road_desc">昆明—磨憨—万象—曼谷，全程约 1800km，跨境陆路运输</div>
+                                <div class="plan-meta">
+                                    <span>⏱ <span data-i18n="route_road_time">预计 48 小时</span></span>
+                                    <span>💰 <span data-i18n="route_road_cost">约 $1,200</span></span>
+                                </div>
+                                <div class="plan-tag recommended" data-i18n="route_tag_recommend">AI 推荐</div>
                             </div>
-                            <div id="logistics-map"></div>
+                            <div class="route-plan-card" onclick="alert('演示：查看铁路运输详情')">
+                                <div class="plan-icon">🚄</div>
+                                <div class="plan-name" data-i18n="route_rail">铁路运输</div>
+                                <div class="plan-desc" data-i18n="route_rail_desc">中老铁路磨憨—万象—廊开—曼谷，冷链集装箱直达</div>
+                                <div class="plan-meta">
+                                    <span>⏱ <span data-i18n="route_rail_time">预计 36 小时</span></span>
+                                    <span>💰 <span data-i18n="route_rail_cost">约 $1,500</span></span>
+                                </div>
+                                <div class="plan-tag express" data-i18n="route_tag_fast">时效最快</div>
+                            </div>
+                            <div class="route-plan-card" onclick="alert('演示：查看海运运输详情')">
+                                <div class="plan-icon">🚢</div>
+                                <div class="plan-name" data-i18n="route_sea">海运运输</div>
+                                <div class="plan-desc" data-i18n="route_sea_desc">昆明陆运至深圳港—曼谷港，适合大批量货物</div>
+                                <div class="plan-meta">
+                                    <span>⏱ <span data-i18n="route_sea_time">预计 7 天</span></span>
+                                    <span>💰 <span data-i18n="route_sea_cost">约 $800</span></span>
+                                </div>
+                                <div class="plan-tag" data-i18n="route_tag_economy">经济实惠</div>
+                            </div>
+                            <div class="route-plan-card" onclick="alert('演示：查看空运运输详情')">
+                                <div class="plan-icon">✈️</div>
+                                <div class="plan-name" data-i18n="route_air">空运运输</div>
+                                <div class="plan-desc" data-i18n="route_air_desc">昆明长水机场—曼谷素万那普机场，适合高价值急需货物</div>
+                                <div class="plan-meta">
+                                    <span>⏱ <span data-i18n="route_air_time">预计 6 小时</span></span>
+                                    <span>💰 <span data-i18n="route_air_cost">约 $5,000</span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 路线示意图（无国界，仅示意重要口岸/海关节点） -->
+                        <div class="card" style="margin-top:16px;padding:0;background:transparent;border:1px solid var(--border-subtle);">
+                            <div style="padding:14px 20px;border-bottom:1px solid var(--border-subtle);">
+                                <div class="card-title" style="font-size:13px;" data-i18n="logi_scheme_title">🗺️ 路线节点示意</div>
+                            </div>
+                            <div class="route-schematic">
+                                <div class="scheme-node">
+                                    <div class="node-icon">🏭</div>
+                                    <div class="node-dot completed"></div>
+                                    <div class="node-label completed" data-i18n="node_warehouse">昆明仓库</div>
+                                    <div class="node-sub">出库</div>
+                                </div>
+                                <div class="scheme-node">
+                                    <div class="node-icon">🛃</div>
+                                    <div class="node-dot completed"></div>
+                                    <div class="node-label completed" data-i18n="node_cn_customs">中国海关</div>
+                                    <div class="node-sub">出口放行</div>
+                                </div>
+                                <div class="scheme-node">
+                                    <div class="node-icon">🚛</div>
+                                    <div class="node-dot completed"></div>
+                                    <div class="node-label completed" data-i18n="node_mohan">磨憨口岸</div>
+                                    <div class="node-sub">出境</div>
+                                </div>
+                                <div class="scheme-node">
+                                    <div class="node-icon">📍</div>
+                                    <div class="node-dot current"></div>
+                                    <div class="node-label current" data-i18n="node_laos">万象</div>
+                                    <div class="node-sub">运输中</div>
+                                </div>
+                                <div class="scheme-node">
+                                    <div class="node-icon">🛃</div>
+                                    <div class="node-dot upcoming"></div>
+                                    <div class="node-label" data-i18n="node_nongkhai">廊开口岸</div>
+                                    <div class="node-sub">入境泰国</div>
+                                </div>
+                                <div class="scheme-node">
+                                    <div class="node-icon">📦</div>
+                                    <div class="node-dot upcoming"></div>
+                                    <div class="node-label" data-i18n="node_bangkok">曼谷仓库</div>
+                                    <div class="node-sub">交付</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 模块2：在途物流实时追踪 -->
+                    <div class="card animate-in animate-delay-1" style="margin-top:20px;">
+                        <div class="card-header">
+                            <div class="card-title" data-i18n="logi_tracking_title">🛰️ 在途物流实时追踪</div>
+                            <span class="card-badge badge-green" style="font-size:10px;">LIVE</span>
+                        </div>
+                        <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px;padding:0 4px;" data-i18n="logi_tracking_desc">通过卫星定位与海关报关数据分析，实时追踪货物去向</div>
+
+                        <!-- 卫星仪表盘 -->
+                        <div class="satellite-dashboard">
+                            <div class="satellite-card">
+                                <div class="sat-icon">🛰️</div>
+                                <div class="sat-label" data-i18n="sat_signal">卫星信号</div>
+                                <div class="sat-value green" data-i18n="sat_signal_val">强 (4/4)</div>
+                            </div>
+                            <div class="satellite-card">
+                                <div class="sat-icon">📍</div>
+                                <div class="sat-label" data-i18n="sat_position">当前位置</div>
+                                <div class="sat-value amber" id="sat-position" data-i18n="sat_position_val">北纬 18.2° 东经 102.5°</div>
+                            </div>
+                            <div class="satellite-card">
+                                <div class="sat-icon">🚀</div>
+                                <div class="sat-label" data-i18n="sat_speed">当前速度</div>
+                                <div class="sat-value blue" id="sat-speed" data-i18n="sat_speed_val">62 km/h</div>
+                            </div>
+                            <div class="satellite-card">
+                                <div class="sat-icon">⏱️</div>
+                                <div class="sat-label" data-i18n="sat_est">预计到达</div>
+                                <div class="sat-value green" data-i18n="sat_est_val">03-14 14:30</div>
+                            </div>
                         </div>
 
-                        <div>
-                            <div class="card" style="margin-bottom:16px;">
-                                <div class="card-header">
-                                    <div class="card-title" data-i18n="logi_nodes_title">📍 物流节点状态</div>
+                        <!-- 海关报关数据分析 -->
+                        <div class="customs-analysis">
+                            <div class="card-title" style="margin-bottom:12px;font-size:13px;" data-i18n="customs_title">📋 海关报关数据分析</div>
+                            <div class="analysis-item">
+                                <span class="label" data-i18n="customs_order">关联订单</span>
+                                <span class="value" data-i18n="customs_order_val">LMT-2026-0308</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="label" data-i18n="customs_declare">报关单号</span>
+                                <span class="value" data-i18n="customs_declare_val">CN-2026-0312-0089</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="label" data-i18n="customs_status">报关状态</span>
+                                <span class="value" style="color:var(--accent-green);" data-i18n="customs_status_val">✅ 已完成出口申报</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="label" data-i18n="customs_goods">货物状态</span>
+                                <span class="value" data-i18n="customs_goods_val">📦 已出中国关境，老挝过境中</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="label" data-i18n="customs_next">下一海关节点</span>
+                                <span class="value" style="color:var(--accent-amber);" data-i18n="customs_next_val">🇹🇭 廊开口岸（入境泰国）</span>
+                            </div>
+                        </div>
+
+                        <!-- 物流节点状态 -->
+                        <div class="card" style="padding:0;background:transparent;border:none;">
+                            <div class="card-header" style="padding:0 0 12px 0;">
+                                <div class="card-title" style="font-size:13px;" data-i18n="logi_nodes_title">📍 物流节点状态</div>
+                            </div>
+                            <div class="logistics-info-panel">
+                                <div class="route-node completed">
+                                    <div class="route-node-icon">🏭</div>
+                                    <div class="route-node-info">
+                                        <div class="route-node-name" data-i18n="node_warehouse">昆明仓库 · 出库</div>
+                                        <div class="route-node-detail" data-i18n="node_warehouse_detail">货物已出库，智能合约已触发</div>
+                                    </div>
+                                    <div class="route-node-time">03-08<br>08:00</div>
                                 </div>
-                                <div class="logistics-info-panel">
-                                    <div class="route-node completed">
-                                        <div class="route-node-icon">🏭</div>
-                                        <div class="route-node-info">
-                                            <div class="route-node-name" data-i18n="node_warehouse">昆明仓库 · 出库</div>
-                                            <div class="route-node-detail" data-i18n="node_warehouse_detail">货物已出库，智能合约已触发</div>
-                                        </div>
-                                        <div class="route-node-time">03-08<br>08:00</div>
+                                <div class="route-node completed">
+                                    <div class="route-node-icon">🛃</div>
+                                    <div class="route-node-info">
+                                        <div class="route-node-name" data-i18n="node_cn_customs">中国海关 · 出口放行</div>
+                                        <div class="route-node-detail" data-i18n="node_cn_customs_detail">报关单、SPS 证书审核通过</div>
                                     </div>
-                                    <div class="route-node completed">
-                                        <div class="route-node-icon">🛃</div>
-                                        <div class="route-node-info">
-                                            <div class="route-node-name" data-i18n="node_cn_customs">中国海关 · 出口放行</div>
-                                            <div class="route-node-detail" data-i18n="node_cn_customs_detail">报关单、SPS 证书审核通过</div>
-                                        </div>
-                                        <div class="route-node-time">03-08<br>14:30</div>
+                                    <div class="route-node-time">03-08<br>14:30</div>
+                                </div>
+                                <div class="route-node completed">
+                                    <div class="route-node-icon">🚛</div>
+                                    <div class="route-node-info">
+                                        <div class="route-node-name" data-i18n="node_mohan">磨憨口岸 · 出境</div>
+                                        <div class="route-node-detail" data-i18n="node_mohan_detail">通关耗时 5.5 小时</div>
                                     </div>
-                                    <div class="route-node completed">
-                                        <div class="route-node-icon">🚛</div>
-                                        <div class="route-node-info">
-                                            <div class="route-node-name" data-i18n="node_mohan">磨憨口岸 · 出境</div>
-                                            <div class="route-node-detail" data-i18n="node_mohan_detail">通关耗时 5.5 小时</div>
-                                        </div>
-                                        <div class="route-node-time">03-09<br>06:20</div>
+                                    <div class="route-node-time">03-09<br>06:20</div>
+                                </div>
+                                <div class="route-node current">
+                                    <div class="route-node-icon">🇱🇦</div>
+                                    <div class="route-node-info">
+                                        <div class="route-node-name" data-i18n="node_laos">老挝境内运输中</div>
+                                        <div class="route-node-detail" data-i18n="node_laos_detail">卫星定位：万象以南 120km · 预计 6 小时后抵达泰老边境</div>
                                     </div>
-                                    <div class="route-node current">
-                                        <div class="route-node-icon">🇱🇦</div>
-                                        <div class="route-node-info">
-                                            <div class="route-node-name" data-i18n="node_laos">老挝境内运输中</div>
-                                            <div class="route-node-detail" data-i18n="node_laos_detail">当前位置：万象以南 120km · 预计 6 小时后抵达泰老边境</div>
-                                        </div>
-                                        <div class="route-node-time" style="color:var(--accent-amber);">实时</div>
+                                    <div class="route-node-time" style="color:var(--accent-amber);">实时</div>
+                                </div>
+                                <div class="route-node upcoming">
+                                    <div class="route-node-icon">🛃</div>
+                                    <div class="route-node-info">
+                                        <div class="route-node-name" data-i18n="node_nongkhai">廊开口岸 · 入境泰国</div>
+                                        <div class="route-node-detail" data-i18n="node_nongkhai_detail">AI 预测通关时间：3.5 小时</div>
                                     </div>
-                                    <div class="route-node upcoming">
-                                        <div class="route-node-icon">🛃</div>
-                                        <div class="route-node-info">
-                                            <div class="route-node-name" data-i18n="node_nongkhai">廊开口岸 · 入境泰国</div>
-                                            <div class="route-node-detail" data-i18n="node_nongkhai_detail">AI 预测通关时间：3.5 小时</div>
-                                        </div>
-                                        <div class="route-node-time">预计<br>03-13</div>
+                                    <div class="route-node-time">预计<br>03-13</div>
+                                </div>
+                                <div class="route-node upcoming">
+                                    <div class="route-node-icon">📦</div>
+                                    <div class="route-node-info">
+                                        <div class="route-node-name" data-i18n="node_bangkok">曼谷仓库 · 交付</div>
+                                        <div class="route-node-detail" data-i18n="node_bangkok_detail">预计到达，智能合约将自动确认交付</div>
                                     </div>
-                                    <div class="route-node upcoming">
-                                        <div class="route-node-icon">📦</div>
-                                        <div class="route-node-info">
-                                            <div class="route-node-name" data-i18n="node_bangkok">曼谷仓库 · 交付</div>
-                                            <div class="route-node-detail" data-i18n="node_bangkok_detail">预计到达，智能合约将自动确认交付</div>
-                                        </div>
-                                        <div class="route-node-time">预计<br>03-14</div>
-                                    </div>
+                                    <div class="route-node-time">预计<br>03-14</div>
                                 </div>
                             </div>
                         </div>
@@ -4641,48 +5813,48 @@
                                 <div style="flex:1;width:100%;display:flex;align-items:flex-end;">
                                     <div style="width:100%;height:82%;background:rgba(239,68,68,0.3);border-radius:4px 4px 0 0;border-top:2px solid var(--accent-red);"></div>
                                 </div>
-                                <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">03-13</div>
+                                <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">07-12</div>
                             </div>
                             <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
                                 <div style="flex:1;width:100%;display:flex;align-items:flex-end;">
                                     <div style="width:100%;height:78%;background:rgba(239,68,68,0.25);border-radius:4px 4px 0 0;border-top:2px solid var(--accent-red);"></div>
                                 </div>
-                                <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">03-14</div>
+                                <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">07-13</div>
                             </div>
                             <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
                                 <div style="flex:1;width:100%;display:flex;align-items:flex-end;">
                                     <div style="width:100%;height:70%;background:rgba(245,158,11,0.25);border-radius:4px 4px 0 0;border-top:2px solid var(--accent-amber);"></div>
                                 </div>
-                                <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">03-15</div>
+                                <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">07-14</div>
                             </div>
                             <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
                                 <div style="flex:1;width:100%;display:flex;align-items:flex-end;">
                                     <div style="width:100%;height:55%;background:rgba(245,158,11,0.2);border-radius:4px 4px 0 0;border-top:2px solid var(--accent-amber);"></div>
                                 </div>
-                                <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">03-16</div>
+                                <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">07-15</div>
                             </div>
                             <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
                                 <div style="flex:1;width:100%;display:flex;align-items:flex-end;">
                                     <div style="width:100%;height:45%;background:rgba(34,197,94,0.2);border-radius:4px 4px 0 0;border-top:2px solid var(--accent-green);"></div>
                                 </div>
-                                <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">03-17</div>
+                                <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">07-16</div>
                             </div>
                             <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
                                 <div style="flex:1;width:100%;display:flex;align-items:flex-end;">
                                     <div style="width:100%;height:38%;background:rgba(34,197,94,0.2);border-radius:4px 4px 0 0;border-top:2px solid var(--accent-green);"></div>
                                 </div>
-                                <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">03-18</div>
+                                <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">07-17</div>
                             </div>
                             <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
                                 <div style="flex:1;width:100%;display:flex;align-items:flex-end;">
                                     <div style="width:100%;height:35%;background:rgba(34,197,94,0.2);border-radius:4px 4px 0 0;border-top:2px solid var(--accent-green);"></div>
                                 </div>
-                                <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">03-19</div>
+                                <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">07-18</div>
                             </div>
                         </div>
                         <div class="ai-suggestion">
                             <div class="suggestion-title" data-i18n="port_ai_title">🤖 AI 路线建议</div>
-                            <div class="suggestion-text" data-i18n="port_ai_text">磨憨口岸拥堵预计将在 3 月 17 日后缓解。如需紧急发货，建议选择 <strong>河口—老街—河内—曼谷</strong> 路线，综合运输时间可缩短约 18 小时，运费增加约 $120。</div>
+                            <div class="suggestion-text" data-i18n="port_ai_text">磨憨口岸拥堵预计将在 7 月 16 日后缓解。如需紧急发货，建议选择 <strong>河口—老街—河内—曼谷</strong> 路线，综合运输时间可缩短约 18 小时，运费增加约 $120。</div>
                         </div>
                     </div>
                 </div>
@@ -4697,7 +5869,8 @@
                             <input class="form-input" placeholder="搜索政策法规..." data-i18n-placeholder="kb_search" style="max-width:400px;">
                         </div>
                         <div>
-                            <div class="kb-item" onclick="alert('Demo: 打开 RCEP 详细规则')">
+                            <a href="http://www.customs.gov.cn/shenzhen_customs/zfxxgk15/2966748/zcjd82/3584328/index.html" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">
+                            <div class="kb-item">
                                 <div class="kb-icon">📘</div>
                                 <div class="kb-info">
                                     <div class="kb-title" data-i18n="kb_rcep_title">RCEP 原产地规则完整指南</div>
@@ -4705,14 +5878,18 @@
                                 </div>
                                 <div class="kb-tag">RCEP</div>
                             </div>
+                            </a>
+                            <a href="https://www.customs.go.th" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">
                             <div class="kb-item">
                                 <div class="kb-icon">📗</div>
                                 <div class="kb-info">
-                                    <div class="kb-title" data-i18n="kb_th_title">泰国农产品进口 SPS 标准</div>
-                                    <div class="kb-desc" data-i18n="kb_th_desc">泰国 FDA 对动植物检疫、农药残留、食品添加剂的最新标准</div>
+                                    <div class="kb-title" data-i18n="kb_th_guide_title">泰国进口合规综合指南</div>
+                                    <div class="kb-desc" data-i18n="kb_th_guide_desc">涵盖泰国海关进口关税、原产地规则、SPS检疫、FDA食品药品标准、产品标签及包装要求</div>
                                 </div>
                                 <div class="kb-tag">🇹🇭 TH</div>
                             </div>
+                            </a>
+                            <a href="http://www.customs.gov.vn" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">
                             <div class="kb-item">
                                 <div class="kb-icon">📙</div>
                                 <div class="kb-info">
@@ -4721,14 +5898,18 @@
                                 </div>
                                 <div class="kb-tag">🇻🇳 VN</div>
                             </div>
+                            </a>
+                            <a href="http://www.customs.gov.la" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">
                             <div class="kb-item">
                                 <div class="kb-icon">📕</div>
                                 <div class="kb-info">
-                                    <div class="kb-title" data-i18n="kb_la_title">老挝过境运输许可指南</div>
-                                    <div class="kb-desc" data-i18n="kb_la_desc">老挝过境货物的许可证申请流程、所需文件及处理时间</div>
+                                    <div class="kb-title" data-i18n="kb_la_guide_title">老挝海关与过境运输指南</div>
+                                    <div class="kb-desc" data-i18n="kb_la_guide_desc">老挝海关总局进出口报关流程、过境货物许可、关税政策及通关要求</div>
                                 </div>
                                 <div class="kb-tag">🇱🇦 LA</div>
                             </div>
+                            </a>
+                            <a href="https://www.chinatax.gov.cn" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">
                             <div class="kb-item">
                                 <div class="kb-icon">📒</div>
                                 <div class="kb-info">
@@ -4737,6 +5918,7 @@
                                 </div>
                                 <div class="kb-tag">🇨🇳 CN</div>
                             </div>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -4762,7 +5944,7 @@
             </div>
         </div>
         <div class="chatbot-input-area">
-            <button onclick="startSpeechRecognition()" style="background:transparent; border:none; cursor:pointer; font-size:18px;">🎤</button>
+            <button onclick="toggleSpeechRecognition()" style="background:transparent; border:none; cursor:pointer; font-size:18px; border-radius:50%; padding:8px;">🎤</button>
             <input type="text" id="chat-input" data-i18n="chat_placeholder" placeholder="输入您的问题..." onkeypress="handleChatEnter(event)">
             <button onclick="sendMessage()" data-i18n="chat_send_btn">发送</button>
         </div>
