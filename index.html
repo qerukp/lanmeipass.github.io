@@ -195,6 +195,74 @@
                 rcep_qualify_detail2: "预计关税从 5% 降至 0%，每批次节省约 $800-1,200",
                 rcep_not_qualify: "❌ 不符合RCEP原产资格",
                 rcep_not_qualify_detail: "RVC < 40% 阈值，建议增加RCEP成员国原材料占比后重新计算",
+                
+                // RCEP 验证错误消息
+                rcep_err_fob_zero: "FOB离岸价格必须大于0",
+                rcep_err_vnm_negative: "扣减值(VNM)不能为负数",
+                rcep_err_vnm_exceed_fob: "扣减值(VNM)不能大于FOB离岸价格，否则RVC将为负值",
+                rcep_err_vom_negative: "原产材料价值(VOM)不能为负数",
+                rcep_err_labor_negative: "人工成本不能为负数",
+                rcep_err_overhead_negative: "制造费用不能为负数",
+                rcep_err_profit_negative: "利润不能为负数",
+                rcep_err_accum_exceed_fob: "累加值(VOM+人工+费用+利润)不能大于FOB离岸价格，否则RVC将超过100%",
+                
+                // RCEP 详情标签
+                rcep_detail_fob: "FOB 离岸价格",
+                rcep_detail_vnm: "扣减值 (VNM)",
+                rcep_detail_vom_total: "累加值 (VOM+人工+费用+利润)",
+                rcep_detail_result: "计算结果",
+                rcep_detail_qualification: "资格判定",
+                rcep_detail_qualified: "✅ 合格",
+                rcep_detail_not_qualified: "❌ 不合格",
+                
+                // RCEP AI 引擎消息
+                rcep_method_indirect: "扣减法（间接法）",
+                rcep_method_direct: "累加法（直接法）",
+                rcep_cum_enabled: "（累积规则已启用）",
+                rcep_ai_calculated: "计算完成",
+                rcep_ai_failed: "未通过",
+                rcep_ai_suggestion: "💡 建议增加RCEP成员国原材料占比，或启用累积规则",
+                rcep_threshold_pass: "≥ 40% 阈值",
+                rcep_threshold_fail: "< 40% 阈值",
+
+                // 语音识别
+                sr_recording: "正在录音...再次点击停止",
+                sr_processing: "正在处理...",
+                sr_failed: "语音识别失败，请重试",
+                sr_permission_denied: "麦克风权限被拒绝，请允许访问麦克风。",
+                sr_cannot_start: "无法启动录音: ",
+                sr_network_error: "网络连接失败",
+                
+                // AI 单证引擎
+                ai_all_processed: "✅ 所有文件处理完成！",
+                ai_processing_file: "正在处理: ",
+                ai_prepare: "准备开始处理文件...",
+                ai_pending: "等待处理...",
+                ai_complete: "✅ 处理完成",
+                ai_step_processing: "🔄 ",
+                
+                // AI 助手
+                chat_thinking: "思考中...",
+                chat_placeholder: "输入您的问题...",
+                chat_network_error: "网络连接失败，请稍后再试。",
+                
+                // 审批流程
+                approval_demo: "演示模式：单证已提交至多部门并联审批",
+                approval_complete: "✅ 流水线完成！即将跳转至审批看板...",
+                
+                // 投诉弹窗
+                complaint_select_reason: "请选择一个投诉理由",
+                complaint_score_inaccurate: "评分数据不准确",
+                complaint_missing_data: "存在未纳入计算的正面交易记录",
+                complaint_wrong_category: "企业主营品类归类错误",
+                complaint_other: "其他原因",
+                complaint_submitted: "✅ 投诉已提交。感谢您的反馈，我们将对相关信用评分进行复核。",
+                
+                // 通知消息
+                notifications: "您有 3 条未读通知：\n1. 磨憨口岸通关延迟预警\n2. SPS 证书优化建议\n3. RCEP 优惠已生效",
+                
+                // RCEP 动态消息
+                rcep_savings_text: "预计关税从 {{rate}}% 降至 0%，每批次节省约 ${{amount}}",
 
                 // 泰国进口综合指南
                 kb_th_guide_title: "泰国进口合规综合指南",
@@ -528,6 +596,74 @@
                 rcep_qualify_detail2: "Tariff from 5% → 0%, saving ~$800-1,200 per shipment",
                 rcep_not_qualify: "❌ Not RCEP Origin Qualified",
                 rcep_not_qualify_detail: "RVC < 40% threshold. Consider increasing RCEP member material ratio",
+                
+                // RCEP Validation Error Messages
+                rcep_err_fob_zero: "FOB price must be greater than 0",
+                rcep_err_vnm_negative: "Deduction value (VNM) cannot be negative",
+                rcep_err_vnm_exceed_fob: "Deduction value (VNM) cannot exceed FOB price, otherwise RVC will be negative",
+                rcep_err_vom_negative: "Originating material value (VOM) cannot be negative",
+                rcep_err_labor_negative: "Labor cost cannot be negative",
+                rcep_err_overhead_negative: "Overhead cost cannot be negative",
+                rcep_err_profit_negative: "Profit cannot be negative",
+                rcep_err_accum_exceed_fob: "Accumulated value (VOM+Labor+Overhead+Profit) cannot exceed FOB price, otherwise RVC will exceed 100%",
+                
+                // RCEP Detail Labels
+                rcep_detail_fob: "FOB Price",
+                rcep_detail_vnm: "Deduction (VNM)",
+                rcep_detail_vom_total: "Accumulated Value",
+                rcep_detail_result: "Result (RVC)",
+                rcep_detail_qualification: "Qualification",
+                rcep_detail_qualified: "✅ Qualified",
+                rcep_detail_not_qualified: "❌ Not Qualified",
+                
+                // RCEP AI Engine Messages
+                rcep_method_indirect: "Deduction Method",
+                rcep_method_direct: "Accumulation Method",
+                rcep_cum_enabled: " (Accumulation Rule ON)",
+                rcep_ai_calculated: "Calculated",
+                rcep_ai_failed: "Failed",
+                rcep_ai_suggestion: "💡 Consider increasing RCEP material ratio or enabling Accumulation Rule",
+                rcep_threshold_pass: "≥ 40% threshold",
+                rcep_threshold_fail: "< 40% threshold",
+
+                // Speech Recognition
+                sr_recording: "Recording... click again to stop",
+                sr_processing: "Processing...",
+                sr_failed: "Speech recognition failed, please retry",
+                sr_permission_denied: "Microphone permission denied.",
+                sr_cannot_start: "Cannot start recording: ",
+                sr_network_error: "Network connection failed",
+                
+                // AI Document Engine
+                ai_all_processed: "✅ All files processed!",
+                ai_processing_file: "Processing: ",
+                ai_prepare: "Preparing to process files...",
+                ai_pending: "Pending...",
+                ai_complete: "✅ Complete",
+                ai_step_processing: "🔄 ",
+                
+                // AI Assistant
+                chat_thinking: "Thinking...",
+                chat_placeholder: "Type your question here...",
+                chat_network_error: "Connection failed. Please try again.",
+                
+                // Approval Process
+                approval_demo: "Demo mode: Documents submitted for parallel approval",
+                approval_complete: "✅ Pipeline complete! Redirecting to approval board...",
+                
+                // Complaint Modal
+                complaint_select_reason: "Please select a complaint reason",
+                complaint_score_inaccurate: "Score inaccurate",
+                complaint_missing_data: "Missing positive transaction data",
+                complaint_wrong_category: "Wrong business category",
+                complaint_other: "Other",
+                complaint_submitted: "✅ Complaint submitted. Thank you for your feedback. We will review the credit rating.",
+                
+                // Notifications
+                notifications: "You have 3 unread notifications:\n1. Mohan port delay alert\n2. SPS certificate optimization\n3. RCEP benefit applied",
+                
+                // RCEP Dynamic Messages
+                rcep_savings_text: "Tariff from {{rate}}% → 0%, saving ~${{amount}}/shipment",
 
                 // Thailand Import Guide
                 kb_th_guide_title: "Thailand Import Compliance Guide",
@@ -699,20 +835,17 @@
             currentLang = lang;
             applyTranslations();
 
-            // 修复左下角中英文切换按钮的UI高亮状态
-
             const langBtns = document.querySelectorAll('.modern-lang-toggle .lang-btn');
             if (langBtns.length >= 2) {
                 if (lang === 'zh') {
-                    langBtns[0].classList.add('active'); // 🇨🇳 中 按钮激活
+                    langBtns[0].classList.add('active');
                     langBtns[1].classList.remove('active');
                 } else {
                     langBtns[0].classList.remove('active');
-                    langBtns[1].classList.add('active'); // 🇬🇧 EN 按钮激活
+                    langBtns[1].classList.add('active');
                 }
             }
 
-            // 修复顶栏标题：切换语言后恢复当前页面的正确标题
             const activeNav = document.querySelector('.nav-item.active');
             if (activeNav) {
                 const pageMatch = activeNav.getAttribute('onclick')?.match(/navigateTo\('(\w+)'\)/);
@@ -724,6 +857,26 @@
                     }
                 }
             }
+
+            updateRCEPResults();
+            localStorage.setItem('lanmei_pass_language', lang);
+            updateLanguageModalSelection(lang);
+        }
+
+        let lastRCEPMethod = 'indirect';
+
+        function updateRCEPResults() {
+            const rvcValue = document.getElementById('rvc-value');
+            if (!rvcValue || rvcValue.textContent === '—') return;
+
+            const rvcVal = parseFloat(rvcValue.textContent.replace('%', ''));
+            if (isNaN(rvcVal)) return;
+
+            const qualifies = rvcVal >= 40;
+            const detailVal = parseFloat(document.getElementById('detail-val-2')?.textContent?.replace(/[$,]/g, '')) || 0;
+            const fob = parseFloat(document.getElementById('detail-val-1')?.textContent?.replace(/[$,]/g, '')) || 0;
+
+            showRVCResult(rvcVal, qualifies, lastRCEPMethod, fob, detailVal);
         }
 
         function toggleLanguage() {
@@ -763,6 +916,82 @@
                 if (translations[currentLang][key]) {
                     titleEl.innerHTML = translations[currentLang][key];
                 }
+            }
+        }
+
+        function openLanguageModal() {
+            const modal = document.getElementById('language-modal');
+            if (modal) {
+                modal.classList.add('active');
+            }
+        }
+
+        function closeLanguageModal() {
+            const modal = document.getElementById('language-modal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+
+        function selectLanguage(lang) {
+            setLang(lang);
+            localStorage.setItem('lanmei_pass_language', lang);
+            updateLanguageModalSelection(lang);
+            closeLanguageModal();
+        }
+
+        function updateLanguageModalSelection(lang) {
+            const options = document.querySelectorAll('.language-option');
+            options.forEach(opt => {
+                opt.classList.remove('active');
+            });
+            const selected = document.querySelector(`.language-option[onclick="selectLanguage('${lang}')"]`);
+            if (selected) {
+                selected.classList.add('active');
+            }
+        }
+
+        let currentTheme = 'dark';
+
+        function selectTheme(theme) {
+            currentTheme = theme;
+            document.body.classList.toggle('light', theme === 'light');
+            localStorage.setItem('lanmei_pass_theme', theme);
+            updateThemeModalSelection(theme);
+        }
+
+        function updateThemeModalSelection(theme) {
+            const options = document.querySelectorAll('.theme-option');
+            options.forEach(opt => {
+                opt.classList.remove('active');
+            });
+            const selected = document.querySelector(`.theme-option[onclick="selectTheme('${theme}')"]`);
+            if (selected) {
+                selected.classList.add('active');
+            }
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('lanmei_pass_theme');
+            if (savedTheme) {
+                currentTheme = savedTheme;
+                document.body.classList.toggle('light', savedTheme === 'light');
+                updateThemeModalSelection(savedTheme);
+            } else {
+                updateThemeModalSelection('dark');
+            }
+        }
+
+        function initLanguageModal() {
+            initTheme();
+            const savedLang = localStorage.getItem('lanmei_pass_language');
+            if (savedLang) {
+                currentLang = savedLang;
+                applyTranslations();
+                updateLanguageModalSelection(savedLang);
+            } else {
+                openLanguageModal();
+                updateLanguageModalSelection(currentLang);
             }
         }
 
@@ -815,13 +1044,11 @@
         }
 
         function showNotifications() {
-            alert(currentLang === 'zh' ?
-                '您有 3 条未读通知：\n1. 磨憨口岸通关延迟预警\n2. SPS 证书优化建议\n3. RCEP 优惠已生效' :
-                'You have 3 unread notifications:\n1. Mohan port delay alert\n2. SPS certificate optimization\n3. RCEP benefit applied');
+            alert(translations[currentLang]['notifications']);
         }
 
         function quickDemo() {
-            alert(currentLang === 'zh' ? '演示模式：单证已提交至多部门并联审批' : 'Demo mode: Documents submitted for parallel approval');
+            alert(translations[currentLang]['approval_demo']);
             navigateTo('approval');
         }
 
@@ -848,7 +1075,7 @@
             appendMessage(message, 'user-message');
             inputEl.value = '';
 
-            const loadingText = currentLang === 'zh' ? '思考中...' : 'Thinking...';
+            const loadingText = translations[currentLang]['chat_thinking'];
             const currentAIResponseId = appendMessage(loadingText, 'ai-message');
 
             try {
@@ -883,7 +1110,7 @@
                 updateMessage(currentAIResponseId, aiReply);
                 speakText(aiReply); // 播报 AI 回答
             } catch (error) {
-                const errorMsg = currentLang === 'zh' ? "网络连接失败，请稍后再试。" : "Connection failed. Please try again.";
+                const errorMsg = translations[currentLang]['chat_network_error'];
                 updateMessage(currentAIResponseId, errorMsg);
             }
         }
@@ -1009,7 +1236,7 @@
             if (msg.code !== 0) {
                 console.error('iFlytek error:', msg);
                 const inputEl = document.getElementById('chat-input');
-                if (inputEl) inputEl.value = currentLang === 'zh' ? '语音识别失败，请重试' : 'Speech recognition failed, please retry';
+                if (inputEl) inputEl.value = translations[currentLang]['sr_failed'];
                 cleanupIFlytek();
                 return;
             }
@@ -1065,7 +1292,7 @@
             _iat.sid = null;
             updateMicButton();
             const inputEl = document.getElementById('chat-input');
-            if (inputEl) inputEl.placeholder = currentLang === 'zh' ? '输入您的问题...' : 'Type your question here...';
+            if (inputEl) inputEl.placeholder = translations[currentLang]['chat_placeholder'];
         }
 
         async function startRecording() {
@@ -1081,7 +1308,7 @@
                 _iat.ws.onerror = function(e) {
                     console.error('iFlytek ws error', e);
                     const inputEl = document.getElementById('chat-input');
-                    if (inputEl) inputEl.value = currentLang === 'zh' ? '网络连接失败' : 'Network connection failed';
+                    if (inputEl) inputEl.value = translations[currentLang]['sr_network_error'];
                     cleanupIFlytek();
                 };
                 _iat.ws.onclose = function() {
@@ -1096,13 +1323,14 @@
                 updateMicButton();
 
                 const inputEl = document.getElementById('chat-input');
-                if (inputEl) inputEl.placeholder = currentLang === 'zh' ? '正在录音...再次点击停止' : 'Recording... click again to stop';
+                if (inputEl) inputEl.placeholder = translations[currentLang]['sr_recording'];
 
             } catch (err) {
                 console.error(err);
+                const t = translations[currentLang];
                 const msg = err.name === 'NotAllowedError'
-                    ? (currentLang === 'zh' ? '麦克风权限被拒绝，请允许访问麦克风。' : 'Microphone permission denied.')
-                    : (currentLang === 'zh' ? '无法启动录音: ' : 'Cannot start recording: ') + err.message;
+                    ? t['sr_permission_denied']
+                    : t['sr_cannot_start'] + err.message;
                 alert(msg);
                 cleanupIFlytek();
             }
@@ -1126,7 +1354,7 @@
             _iat.isRecording = false;
             updateMicButton();
             const inputEl = document.getElementById('chat-input');
-            if (inputEl) inputEl.placeholder = currentLang === 'zh' ? '正在处理...' : 'Processing...';
+            if (inputEl) inputEl.placeholder = translations[currentLang]['sr_processing'];
         }
 
         function toggleSpeechRecognition() {
@@ -1198,7 +1426,7 @@
             // Reset
             fileList.innerHTML = '';
             statusBar.classList.remove('done');
-            statusText.textContent = currentLang === 'zh' ? '准备开始处理文件...' : 'Preparing to process files...';
+            statusText.textContent = translations[currentLang]['ai_prepare'];
             overlay.classList.add('active');
 
             let completedFiles = 0;
@@ -1213,7 +1441,7 @@
                     <span class="file-icon">${file.icon}</span>
                     <div class="file-info">
                         <div class="file-name">${file.name}</div>
-                        <div class="file-status">${currentLang === 'zh' ? '等待处理...' : 'Pending...'}</div>
+                        <div class="file-status">${translations[currentLang]['ai_pending']}</div>
                     </div>
                     <div class="file-progress"><div class="fill" id="proc-progress-${idx}" style="width:0%"></div></div>
                     <span class="file-check">✓</span>
@@ -1224,7 +1452,7 @@
             // Process files sequentially with animation
             function processFile(index) {
                 if (index >= totalFiles) {
-                    statusText.textContent = currentLang === 'zh' ? '✅ 所有文件处理完成！' : '✅ All files processed!';
+                    statusText.textContent = translations[currentLang]['ai_all_processed'];
                     statusBar.classList.add('done');
                     setTimeout(() => {
                         overlay.classList.remove('active');
@@ -1248,14 +1476,12 @@
                 const steps = file.steps;
                 let stepIdx = 0;
 
-                statusText.textContent = currentLang === 'zh' ?
-                    `正在处理: ${file.name} (${file.type})` :
-                    `Processing: ${file.name} (${file.type})`;
+                statusText.textContent = translations[currentLang]['ai_processing_file'] + `${file.name} (${file.type})`;
 
                 function advanceStep() {
                     if (stepIdx >= steps.length) {
                         item.classList.add('done');
-                        statusEl.textContent = currentLang === 'zh' ? '✅ 处理完成' : '✅ Complete';
+                        statusEl.textContent = translations[currentLang]['ai_complete'];
                         progressFill.style.width = '100%';
                         progressFill.style.background = 'var(--accent-green)';
                         completedFiles++;
@@ -1264,7 +1490,7 @@
                     }
 
                     const stepLabel = steps[stepIdx];
-                    statusEl.textContent = currentLang === 'zh' ? `🔄 ${stepLabel}...` : `🔄 ${stepLabel}...`;
+                    statusEl.textContent = translations[currentLang]['ai_step_processing'] + stepLabel + '...';
                     progressFill.style.width = `${Math.round(((stepIdx + 1) / steps.length) * 100)}%`;
                     progressFill.style.background = 'var(--accent-blue)';
 
@@ -1384,7 +1610,7 @@
                         }
                     });
 
-                    addLogEntry(`<span class="check">✅ ${currentLang === 'zh' ? '流水线完成！即将跳转至审批看板...' : 'Pipeline complete! Redirecting to approval board...'}</span>`);
+                    addLogEntry(`<span class="check">${translations[currentLang]['approval_complete']}</span>`);
                     setTimeout(() => navigateTo('approval'), 2000);
                     return;
                 }
@@ -1484,12 +1710,23 @@
             }
 
             if (fob <= 0) {
-                showRCEPError('FOB must be > 0');
+                showRCEPError(translations[currentLang]['rcep_err_fob_zero']);
+                return;
+            }
+
+            if (vnm < 0) {
+                showRCEPError(translations[currentLang]['rcep_err_vnm_negative']);
+                return;
+            }
+
+            if (vnm > fob) {
+                showRCEPError(translations[currentLang]['rcep_err_vnm_exceed_fob']);
                 return;
             }
 
             const rvc = ((fob - vnm) / fob) * 100;
             const qualifies = rvc >= 40;
+            lastRCEPMethod = 'indirect';
             showRVCResult(rvc, qualifies, 'indirect', fob, vnm);
         }
 
@@ -1509,13 +1746,40 @@
             }
 
             if (fob <= 0) {
-                showRCEPError('FOB must be > 0');
+                showRCEPError(translations[currentLang]['rcep_err_fob_zero']);
+                return;
+            }
+
+            if (vom < 0) {
+                showRCEPError(translations[currentLang]['rcep_err_vom_negative']);
+                return;
+            }
+
+            if (labor < 0) {
+                showRCEPError(translations[currentLang]['rcep_err_labor_negative']);
+                return;
+            }
+
+            if (overhead < 0) {
+                showRCEPError(translations[currentLang]['rcep_err_overhead_negative']);
+                return;
+            }
+
+            if (profit < 0) {
+                showRCEPError(translations[currentLang]['rcep_err_profit_negative']);
                 return;
             }
 
             const numerator = vom + labor + overhead + profit;
+
+            if (numerator > fob) {
+                showRCEPError(translations[currentLang]['rcep_err_accum_exceed_fob']);
+                return;
+            }
+
             const rvc = (numerator / fob) * 100;
             const qualifies = rvc >= 40;
+            lastRCEPMethod = 'direct';
             showRVCResult(rvc, qualifies, 'direct', fob, numerator);
         }
 
@@ -1524,66 +1788,72 @@
             document.getElementById('rvc-value').textContent = displayRVC + '%';
             document.getElementById('rvc-fill').style.width = Math.min(displayRVC, 100) + '%';
 
-            // 填充详情
             const detailDiv = document.getElementById('rcep-detail');
             detailDiv.style.display = 'grid';
 
-            const isZh = currentLang === 'zh';
+            const t = translations[currentLang];
+
             if (method === 'indirect') {
-                document.getElementById('detail-label-1').textContent = isZh ? 'FOB 离岸价格' : 'FOB Price';
+                document.getElementById('detail-label-1').textContent = t['rcep_detail_fob'];
                 document.getElementById('detail-val-1').textContent = '$' + fob.toLocaleString();
-                document.getElementById('detail-label-2').textContent = isZh ? '扣减值 (VNM)' : 'Deduction (VNM)';
+                document.getElementById('detail-label-2').textContent = t['rcep_detail_vnm'];
                 document.getElementById('detail-val-2').textContent = '$' + (detailVal || 0).toLocaleString();
-                document.getElementById('detail-label-3').textContent = isZh ? '计算结果' : 'Result (RVC)';
+                document.getElementById('detail-label-3').textContent = t['rcep_detail_result'];
                 document.getElementById('detail-val-3').textContent = displayRVC + '%';
             } else {
-                document.getElementById('detail-label-1').textContent = isZh ? 'FOB 离岸价格' : 'FOB Price';
+                document.getElementById('detail-label-1').textContent = t['rcep_detail_fob'];
                 document.getElementById('detail-val-1').textContent = '$' + fob.toLocaleString();
-                document.getElementById('detail-label-2').textContent = isZh ? '累加值 (VOM+人工+费用+利润)' : 'Accumulated Value';
+                document.getElementById('detail-label-2').textContent = t['rcep_detail_vom_total'];
                 document.getElementById('detail-val-2').textContent = '$' + Math.round(detailVal).toLocaleString();
-                document.getElementById('detail-label-3').textContent = isZh ? '计算结果' : 'Result (RVC)';
+                document.getElementById('detail-label-3').textContent = t['rcep_detail_result'];
                 document.getElementById('detail-val-3').textContent = displayRVC + '%';
             }
-            document.getElementById('detail-label-4').textContent = isZh ? '资格判定' : 'Qualification';
+            document.getElementById('detail-label-4').textContent = t['rcep_detail_qualification'];
             const qualEl = document.getElementById('detail-val-4');
             if (qualifies) {
                 qualEl.className = 'detail-value green';
-                qualEl.textContent = isZh ? '✅ 合格' : '✅ Qualified';
+                qualEl.textContent = t['rcep_detail_qualified'];
             } else {
                 qualEl.className = 'detail-value red';
-                qualEl.textContent = isZh ? '❌ 不合格' : '❌ Not Qualified';
+                qualEl.textContent = t['rcep_detail_not_qualified'];
             }
 
-            // 状态显示
             const statusEl = document.getElementById('rvc-status');
             if (qualifies) {
-                const rcepQualify = isZh ? '符合RCEP原产资格' : 'RCEP Origin Qualified';
-                const rcepQualifyDetail = isZh ? 'RVC ≥ 40% 阈值，该产品可享受协定关税优惠' : 'RVC ≥ 40% threshold, eligible for tariff preference';
-                const rcepQualifyDetail2 = isZh ? '预计关税从 5% 降至 0%，每批次节省约 $800-1,200' : 'Tariff from 5% → 0%, saving ~$800-1,200/shipment';
-                statusEl.innerHTML = '<div class="alert-box success"><div class="alert-icon">🎉</div><div class="alert-content"><div class="alert-title">' + rcepQualify + '</div><div class="alert-text">' + rcepQualifyDetail + '<br>' + rcepQualifyDetail2 + '</div></div></div>';
+                const tariffRate = 5;
+                const savings = fob * tariffRate / 100;
+                const rcepQualifyDetail2 = t['rcep_savings_text']
+                    .replace('{{rate}}', tariffRate)
+                    .replace('{{amount}}', Math.round(savings).toLocaleString());
+                statusEl.innerHTML = '<div class="alert-box success"><div class="alert-icon">🎉</div><div class="alert-content"><div class="alert-title">' + t['rcep_qualify'] + '</div><div class="alert-text">' + t['rcep_qualify_detail'] + '<br>' + rcepQualifyDetail2 + '</div></div></div>';
             } else {
-                statusEl.innerHTML = '<div class="alert-box error"><div class="alert-icon">❌</div><div class="alert-content"><div class="alert-title">' + (isZh ? '不符合RCEP原产资格' : 'Not RCEP Origin Qualified') + '</div><div class="alert-text">' + (isZh ? 'RVC < 40% 阈值，建议增加RCEP成员国原材料占比后重新计算' : 'RVC < 40% threshold. Consider increasing RCEP member material ratio') + '</div></div></div>';
+                statusEl.innerHTML = '<div class="alert-box error"><div class="alert-icon">❌</div><div class="alert-content"><div class="alert-title">' + t['rcep_not_qualify'] + '</div><div class="alert-text">' + t['rcep_not_qualify_detail'] + '</div></div></div>';
             }
 
-            // AI 引擎
             const aiBox = document.getElementById('rcep-ai-box');
             aiBox.style.display = 'block';
-            const methodName = method === 'indirect' ? (isZh ? '扣减法（间接法）' : 'Deduction Method') : (isZh ? '累加法（直接法）' : 'Accumulation Method');
-            const cumNote = rcepCumulativeEnabled ? (isZh ? '（累积规则已启用）' : ' (Accumulation Rule ON)') : '';
+            const methodName = method === 'indirect' ? t['rcep_method_indirect'] : t['rcep_method_direct'];
+            const cumNote = rcepCumulativeEnabled ? t['rcep_cum_enabled'] : '';
             const aiMsg = document.getElementById('rcep-ai-msg');
             if (qualifies) {
-                aiMsg.innerHTML = '<p>✅ <strong>' + (isZh ? '计算完成' : 'Calculated') + '</strong> · ' + methodName + cumNote + '<br>' +
-                    (isZh ? 'RVC = ' : 'RVC = ') + displayRVC + '% ' + (isZh ? '≥ 40% 阈值' : '≥ 40% threshold') + '</p>';
+                aiMsg.innerHTML = '<p>✅ <strong>' + t['rcep_ai_calculated'] + '</strong> · ' + methodName + cumNote + '<br>' +
+                    'RVC = ' + displayRVC + '% ' + t['rcep_threshold_pass'] + '</p>';
             } else {
-                aiMsg.innerHTML = '<p>❌ <strong>' + (isZh ? '未通过' : 'Failed') + '</strong> · ' + methodName + cumNote + '<br>' +
-                    (isZh ? 'RVC = ' : 'RVC = ') + displayRVC + '% ' + (isZh ? '< 40% 阈值' : '< 40% threshold') + '<br>' +
-                    (isZh ? '💡 建议增加RCEP成员国原材料占比，或启用累积规则' : '💡 Consider increasing RCEP material ratio or enabling Accumulation Rule') + '</p>';
+                aiMsg.innerHTML = '<p>❌ <strong>' + t['rcep_ai_failed'] + '</strong> · ' + methodName + cumNote + '<br>' +
+                    'RVC = ' + displayRVC + '% ' + t['rcep_threshold_fail'] + '<br>' +
+                    t['rcep_ai_suggestion'] + '</p>';
             }
         }
 
         function showRCEPError(msg) {
             const statusEl = document.getElementById('rvc-status');
             statusEl.innerHTML = '<div class="alert-box error"><div class="alert-icon">⚠️</div><div class="alert-content"><div class="alert-text">' + msg + '</div></div></div>';
+            
+            document.getElementById('rvc-value').textContent = '—';
+            document.getElementById('rvc-fill').style.width = '0%';
+            
+            const detailDiv = document.getElementById('rcep-detail');
+            if (detailDiv) detailDiv.style.display = 'none';
         }
 
         // ==========================================
@@ -1859,23 +2129,22 @@
         function submitComplaint() {
             const selected = document.querySelector('input[name="complaint_reason"]:checked');
             if (!selected) {
-                alert(currentLang === 'zh' ? '请选择一个投诉理由' : 'Please select a complaint reason');
+                alert(translations[currentLang]['complaint_select_reason']);
                 return;
             }
+            const t = translations[currentLang];
             const reasonMap = {
-                'score_inaccurate': currentLang === 'zh' ? '评分数据不准确' : 'Score inaccurate',
-                'missing_data': currentLang === 'zh' ? '存在未纳入计算的正面交易记录' : 'Missing positive transaction data',
-                'wrong_category': currentLang === 'zh' ? '企业主营品类归类错误' : 'Wrong business category',
-                'other': currentLang === 'zh' ? '其他原因' : 'Other'
+                'score_inaccurate': t['complaint_score_inaccurate'],
+                'missing_data': t['complaint_missing_data'],
+                'wrong_category': t['complaint_wrong_category'],
+                'other': t['complaint_other']
             };
             let reasonText = reasonMap[selected.value] || selected.value;
             if (selected.value === 'other') {
                 const detail = document.getElementById('complaint-other-text').value.trim();
                 if (detail) reasonText += ': ' + detail;
             }
-            alert(currentLang === 'zh' ?
-                '✅ 投诉已提交。感谢您的反馈，我们将对相关信用评分进行复核。' :
-                '✅ Complaint submitted. Thank you for your feedback. We will review the credit rating.');
+            alert(translations[currentLang]['complaint_submitted']);
             closeComplaintModal();
         }
 
@@ -1883,10 +2152,12 @@
         // 9. 页面初始化加载事件
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
-            // 初始设置语言并渲染
-            setLang('zh');
+            // 初始化语言选择弹窗
+            initLanguageModal();
 
             // 启动卫星追踪模拟
+            const activeNav = document.querySelector('.nav-item.active');
+            const pageId = activeNav ? activeNav.getAttribute('data-page') : null;
             if (pageId === 'logistics') {
                 setTimeout(simulateSatelliteUpdate, 500);
             }
@@ -1924,6 +2195,30 @@
             --font-cn: 'Noto Sans SC', sans-serif;
             --font-en: 'DM Sans', sans-serif;
             --font-mono: 'Space Mono', monospace;
+        }
+
+        body.light {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #f1f5f9;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f8fafc;
+            --bg-surface: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --accent-teal: #14b8a6;
+            --accent-green: #22c55e;
+            --accent-amber: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #8b5cf6;
+            --gradient-primary: linear-gradient(135deg, #3b82f6, #06b6d4);
+            --gradient-warm: linear-gradient(135deg, #f59e0b, #ef4444);
+            --gradient-cool: linear-gradient(135deg, #14b8a6, #3b82f6);
+            --border-color: rgba(59, 130, 246, 0.2);
+            --border-subtle: rgba(0, 0, 0, 0.08);
+            --shadow-glow: 0 0 30px rgba(59, 130, 246, 0.15);
         }
         
         * {
@@ -4378,6 +4673,224 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
+        .language-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .language-modal.active {
+            display: flex;
+        }
+
+        .language-modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+        }
+
+        .language-modal-content {
+            position: relative;
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 400px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .language-modal-header {
+            padding: 20px 24px;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .language-modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .language-modal-close {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+
+        .language-modal-close:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .language-modal-body {
+            padding: 16px;
+        }
+
+        .language-option {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 8px;
+            border: 1px solid transparent;
+        }
+
+        .language-option:last-child {
+            margin-bottom: 0;
+        }
+
+        .language-option:hover {
+            background-color: var(--bg-surface);
+            border-color: var(--border-subtle);
+        }
+
+        .language-option.active {
+            background-color: rgba(59, 130, 246, 0.08);
+            border-color: var(--accent-blue);
+        }
+
+        .language-flag {
+            font-size: 32px;
+            margin-right: 16px;
+        }
+
+        .language-info {
+            flex: 1;
+        }
+
+        .language-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .language-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .language-check {
+            font-size: 18px;
+            color: var(--accent-green);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .language-option.active .language-check {
+            opacity: 1;
+        }
+
+        .modal-section {
+            margin-bottom: 20px;
+        }
+
+        .modal-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .modal-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .theme-option {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 8px;
+            border: 1px solid transparent;
+        }
+
+        .theme-option:last-child {
+            margin-bottom: 0;
+        }
+
+        .theme-option:hover {
+            background-color: var(--bg-surface);
+            border-color: var(--border-subtle);
+        }
+
+        .theme-option.active {
+            background-color: rgba(59, 130, 246, 0.08);
+            border-color: var(--accent-blue);
+        }
+
+        .theme-icon {
+            font-size: 32px;
+            margin-right: 16px;
+        }
+
+        .theme-info {
+            flex: 1;
+        }
+
+        .theme-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .theme-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .theme-check {
+            font-size: 18px;
+            color: var(--accent-green);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .theme-option.active .theme-check {
+            opacity: 1;
+        }
     </style>
 
 </head>
@@ -5947,6 +6460,56 @@
             <button onclick="toggleSpeechRecognition()" style="background:transparent; border:none; cursor:pointer; font-size:18px; border-radius:50%; padding:8px;">🎤</button>
             <input type="text" id="chat-input" data-i18n="chat_placeholder" placeholder="输入您的问题..." onkeypress="handleChatEnter(event)">
             <button onclick="sendMessage()" data-i18n="chat_send_btn">发送</button>
+        </div>
+    </div>
+
+    <div id="language-modal" class="language-modal">
+        <div class="language-modal-overlay" onclick="closeLanguageModal()"></div>
+        <div class="language-modal-content">
+            <div class="language-modal-header">
+                <div class="language-modal-title">⚙️ 设置 / Settings</div>
+                <button class="language-modal-close" onclick="closeLanguageModal()">✕</button>
+            </div>
+            <div class="language-modal-body">
+                <div class="modal-section">
+                    <div class="modal-section-title">🌐 语言 / Language</div>
+                    <div class="language-option" onclick="selectLanguage('zh')">
+                        <div class="language-flag">🇨🇳</div>
+                        <div class="language-info">
+                            <div class="language-name">中文</div>
+                            <div class="language-desc">Chinese</div>
+                        </div>
+                        <div class="language-check">✓</div>
+                    </div>
+                    <div class="language-option" onclick="selectLanguage('en')">
+                        <div class="language-flag">🇬🇧</div>
+                        <div class="language-info">
+                            <div class="language-name">English</div>
+                            <div class="language-desc">English</div>
+                        </div>
+                        <div class="language-check">✓</div>
+                    </div>
+                </div>
+                <div class="modal-section">
+                    <div class="modal-section-title">🎨 主题 / Theme</div>
+                    <div class="theme-option" onclick="selectTheme('dark')">
+                        <div class="theme-icon">🌙</div>
+                        <div class="theme-info">
+                            <div class="theme-name">暗色模式</div>
+                            <div class="theme-desc">Dark Mode</div>
+                        </div>
+                        <div class="theme-check">✓</div>
+                    </div>
+                    <div class="theme-option" onclick="selectTheme('light')">
+                        <div class="theme-icon">☀️</div>
+                        <div class="theme-info">
+                            <div class="theme-name">亮色模式</div>
+                            <div class="theme-desc">Light Mode</div>
+                        </div>
+                        <div class="theme-check">✓</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
