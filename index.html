@@ -28,6 +28,91 @@
         let currentLang = 'zh';
         const translations = {
             zh: {
+                // ===== 新增：补齐硬编码中文的 i18n 键 =====
+                dest_th_bkk: "🇹🇭 泰国 · 曼谷",
+                dest_vn_han: "🇻🇳 越南 · 河内",
+                dest_la_vte: "🇱🇦 老挝 · 万象",
+                did_reg_country_val: "🇨🇳 中国（云南省昆明市）",
+                ctry_cn: "🇨🇳 中国",
+                ctry_th: "🇹🇭 泰国",
+                ctry_vn: "🇻🇳 越南",
+                ctry_la: "🇱🇦 老挝",
+                ctry_kh: "🇰🇭 柬埔寨",
+                ctry_mm: "🇲🇲 缅甸",
+                company_revenue_val: "约 $2.8M",
+                cert_iso22000: "ISO 22000 食品安全",
+                cert_haccp: "HACCP 认证",
+                cert_organic: "有机产品认证",
+                cert_rcep: "RCEP 注册出口商",
+                cert_aeo: "AEO 高认企业",
+                grade_a: "A 级",
+                grade_bplus: "B+ 级",
+                grade_bb: "BB 级",
+                credit_label: "信用",
+                pc1_country: "🇹🇭 泰国 · 清迈",
+                pc1_industry: "🏭 农产品精深加工 · 菌类罐头/干制",
+                pc1_m1: "信用 92",
+                pc1_m2: "交易 6 次",
+                pc2_country: "🇻🇳 越南 · 胡志明市",
+                pc2_industry: "🚛 跨境冷链物流 · 中越/中老铁路",
+                pc2_m1: "信用 88",
+                pc2_m2: "合作 4 年",
+                pc2_m3: "运力 ⭐⭐⭐⭐",
+                pc3_country: "🇱🇦 老挝 · 万象",
+                pc3_industry: "🌱 有机菌类种植 · 野生松茸/牛肝菌",
+                pc3_m1: "信用 81",
+                pc3_m2: "交易 3 次",
+                pc3_m3: "新接触",
+                pc4_country: "🇰🇭 柬埔寨 · 金边",
+                pc4_industry: "🌾 稻米加工/米制品出口 · 茉莉香米",
+                pc4_m1: "信用 84",
+                pc4_m2: "交易 2 次",
+                pc4_m3: "可拓展",
+                pc5_country: "🇲🇲 缅甸 · 仰光",
+                pc5_industry: "⛏️ 矿产原料 · 电子元器件用稀土",
+                pc5_m1: "信用 75",
+                pc5_m2: "待尽调",
+                pc5_m3: "新推荐",
+                pc6_country: "🇹🇭 泰国 · 曼谷",
+                pc6_industry: "❄️ 冷链仓储/分销 · 覆盖东南亚",
+                pc6_m1: "信用 82",
+                pc6_m2: "合作 5 次",
+                pc6_m3: "续约中",
+                complaint_other_ph: "请详细描述您认为评分不准确的原因...",
+                pipe_waiting: "等待开始... 点击\"一键提交审批\"启动流水线",
+                opt_th: "🇹🇭 泰国 Thailand",
+                opt_vn: "🇻🇳 越南 Vietnam",
+                opt_la: "🇱🇦 老挝 Laos",
+                opt_kh: "🇰🇭 柬埔寨 Cambodia",
+                opt_mm: "🇲🇲 缅甸 Myanmar",
+                hs_070951_desc: "0709.51 — 蘑菇及块菌（鲜或冷藏）",
+                rcep_prod_name_val: "野生菌类混合干品（HS 0712.39）",
+                origin_cn_yn: "🇨🇳 中国云南",
+                origin_vn: "🇻🇳 越南",
+                origin_jp: "🇯🇵 日本",
+                origin_cn: "🇨🇳 中国",
+                rn_outbound: "出库",
+                rn_cleared: "出口放行",
+                rn_departed: "出境",
+                rn_transit: "运输中",
+                rn_enter_th: "入境泰国",
+                rn_delivery: "交付",
+                rnt_live: "实时",
+                rnt_eta_0313: "预计<br>03-13",
+                rnt_eta_0314: "预计<br>03-14",
+                port_mohan: "🇨🇳🇱🇦 磨憨—磨丁",
+                port_hekou: "🇨🇳🇻🇳 河口—老街",
+                port_nongkhai: "🇱🇦🇹🇭 廊开—友谊桥",
+                theme_dark: "暗色模式",
+                theme_light: "亮色模式",
+                alert_road_demo: "演示：查看公路运输详情",
+                alert_rail_demo: "演示：查看铁路运输详情",
+                alert_sea_demo: "演示：查看海运运输详情",
+                alert_air_demo: "演示：查看空运运输详情",
+                sat_pos_fmt: "北纬 {lat} 东经 102.5°",
+                steps_pdf: ["扫描文件格式", "OCR 识别字段", "提取贸易数据", "映射目标格式"],
+                steps_jpg: ["图像预处理", "OCR 文字识别", "解析装箱明细", "数据校验"],
+                steps_docx: ["解析文档结构", "提取关键字段", "验证 RCEP 规则", "转换为目标格式"],
                 // 基础
                 site_title: "澜湄通 LanMei Pass",
                 toggle_btn_text: "English",
@@ -290,6 +375,7 @@
                 logi_alert_title: "AI 预警：磨憨—磨丁口岸通关延迟",
                 logi_alert_text: "当前平均通关时间 8 小时（较上周增加 30%），预计未来 3 天仍将维持高位。<strong>建议：</strong>考虑河口口岸（当前平均通关 4 小时）或延迟 3 天发货。",
                 logi_route_title: "🚚 运输前物流路线推荐",
+                logi_scheme_title: "🗺️ 路线节点示意",
                 logi_route_desc: "AI 根据您的货物信息与目的国为您推荐以下最优运输方案",
                 route_road: "公路运输",
                 route_road_desc: "昆明—磨憨—万象—曼谷，全程约 1800km，跨境陆路运输",
@@ -461,6 +547,91 @@
                 complaint_submit: "提交投诉"
             },
             en: {
+                // ===== Added: keys for previously hardcoded Chinese =====
+                dest_th_bkk: "🇹🇭 Thailand · Bangkok",
+                dest_vn_han: "🇻🇳 Vietnam · Hanoi",
+                dest_la_vte: "🇱🇦 Laos · Vientiane",
+                did_reg_country_val: "🇨🇳 China (Kunming, Yunnan)",
+                ctry_cn: "🇨🇳 China",
+                ctry_th: "🇹🇭 Thailand",
+                ctry_vn: "🇻🇳 Vietnam",
+                ctry_la: "🇱🇦 Laos",
+                ctry_kh: "🇰🇭 Cambodia",
+                ctry_mm: "🇲🇲 Myanmar",
+                company_revenue_val: "~$2.8M",
+                cert_iso22000: "ISO 22000 Food Safety",
+                cert_haccp: "HACCP Certified",
+                cert_organic: "Organic Certified",
+                cert_rcep: "RCEP Registered Exporter",
+                cert_aeo: "AEO Advanced Certified",
+                grade_a: "Grade A",
+                grade_bplus: "Grade B+",
+                grade_bb: "Grade BB",
+                credit_label: "Credit",
+                pc1_country: "🇹🇭 Thailand · Chiang Mai",
+                pc1_industry: "🏭 Agri-Processing · Canned & Dried Mushrooms",
+                pc1_m1: "Credit 92",
+                pc1_m2: "6 Deals",
+                pc2_country: "🇻🇳 Vietnam · Ho Chi Minh City",
+                pc2_industry: "🚛 Cross-border Cold Chain · China–Vietnam/Laos Rail",
+                pc2_m1: "Credit 88",
+                pc2_m2: "4 Yrs Partnership",
+                pc2_m3: "Capacity ⭐⭐⭐⭐",
+                pc3_country: "🇱🇦 Laos · Vientiane",
+                pc3_industry: "🌱 Organic Mushroom Farming · Matsutake/Porcini",
+                pc3_m1: "Credit 81",
+                pc3_m2: "3 Deals",
+                pc3_m3: "New Contact",
+                pc4_country: "🇰🇭 Cambodia · Phnom Penh",
+                pc4_industry: "🌾 Rice Milling & Export · Jasmine Rice",
+                pc4_m1: "Credit 84",
+                pc4_m2: "2 Deals",
+                pc4_m3: "Expandable",
+                pc5_country: "🇲🇲 Myanmar · Yangon",
+                pc5_industry: "⛏️ Mineral Feedstock · Rare Earths for Electronics",
+                pc5_m1: "Credit 75",
+                pc5_m2: "Pending DD",
+                pc5_m3: "New Match",
+                pc6_country: "🇹🇭 Thailand · Bangkok",
+                pc6_industry: "❄️ Cold Storage & Distribution · SEA Coverage",
+                pc6_m1: "Credit 82",
+                pc6_m2: "5 Deals",
+                pc6_m3: "Renewing",
+                complaint_other_ph: "Please describe why you believe the score is inaccurate...",
+                pipe_waiting: "Waiting to start... Click \"Submit for Approval\" to launch the pipeline",
+                opt_th: "🇹🇭 Thailand",
+                opt_vn: "🇻🇳 Vietnam",
+                opt_la: "🇱🇦 Laos",
+                opt_kh: "🇰🇭 Cambodia",
+                opt_mm: "🇲🇲 Myanmar",
+                hs_070951_desc: "0709.51 — Mushrooms & truffles (fresh or chilled)",
+                rcep_prod_name_val: "Dried Wild Mushroom Mix (HS 0712.39)",
+                origin_cn_yn: "🇨🇳 Yunnan, China",
+                origin_vn: "🇻🇳 Vietnam",
+                origin_jp: "🇯🇵 Japan",
+                origin_cn: "🇨🇳 China",
+                rn_outbound: "Outbound",
+                rn_cleared: "Export Cleared",
+                rn_departed: "Departed",
+                rn_transit: "In Transit",
+                rn_enter_th: "Entered Thailand",
+                rn_delivery: "Delivered",
+                rnt_live: "Live",
+                rnt_eta_0313: "ETA<br>03-13",
+                rnt_eta_0314: "ETA<br>03-14",
+                port_mohan: "🇨🇳🇱🇦 Mohan—Boten",
+                port_hekou: "🇨🇳🇻🇳 Hekou—Lao Cai",
+                port_nongkhai: "🇱🇦🇹🇭 Nong Khai—Friendship Bridge",
+                theme_dark: "Dark Mode",
+                theme_light: "Light Mode",
+                alert_road_demo: "Demo: View road freight details",
+                alert_rail_demo: "Demo: View rail freight details",
+                alert_sea_demo: "Demo: View sea freight details",
+                alert_air_demo: "Demo: View air freight details",
+                sat_pos_fmt: "{lat}N 102.5°E",
+                steps_pdf: ["Scanning file format", "OCR field recognition", "Extracting trade data", "Mapping to target format"],
+                steps_jpg: ["Image pre-processing", "OCR text recognition", "Parsing packing details", "Data validation"],
+                steps_docx: ["Parsing document structure", "Extracting key fields", "Validating RCEP rules", "Converting to target format"],
                 // Basic
                 site_title: "LanMei Pass",
                 toggle_btn_text: "中文",
@@ -723,6 +894,7 @@
                 logi_alert_title: "AI Alert: Mohan-Boten Port Delay",
                 logi_alert_text: "Average clearance: 8 hrs (+30% WoW). Expected to remain high for 3 days. <strong>Suggest:</strong> Use Hekou Port (avg 4 hrs) or delay shipment by 3 days.",
                 logi_route_title: "🚚 Pre-shipment Route Recommendation",
+                logi_scheme_title: "🗺️ Route Node Overview",
                 logi_route_desc: "AI recommends optimal transport plans based on your cargo and destination",
                 route_road: "Road Transport",
                 route_road_desc: "Kunming—Mohan—Vientiane—Bangkok, ~1800km cross-border road",
@@ -923,6 +1095,13 @@
             }
 
             updateRCEPResults();
+
+            // 若合作伙伴弹窗正打开，按新语言重新渲染其动态内容
+            const partnerOverlay = document.getElementById('partner-modal');
+            if (partnerOverlay && partnerOverlay.classList.contains('active') && currentPartnerIndex !== null) {
+                showPartnerDetail(currentPartnerIndex);
+            }
+
             localStorage.setItem('lanmei_pass_language', lang);
             updateLanguageModalSelection(lang);
         }
@@ -951,7 +1130,8 @@
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 const text = translations[currentLang][key];
-                if (text) {
+                // 仅处理字符串型翻译；数组型（如 steps_*）由业务代码自行读取
+                if (typeof text === 'string') {
                     if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                         el.placeholder = text;
                     } else {
@@ -960,6 +1140,18 @@
                 } else if (el.getAttribute('data-i18n-fallback')) {
                     // 如果翻译缺失，使用fallback属性中的文本
                 }
+            });
+            // 处理 data-i18n-value（用于 readonly 输入框的显示值）
+            document.querySelectorAll('[data-i18n-value]').forEach(el => {
+                const key = el.getAttribute('data-i18n-value');
+                const text = translations[currentLang][key];
+                if (typeof text === 'string') el.value = text;
+            });
+            // 处理 data-i18n-title（用于按钮 tooltip）
+            document.querySelectorAll('[data-i18n-title]').forEach(el => {
+                const key = el.getAttribute('data-i18n-title');
+                const text = translations[currentLang][key];
+                if (typeof text === 'string') el.title = text;
             });
             // 处理 data-i18n-placeholder 属性（用于搜索输入框等）
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
@@ -1500,9 +1692,9 @@
         // ==========================================
 
         const demoFiles = [
-            { name: 'commercial_invoice_2026_0312.pdf', icon: '📄', type: 'PDF Invoice', steps: ['扫描文件格式', 'OCR 识别字段', '提取贸易数据', '映射目标格式'] },
-            { name: 'packing_list_2026_0312.jpg', icon: '🖼️', type: 'JPG Image', steps: ['图像预处理', 'OCR 文字识别', '解析装箱明细', '数据校验'] },
-            { name: 'cert_of_origin_draft.docx', icon: '📝', type: 'DOCX Draft', steps: ['解析文档结构', '提取关键字段', '验证 RCEP 规则', '转换为目标格式'] }
+            { name: 'commercial_invoice_2026_0312.pdf', icon: '📄', type: 'PDF Invoice', stepsKey: 'steps_pdf' },
+            { name: 'packing_list_2026_0312.jpg', icon: '🖼️', type: 'JPG Image', stepsKey: 'steps_jpg' },
+            { name: 'cert_of_origin_draft.docx', icon: '📝', type: 'DOCX Draft', stepsKey: 'steps_docx' }
         ];
 
         function simulateUpload() {
@@ -1563,7 +1755,7 @@
                 const item = document.getElementById(`proc-file-${index}`);
                 const statusEl = item.querySelector('.file-status');
                 const progressFill = document.getElementById(`proc-progress-${index}`);
-                const steps = file.steps;
+                const steps = translations[currentLang][file.stepsKey] || [];
                 let stepIdx = 0;
 
                 statusText.textContent = translations[currentLang]['ai_processing_file'] + `${file.name} (${file.type})`;
@@ -1753,7 +1945,10 @@
             setInterval(() => {
                 i = (i + 1) % speeds.length;
                 if (speedEl) speedEl.textContent = speeds[i] + ' km/h';
-                if (posEl) posEl.textContent = '北纬 ' + lats[i] + ' 东经 102.5°';
+                if (posEl) {
+                    const fmt = translations[currentLang]['sat_pos_fmt'] || '{lat}N 102.5°E';
+                    posEl.textContent = fmt.replace('{lat}', lats[i]);
+                }
             }, 3000);
         }
 
@@ -1954,6 +2149,8 @@
                 flag: '🇹🇭',
                 name: 'Siam AgriFood Co., Ltd.',
                 location: '泰国 · 清迈 · 清迈府农产品加工园',
+                locationEn: 'Thailand · Chiang Mai · Chiang Mai Agri-Processing Park',
+                gradeEn: 'Grade A',
                 countryClass: 'th',
                 grade: 'A 级',
                 gradeClass: 'grade-a',
@@ -1977,6 +2174,8 @@
                 flag: '🇻🇳',
                 name: 'Mekong Link Logistics JSC',
                 location: '越南 · 胡志明市 · 第七郡新顺出口加工区',
+                locationEn: 'Vietnam · Ho Chi Minh City · Tan Thuan EPZ, District 7',
+                gradeEn: 'Grade A',
                 countryClass: 'vn',
                 grade: 'A 级',
                 gradeClass: 'grade-a',
@@ -2000,6 +2199,8 @@
                 flag: '🇱🇦',
                 name: 'Vientiane Natural Foods',
                 location: '老挝 · 万象 · 赛色塔县农业开发区',
+                locationEn: 'Laos · Vientiane · Xaysetha Agricultural Development Zone',
+                gradeEn: 'Grade B+',
                 countryClass: 'la',
                 grade: 'B+ 级',
                 gradeClass: 'grade-b',
@@ -2023,6 +2224,8 @@
                 flag: '🇰🇭',
                 name: 'Phnom Penh Royal Rice Mill',
                 location: '柬埔寨 · 金边 · 朗哥区稻米加工园区',
+                locationEn: 'Cambodia · Phnom Penh · Russey Keo Rice Milling Park',
+                gradeEn: 'Grade B+',
                 countryClass: 'kh',
                 grade: 'B+ 级',
                 gradeClass: 'grade-b',
@@ -2046,6 +2249,8 @@
                 flag: '🇲🇲',
                 name: 'Mandalay Mineral Supply Co.',
                 location: '缅甸 · 仰光 · 丁茵县工业原料贸易区',
+                locationEn: 'Myanmar · Yangon · Thanlyin Industrial Materials Zone',
+                gradeEn: 'Grade BB',
                 countryClass: 'mm',
                 grade: 'BB 级',
                 gradeClass: 'grade-bb',
@@ -2069,6 +2274,8 @@
                 flag: '🇹🇭',
                 name: 'Thai Eastern Cold Chain Dist.',
                 location: '泰国 · 曼谷 · 邦纳区东部冷链物流中心',
+                locationEn: 'Thailand · Bangkok · Bang Na Eastern Cold Chain Hub',
+                gradeEn: 'Grade B+',
                 countryClass: 'th',
                 grade: 'B+ 级',
                 gradeClass: 'grade-b',
@@ -2091,9 +2298,12 @@
         ];
 
         // 打开合作伙伴详情弹窗
+        let currentPartnerIndex = null;
+
         function showPartnerDetail(index) {
             const p = partnerData[index];
             if (!p) return;
+            currentPartnerIndex = index;
 
             const overlay = document.getElementById('partner-modal');
             if (!overlay) return;
@@ -2102,9 +2312,10 @@
             const gradeClass = p.gradeClass;
             document.getElementById('modal-flag').textContent = p.flag;
             document.getElementById('modal-company-name').textContent = p.name;
-            document.getElementById('modal-company-location').textContent = p.location;
+            document.getElementById('modal-company-location').textContent = (currentLang === 'en' && p.locationEn) ? p.locationEn : p.location;
             const gradeEl = document.getElementById('modal-company-grade');
-            gradeEl.textContent = p.grade + ' · 信用 ' + p.totalScore;
+            const gradeText = (currentLang === 'en' && p.gradeEn) ? p.gradeEn : p.grade;
+            gradeEl.textContent = gradeText + ' · ' + (translations[currentLang]['credit_label'] || '信用') + ' ' + p.totalScore;
             gradeEl.className = 'modal-company-grade ' + gradeClass;
 
             // 信用评分维度（使用i18n翻译）
@@ -2165,6 +2376,7 @@
         function closePartnerModal() {
             const overlay = document.getElementById('partner-modal');
             if (overlay) overlay.classList.remove('active');
+            currentPartnerIndex = null;
         }
 
         // 点击遮罩层关闭弹窗
@@ -5310,8 +5522,8 @@
                 </div>
                 <div class="header-actions">
                     <div class="theme-toggle">
-                        <button class="theme-btn" onclick="selectTheme('dark')" title="暗色模式">🌙</button>
-                        <button class="theme-btn active" onclick="selectTheme('light')" title="亮色模式">☀️</button>
+                        <button class="theme-btn" onclick="selectTheme('dark')" data-i18n-title="theme_dark" title="暗色模式">🌙</button>
+                        <button class="theme-btn active" onclick="selectTheme('light')" data-i18n-title="theme_light" title="亮色模式">☀️</button>
                     </div>
                     <div class="notification-bell" onclick="showNotifications()">
                         🔔
@@ -5403,7 +5615,7 @@
                                 <tbody>
                                     <tr>
                                         <td style="font-family:var(--font-mono);font-size:12px;">LMT-2026-0312</td>
-                                        <td>🇹🇭 泰国 · 曼谷</td>
+                                        <td data-i18n="dest_th_bkk">🇹🇭 泰国 · 曼谷</td>
                                         <td data-i18n="product_mushroom">野生菌类</td>
                                         <td style="font-family:var(--font-mono);">500 kg</td>
                                         <td style="font-family:var(--font-mono);">$25.00/kg</td>
@@ -5412,7 +5624,7 @@
                                     </tr>
                                     <tr>
                                         <td style="font-family:var(--font-mono);font-size:12px;">LMT-2026-0308</td>
-                                        <td>🇻🇳 越南 · 河内</td>
+                                        <td data-i18n="dest_vn_han">🇻🇳 越南 · 河内</td>
                                         <td data-i18n="product_tea">普洱茶叶</td>
                                         <td style="font-family:var(--font-mono);">300 kg</td>
                                         <td style="font-family:var(--font-mono);">$40.00/kg</td>
@@ -5421,7 +5633,7 @@
                                     </tr>
                                     <tr>
                                         <td style="font-family:var(--font-mono);font-size:12px;">LMT-2026-0301</td>
-                                        <td>🇱🇦 老挝 · 万象</td>
+                                        <td data-i18n="dest_la_vte">🇱🇦 老挝 · 万象</td>
                                         <td data-i18n="product_parts">电子元器件</td>
                                         <td style="font-family:var(--font-mono);">2,000 pcs</td>
                                         <td style="font-family:var(--font-mono);">$5.00/pc</td>
@@ -5483,7 +5695,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="form-label" data-i18n="did_country">注册国</div>
-                                    <div class="form-input" style="background:var(--bg-surface);">🇨🇳 中国（云南省昆明市）</div>
+                                    <div class="form-input" style="background:var(--bg-surface);" data-i18n="did_reg_country_val">🇨🇳 中国（云南省昆明市）</div>
                                 </div>
                                 <div class="form-group">
                                     <div class="form-label" data-i18n="did_auth">认证机构</div>
@@ -5492,12 +5704,12 @@
                                 <div class="form-group">
                                     <div class="form-label" data-i18n="did_scope">互认范围</div>
                                     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
-                                        <span class="card-badge badge-green">🇨🇳 中国</span>
-                                        <span class="card-badge badge-green">🇹🇭 泰国</span>
-                                        <span class="card-badge badge-green">🇻🇳 越南</span>
-                                        <span class="card-badge badge-green">🇱🇦 老挝</span>
-                                        <span class="card-badge badge-green">🇰🇭 柬埔寨</span>
-                                        <span class="card-badge badge-green">🇲🇲 缅甸</span>
+                                        <span class="card-badge badge-green" data-i18n="ctry_cn">🇨🇳 中国</span>
+                                        <span class="card-badge badge-green" data-i18n="ctry_th">🇹🇭 泰国</span>
+                                        <span class="card-badge badge-green" data-i18n="ctry_vn">🇻🇳 越南</span>
+                                        <span class="card-badge badge-green" data-i18n="ctry_la">🇱🇦 老挝</span>
+                                        <span class="card-badge badge-green" data-i18n="ctry_kh">🇰🇭 柬埔寨</span>
+                                        <span class="card-badge badge-green" data-i18n="ctry_mm">🇲🇲 缅甸</span>
                                     </div>
                                 </div>
                             </div>
@@ -5528,7 +5740,7 @@
                                     </div>
                                     <div style="background:var(--bg-surface);padding:12px;border-radius:var(--radius-sm);">
                                         <div style="font-size:11px;color:var(--text-muted);" data-i18n="company_annual_revenue">年出口额</div>
-                                        <div style="font-size:14px;font-weight:600;color:var(--accent-green);">约 $2.8M</div>
+                                        <div style="font-size:14px;font-weight:600;color:var(--accent-green);" data-i18n="company_revenue_val">约 $2.8M</div>
                                     </div>
                                     <div style="background:var(--bg-surface);padding:12px;border-radius:var(--radius-sm);">
                                         <div style="font-size:11px;color:var(--text-muted);" data-i18n="company_customs_record">海关备案</div>
@@ -5542,11 +5754,11 @@
                                     <li data-i18n="company_prod_agri">高原农副加工品（米线/香料/中药材）—— HS 1102.90、HS 0909.61、HS 1211.90</li>
                                 </ul>
                                 <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;">
-                                    <span class="card-badge badge-green" style="font-size:10px;">ISO 22000 食品安全</span>
-                                    <span class="card-badge badge-green" style="font-size:10px;">HACCP 认证</span>
-                                    <span class="card-badge badge-green" style="font-size:10px;">有机产品认证</span>
-                                    <span class="card-badge badge-blue" style="font-size:10px;">RCEP 注册出口商</span>
-                                    <span class="card-badge badge-purple" style="font-size:10px;">AEO 高认企业</span>
+                                    <span class="card-badge badge-green" style="font-size:10px;" data-i18n="cert_iso22000">ISO 22000 食品安全</span>
+                                    <span class="card-badge badge-green" style="font-size:10px;" data-i18n="cert_haccp">HACCP 认证</span>
+                                    <span class="card-badge badge-green" style="font-size:10px;" data-i18n="cert_organic">有机产品认证</span>
+                                    <span class="card-badge badge-blue" style="font-size:10px;" data-i18n="cert_rcep">RCEP 注册出口商</span>
+                                    <span class="card-badge badge-purple" style="font-size:10px;" data-i18n="cert_aeo">AEO 高认企业</span>
                                 </div>
                             </div>
                         </div>
@@ -5575,7 +5787,7 @@
               </svg>
                                 <div class="score-text">
                                     <div class="score-number">85</div>
-                                    <div class="score-grade">A 级</div>
+                                    <div class="score-grade" data-i18n="grade_a">A 级</div>
                                 </div>
                             </div>
                             <table class="data-table">
@@ -5668,74 +5880,74 @@
                         <div class="partner-grid">
                             <!-- 泰国 - 农产品加工 -->
                             <div class="partner-card country-th" onclick="showPartnerDetail(0)">
-                                <span class="partner-badge credit-a">A 级</span>
-                                <div class="partner-country">🇹🇭 泰国 · 清迈</div>
+                                <span class="partner-badge credit-a" data-i18n="grade_a">A 级</span>
+                                <div class="partner-country" data-i18n="pc1_country">🇹🇭 泰国 · 清迈</div>
                                 <div class="partner-name">Siam AgriFood Co., Ltd.</div>
-                                <div class="partner-industry">🏭 农产品精深加工 · 菌类罐头/干制</div>
+                                <div class="partner-industry" data-i18n="pc1_industry">🏭 农产品精深加工 · 菌类罐头/干制</div>
                                 <div class="partner-metrics">
-                                    <span class="partner-metric green">信用 92</span>
-                                    <span class="partner-metric">交易 6 次</span>
+                                    <span class="partner-metric green" data-i18n="pc1_m1">信用 92</span>
+                                    <span class="partner-metric" data-i18n="pc1_m2">交易 6 次</span>
                                     <span class="partner-metric purple">RCEP ✓</span>
                                 </div>
                             </div>
                             <!-- 越南 - 跨境物流 -->
                             <div class="partner-card country-vn" onclick="showPartnerDetail(1)">
-                                <span class="partner-badge credit-a">A 级</span>
-                                <div class="partner-country">🇻🇳 越南 · 胡志明市</div>
+                                <span class="partner-badge credit-a" data-i18n="grade_a">A 级</span>
+                                <div class="partner-country" data-i18n="pc2_country">🇻🇳 越南 · 胡志明市</div>
                                 <div class="partner-name">Mekong Link Logistics JSC</div>
-                                <div class="partner-industry">🚛 跨境冷链物流 · 中越/中老铁路</div>
+                                <div class="partner-industry" data-i18n="pc2_industry">🚛 跨境冷链物流 · 中越/中老铁路</div>
                                 <div class="partner-metrics">
-                                    <span class="partner-metric green">信用 88</span>
-                                    <span class="partner-metric">合作 4 年</span>
-                                    <span class="partner-metric amber">运力 ⭐⭐⭐⭐</span>
+                                    <span class="partner-metric green" data-i18n="pc2_m1">信用 88</span>
+                                    <span class="partner-metric" data-i18n="pc2_m2">合作 4 年</span>
+                                    <span class="partner-metric amber" data-i18n="pc2_m3">运力 ⭐⭐⭐⭐</span>
                                 </div>
                             </div>
                             <!-- 老挝 - 有机农产品 -->
                             <div class="partner-card country-la" onclick="showPartnerDetail(2)">
-                                <span class="partner-badge credit-b">B+ 级</span>
-                                <div class="partner-country">🇱🇦 老挝 · 万象</div>
+                                <span class="partner-badge credit-b" data-i18n="grade_bplus">B+ 级</span>
+                                <div class="partner-country" data-i18n="pc3_country">🇱🇦 老挝 · 万象</div>
                                 <div class="partner-name">Vientiane Natural Foods</div>
-                                <div class="partner-industry">🌱 有机菌类种植 · 野生松茸/牛肝菌</div>
+                                <div class="partner-industry" data-i18n="pc3_industry">🌱 有机菌类种植 · 野生松茸/牛肝菌</div>
                                 <div class="partner-metrics">
-                                    <span class="partner-metric green">信用 81</span>
-                                    <span class="partner-metric">交易 3 次</span>
-                                    <span class="partner-metric purple">新接触</span>
+                                    <span class="partner-metric green" data-i18n="pc3_m1">信用 81</span>
+                                    <span class="partner-metric" data-i18n="pc3_m2">交易 3 次</span>
+                                    <span class="partner-metric purple" data-i18n="pc3_m3">新接触</span>
                                 </div>
                             </div>
                             <!-- 柬埔寨 - 稻米加工 -->
                             <div class="partner-card country-kh" onclick="showPartnerDetail(3)">
-                                <span class="partner-badge credit-b">B+ 级</span>
-                                <div class="partner-country">🇰🇭 柬埔寨 · 金边</div>
+                                <span class="partner-badge credit-b" data-i18n="grade_bplus">B+ 级</span>
+                                <div class="partner-country" data-i18n="pc4_country">🇰🇭 柬埔寨 · 金边</div>
                                 <div class="partner-name">Phnom Penh Royal Rice Mill</div>
-                                <div class="partner-industry">🌾 稻米加工/米制品出口 · 茉莉香米</div>
+                                <div class="partner-industry" data-i18n="pc4_industry">🌾 稻米加工/米制品出口 · 茉莉香米</div>
                                 <div class="partner-metrics">
-                                    <span class="partner-metric green">信用 84</span>
-                                    <span class="partner-metric">交易 2 次</span>
-                                    <span class="partner-metric amber">可拓展</span>
+                                    <span class="partner-metric green" data-i18n="pc4_m1">信用 84</span>
+                                    <span class="partner-metric" data-i18n="pc4_m2">交易 2 次</span>
+                                    <span class="partner-metric amber" data-i18n="pc4_m3">可拓展</span>
                                 </div>
                             </div>
                             <!-- 缅甸 - 矿产原料 -->
                             <div class="partner-card country-mm" onclick="showPartnerDetail(4)">
-                                <span class="partner-badge credit-bb">BB 级</span>
-                                <div class="partner-country">🇲🇲 缅甸 · 仰光</div>
+                                <span class="partner-badge credit-bb" data-i18n="grade_bb">BB 级</span>
+                                <div class="partner-country" data-i18n="pc5_country">🇲🇲 缅甸 · 仰光</div>
                                 <div class="partner-name">Mandalay Mineral Supply Co.</div>
-                                <div class="partner-industry">⛏️ 矿产原料 · 电子元器件用稀土</div>
+                                <div class="partner-industry" data-i18n="pc5_industry">⛏️ 矿产原料 · 电子元器件用稀土</div>
                                 <div class="partner-metrics">
-                                    <span class="partner-metric green">信用 75</span>
-                                    <span class="partner-metric amber">待尽调</span>
-                                    <span class="partner-metric purple">新推荐</span>
+                                    <span class="partner-metric green" data-i18n="pc5_m1">信用 75</span>
+                                    <span class="partner-metric amber" data-i18n="pc5_m2">待尽调</span>
+                                    <span class="partner-metric purple" data-i18n="pc5_m3">新推荐</span>
                                 </div>
                             </div>
                             <!-- 泰国 - 冷链分销 -->
                             <div class="partner-card country-th" onclick="showPartnerDetail(5)">
-                                <span class="partner-badge credit-b">B+ 级</span>
-                                <div class="partner-country">🇹🇭 泰国 · 曼谷</div>
+                                <span class="partner-badge credit-b" data-i18n="grade_bplus">B+ 级</span>
+                                <div class="partner-country" data-i18n="pc6_country">🇹🇭 泰国 · 曼谷</div>
                                 <div class="partner-name">Thai Eastern Cold Chain Dist.</div>
-                                <div class="partner-industry">❄️ 冷链仓储/分销 · 覆盖东南亚</div>
+                                <div class="partner-industry" data-i18n="pc6_industry">❄️ 冷链仓储/分销 · 覆盖东南亚</div>
                                 <div class="partner-metrics">
-                                    <span class="partner-metric green">信用 82</span>
-                                    <span class="partner-metric">合作 5 次</span>
-                                    <span class="partner-metric amber">续约中</span>
+                                    <span class="partner-metric green" data-i18n="pc6_m1">信用 82</span>
+                                    <span class="partner-metric" data-i18n="pc6_m2">合作 5 次</span>
+                                    <span class="partner-metric amber" data-i18n="pc6_m3">续约中</span>
                                 </div>
                             </div>
                         </div>
@@ -5760,7 +5972,7 @@
                         <div class="processing-file-list" id="processing-file-list"></div>
                         <div class="processing-status-bar" id="processing-status-bar">
                             <div class="spinner"></div>
-                            <div class="status-text">准备开始处理文件...</div>
+                            <div class="status-text" data-i18n="ai_prepare">准备开始处理文件...</div>
                         </div>
                     </div>
                 </div>
@@ -5776,7 +5988,7 @@
                                 <div class="modal-company-name" id="modal-company-name">Company Name</div>
                                 <div class="modal-company-location" id="modal-company-location">Location</div>
                             </div>
-                            <div class="modal-company-grade" id="modal-company-grade">A 级</div>
+                            <div class="modal-company-grade" id="modal-company-grade" data-i18n="grade_a">A 级</div>
                         </div>
 
                         <div class="modal-section-title" data-i18n="modal_credit_title">📊 信用评分维度</div>
@@ -5846,7 +6058,7 @@
                         </div>
                         <div class="form-group" id="complaint-other-group" style="display:none;">
                             <div class="form-label" data-i18n="complaint_detail_label">详细说明</div>
-                            <textarea class="form-textarea" id="complaint-other-text" rows="3" placeholder="请详细描述您认为评分不准确的原因..."></textarea>
+                            <textarea class="form-textarea" id="complaint-other-text" rows="3" data-i18n-placeholder="complaint_other_ph" placeholder="请详细描述您认为评分不准确的原因..."></textarea>
                         </div>
                         <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:16px;">
                             <button class="btn btn-sm btn-secondary" onclick="closeComplaintModal()" data-i18n="complaint_cancel">取消</button>
@@ -5882,7 +6094,7 @@
                         <div class="pipeline-title">⚙️ <span data-i18n="ai_engine">AI 智能合规引擎</span> — <span data-i18n="ai_analysis_1">格式转换流水线</span></div>
                         <div class="pipeline-stages" id="pipeline-stages"></div>
                         <div class="pipeline-log" id="pipeline-log">
-                            <span>等待开始... 点击"一键提交审批"启动流水线</span>
+                            <span data-i18n="pipe_waiting">等待开始... 点击"一键提交审批"启动流水线</span>
                         </div>
                     </div>
 
@@ -5896,16 +6108,16 @@
                                 <div class="form-group">
                                     <div class="form-label" data-i18n="dest_country">目的国</div>
                                     <select class="form-select" id="dest-country">
-                  <option>🇹🇭 泰国 Thailand</option>
-                  <option>🇻🇳 越南 Vietnam</option>
-                  <option>🇱🇦 老挝 Laos</option>
-                  <option>🇰🇭 柬埔寨 Cambodia</option>
-                  <option>🇲🇲 缅甸 Myanmar</option>
+                  <option data-i18n="opt_th">🇹🇭 泰国 Thailand</option>
+                  <option data-i18n="opt_vn">🇻🇳 越南 Vietnam</option>
+                  <option data-i18n="opt_la">🇱🇦 老挝 Laos</option>
+                  <option data-i18n="opt_kh">🇰🇭 柬埔寨 Cambodia</option>
+                  <option data-i18n="opt_mm">🇲🇲 缅甸 Myanmar</option>
                 </select>
                                 </div>
                                 <div class="form-group">
                                     <div class="form-label" data-i18n="hs_code">商品 HS 编码</div>
-                                    <input class="form-input" value="0709.51 — 蘑菇及块菌（鲜或冷藏）" readonly>
+                                    <input class="form-input" data-i18n-value="hs_070951_desc" value="0709.51 — 蘑菇及块菌（鲜或冷藏）" readonly>
                                 </div>
                                 <div style="margin-top:12px;">
                                     <div class="uploaded-file">
@@ -6138,7 +6350,7 @@
                                         <div class="detail-value green" style="font-size:13px;" id="detail-val-3">—</div>
                                     </div>
                                     <div class="detail-item" style="padding:6px;">
-                                        <div class="detail-label" style="font-size:9px;" id="detail-label-4">结果</div>
+                                        <div class="detail-label" style="font-size:9px;" id="detail-label-4" data-i18n="rcep_detail_qualification">结果</div>
                                         <div class="detail-value" style="font-size:13px;" id="detail-val-4">—</div>
                                     </div>
                                 </div>
@@ -6165,11 +6377,11 @@
                         <div style="display:flex;gap:16px;flex-wrap:wrap;padding:0 16px 12px;">
                             <div style="flex:1;min-width:160px;">
                                 <div class="form-label" data-i18n="rcep_product" style="font-size:11px;">出口产品</div>
-                                <input class="form-input" value="野生菌类混合干品（HS 0712.39）" readonly style="font-size:12px;padding:6px 10px;">
+                                <input class="form-input" data-i18n-value="rcep_prod_name_val" value="野生菌类混合干品（HS 0712.39）" readonly style="font-size:12px;padding:6px 10px;">
                             </div>
                             <div style="flex:1;min-width:120px;">
                                 <div class="form-label" data-i18n="rcep_dest" style="font-size:11px;">目的国</div>
-                                <input class="form-input" value="🇹🇭 泰国" readonly style="font-size:12px;padding:6px 10px;">
+                                <input class="form-input" data-i18n-value="ctry_th" value="🇹🇭 泰国" readonly style="font-size:12px;padding:6px 10px;">
                             </div>
                         </div>
                         <div class="form-label" style="margin:0 16px 8px;font-size:11px;" data-i18n="rcep_materials">原材料来源清单</div>
@@ -6186,37 +6398,37 @@
                             <tbody>
                                 <tr>
                                     <td data-i18n="mat_mushroom" style="padding:3px 6px;">野生松茸</td>
-                                    <td style="padding:3px 6px;">🇨🇳 中国云南</td>
+                                    <td style="padding:3px 6px;" data-i18n="origin_cn_yn">🇨🇳 中国云南</td>
                                     <td style="padding:3px 6px;font-family:var(--font-en);">38%</td>
                                     <td style="padding:3px 6px;"><span class="card-badge badge-green" style="font-size:9px;">✓</span></td>
                                 </tr>
                                 <tr>
                                     <td data-i18n="mat_boletus" style="padding:3px 6px;">牛肝菌</td>
-                                    <td style="padding:3px 6px;">🇨🇳 中国云南</td>
+                                    <td style="padding:3px 6px;" data-i18n="origin_cn_yn">🇨🇳 中国云南</td>
                                     <td style="padding:3px 6px;font-family:var(--font-en);">22%</td>
                                     <td style="padding:3px 6px;"><span class="card-badge badge-green" style="font-size:9px;">✓</span></td>
                                 </tr>
                                 <tr>
                                     <td data-i18n="mat_packaging" style="padding:3px 6px;">包装材料</td>
-                                    <td style="padding:3px 6px;">🇻🇳 越南</td>
+                                    <td style="padding:3px 6px;" data-i18n="origin_vn">🇻🇳 越南</td>
                                     <td style="padding:3px 6px;font-family:var(--font-en);">8%</td>
                                     <td style="padding:3px 6px;"><span class="card-badge badge-green" style="font-size:9px;">✓</span></td>
                                 </tr>
                                 <tr>
                                     <td data-i18n="mat_preserv" style="padding:3px 6px;">防腐剂</td>
-                                    <td style="padding:3px 6px;">🇯🇵 日本</td>
+                                    <td style="padding:3px 6px;" data-i18n="origin_jp">🇯🇵 日本</td>
                                     <td style="padding:3px 6px;font-family:var(--font-en);">5%</td>
                                     <td style="padding:3px 6px;"><span class="card-badge badge-green" style="font-size:9px;">✓</span></td>
                                 </tr>
                                 <tr>
                                     <td data-i18n="mat_label" style="padding:3px 6px;">标签印刷</td>
-                                    <td style="padding:3px 6px;">🇨🇳 中国</td>
+                                    <td style="padding:3px 6px;" data-i18n="origin_cn">🇨🇳 中国</td>
                                     <td style="padding:3px 6px;font-family:var(--font-en);">3%</td>
                                     <td style="padding:3px 6px;"><span class="card-badge badge-green" style="font-size:9px;">✓</span></td>
                                 </tr>
                                 <tr style="font-weight:600;">
                                     <td data-i18n="mat_processing" style="padding:3px 6px;">加工增值</td>
-                                    <td style="padding:3px 6px;">🇨🇳 中国云南</td>
+                                    <td style="padding:3px 6px;" data-i18n="origin_cn_yn">🇨🇳 中国云南</td>
                                     <td style="padding:3px 6px;font-family:var(--font-en);">24%</td>
                                     <td style="padding:3px 6px;"><span class="card-badge badge-green" style="font-size:9px;">✓</span></td>
                                 </tr>
@@ -6400,7 +6612,7 @@
                         </div>
                         <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px;padding:0 4px;" data-i18n="logi_route_desc">AI 根据您的货物信息与目的国为您推荐以下最优运输方案</div>
                         <div class="route-plan-grid">
-                            <div class="route-plan-card" onclick="alert('演示：查看公路运输详情')">
+                            <div class="route-plan-card" onclick="alert(translations[currentLang]['alert_road_demo'])">
                                 <div class="plan-icon">🚛</div>
                                 <div class="plan-name" data-i18n="route_road">公路运输</div>
                                 <div class="plan-desc" data-i18n="route_road_desc">昆明—磨憨—万象—曼谷，全程约 1800km，跨境陆路运输</div>
@@ -6410,7 +6622,7 @@
                                 </div>
                                 <div class="plan-tag recommended" data-i18n="route_tag_recommend">AI 推荐</div>
                             </div>
-                            <div class="route-plan-card" onclick="alert('演示：查看铁路运输详情')">
+                            <div class="route-plan-card" onclick="alert(translations[currentLang]['alert_rail_demo'])">
                                 <div class="plan-icon">🚄</div>
                                 <div class="plan-name" data-i18n="route_rail">铁路运输</div>
                                 <div class="plan-desc" data-i18n="route_rail_desc">中老铁路磨憨—万象—廊开—曼谷，冷链集装箱直达</div>
@@ -6420,7 +6632,7 @@
                                 </div>
                                 <div class="plan-tag express" data-i18n="route_tag_fast">时效最快</div>
                             </div>
-                            <div class="route-plan-card" onclick="alert('演示：查看海运运输详情')">
+                            <div class="route-plan-card" onclick="alert(translations[currentLang]['alert_sea_demo'])">
                                 <div class="plan-icon">🚢</div>
                                 <div class="plan-name" data-i18n="route_sea">海运运输</div>
                                 <div class="plan-desc" data-i18n="route_sea_desc">昆明陆运至深圳港—曼谷港，适合大批量货物</div>
@@ -6430,7 +6642,7 @@
                                 </div>
                                 <div class="plan-tag" data-i18n="route_tag_economy">经济实惠</div>
                             </div>
-                            <div class="route-plan-card" onclick="alert('演示：查看空运运输详情')">
+                            <div class="route-plan-card" onclick="alert(translations[currentLang]['alert_air_demo'])">
                                 <div class="plan-icon">✈️</div>
                                 <div class="plan-name" data-i18n="route_air">空运运输</div>
                                 <div class="plan-desc" data-i18n="route_air_desc">昆明长水机场—曼谷素万那普机场，适合高价值急需货物</div>
@@ -6450,37 +6662,37 @@
                                     <div class="node-icon">🏭</div>
                                     <div class="node-dot completed"></div>
                                     <div class="node-label completed" data-i18n="node_warehouse">昆明仓库</div>
-                                    <div class="node-sub">出库</div>
+                                    <div class="node-sub" data-i18n="rn_outbound">出库</div>
                                 </div>
                                 <div class="scheme-node">
                                     <div class="node-icon">🛃</div>
                                     <div class="node-dot completed"></div>
                                     <div class="node-label completed" data-i18n="node_cn_customs">中国海关</div>
-                                    <div class="node-sub">出口放行</div>
+                                    <div class="node-sub" data-i18n="rn_cleared">出口放行</div>
                                 </div>
                                 <div class="scheme-node">
                                     <div class="node-icon">🚛</div>
                                     <div class="node-dot completed"></div>
                                     <div class="node-label completed" data-i18n="node_mohan">磨憨口岸</div>
-                                    <div class="node-sub">出境</div>
+                                    <div class="node-sub" data-i18n="rn_departed">出境</div>
                                 </div>
                                 <div class="scheme-node">
                                     <div class="node-icon">📍</div>
                                     <div class="node-dot current"></div>
                                     <div class="node-label current" data-i18n="node_laos">万象</div>
-                                    <div class="node-sub">运输中</div>
+                                    <div class="node-sub" data-i18n="rn_transit">运输中</div>
                                 </div>
                                 <div class="scheme-node">
                                     <div class="node-icon">🛃</div>
                                     <div class="node-dot upcoming"></div>
                                     <div class="node-label" data-i18n="node_nongkhai">廊开口岸</div>
-                                    <div class="node-sub">入境泰国</div>
+                                    <div class="node-sub" data-i18n="rn_enter_th">入境泰国</div>
                                 </div>
                                 <div class="scheme-node">
                                     <div class="node-icon">📦</div>
                                     <div class="node-dot upcoming"></div>
                                     <div class="node-label" data-i18n="node_bangkok">曼谷仓库</div>
-                                    <div class="node-sub">交付</div>
+                                    <div class="node-sub" data-i18n="rn_delivery">交付</div>
                                 </div>
                             </div>
                         </div>
@@ -6579,7 +6791,7 @@
                                         <div class="route-node-name" data-i18n="node_laos">老挝境内运输中</div>
                                         <div class="route-node-detail" data-i18n="node_laos_detail">卫星定位：万象以南 120km · 预计 6 小时后抵达泰老边境</div>
                                     </div>
-                                    <div class="route-node-time" style="color:var(--accent-amber);">实时</div>
+                                    <div class="route-node-time" style="color:var(--accent-amber);" data-i18n="rnt_live">实时</div>
                                 </div>
                                 <div class="route-node upcoming">
                                     <div class="route-node-icon">🛃</div>
@@ -6587,7 +6799,7 @@
                                         <div class="route-node-name" data-i18n="node_nongkhai">廊开口岸 · 入境泰国</div>
                                         <div class="route-node-detail" data-i18n="node_nongkhai_detail">AI 预测通关时间：3.5 小时</div>
                                     </div>
-                                    <div class="route-node-time">预计<br>03-13</div>
+                                    <div class="route-node-time" data-i18n="rnt_eta_0313">预计<br>03-13</div>
                                 </div>
                                 <div class="route-node upcoming">
                                     <div class="route-node-icon">📦</div>
@@ -6595,7 +6807,7 @@
                                         <div class="route-node-name" data-i18n="node_bangkok">曼谷仓库 · 交付</div>
                                         <div class="route-node-detail" data-i18n="node_bangkok_detail">预计到达，智能合约将自动确认交付</div>
                                     </div>
-                                    <div class="route-node-time">预计<br>03-14</div>
+                                    <div class="route-node-time" data-i18n="rnt_eta_0314">预计<br>03-14</div>
                                 </div>
                             </div>
                         </div>
@@ -6606,7 +6818,7 @@
                 <div class="page" id="page-port">
                     <div class="grid-3 animate-in">
                         <div class="port-card" style="border-left-color:var(--accent-red);">
-                            <div class="port-name">🇨🇳🇱🇦 磨憨—磨丁</div>
+                            <div class="port-name" data-i18n="port_mohan">🇨🇳🇱🇦 磨憨—磨丁</div>
                             <div class="port-stat">
                                 <span class="port-stat-label" data-i18n="port_avg_time">平均通关</span>
                                 <span class="port-stat-value" style="color:var(--accent-red);">8.2h</span>
@@ -6621,7 +6833,7 @@
                             <div style="font-size:10px;color:var(--text-muted);margin-top:4px;" data-i18n="port_congestion_high">拥堵指数：高</div>
                         </div>
                         <div class="port-card" style="border-left-color:var(--accent-amber);">
-                            <div class="port-name">🇨🇳🇻🇳 河口—老街</div>
+                            <div class="port-name" data-i18n="port_hekou">🇨🇳🇻🇳 河口—老街</div>
                             <div class="port-stat">
                                 <span class="port-stat-label" data-i18n="port_avg_time">平均通关</span>
                                 <span class="port-stat-value" style="color:var(--accent-amber);">4.1h</span>
@@ -6636,7 +6848,7 @@
                             <div style="font-size:10px;color:var(--text-muted);margin-top:4px;" data-i18n="port_congestion_med">拥堵指数：中</div>
                         </div>
                         <div class="port-card" style="border-left-color:var(--accent-green);">
-                            <div class="port-name">🇱🇦🇹🇭 廊开—友谊桥</div>
+                            <div class="port-name" data-i18n="port_nongkhai">🇱🇦🇹🇭 廊开—友谊桥</div>
                             <div class="port-stat">
                                 <span class="port-stat-label" data-i18n="port_avg_time">平均通关</span>
                                 <span class="port-stat-value" style="color:var(--accent-green);">2.8h</span>
@@ -6830,7 +7042,7 @@
                     <div class="theme-option" onclick="selectTheme('dark')">
                         <div class="theme-icon">🌙</div>
                         <div class="theme-info">
-                            <div class="theme-name">暗色模式</div>
+                            <div class="theme-name" data-i18n="theme_dark">暗色模式</div>
                             <div class="theme-desc">Dark Mode</div>
                         </div>
                         <div class="theme-check">✓</div>
@@ -6838,7 +7050,7 @@
                     <div class="theme-option" onclick="selectTheme('light')">
                         <div class="theme-icon">☀️</div>
                         <div class="theme-info">
-                            <div class="theme-name">亮色模式</div>
+                            <div class="theme-name" data-i18n="theme_light">亮色模式</div>
                             <div class="theme-desc">Light Mode</div>
                         </div>
                         <div class="theme-check">✓</div>
@@ -6847,7 +7059,7 @@
             </div>
             <div class="language-modal-footer">
                 <button class="modal-confirm-btn" onclick="closeLanguageModal()">
-                    <span data-i18n="confirm">确认</span> / <span>Confirm</span>
+                    <span>确认</span> / <span>Confirm</span>
                 </button>
             </div>
         </div>
